@@ -7,7 +7,7 @@ import React, {
     ReactNode,
 } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { storage } from '../storage/storage';
+//import { storage } from '../storage/storage';
 
 type User = FirebaseAuthTypes.User | null;
 
@@ -39,9 +39,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(u);
 
             if (u) {
-                storage.set('user', JSON.stringify(u.toJSON()));
+                // storage.set('user', JSON.stringify(u.toJSON()));
             } else {
-                storage.delete('user');
+                // storage.delete('user');
             }
 
             if (initializing) {
