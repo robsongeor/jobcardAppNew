@@ -1,29 +1,29 @@
 {
-    "project_info": {
-        "project_number": "430743004571",
-        "project_id": "jobcardapp-cc73d",
-        "storage_bucket": "jobcardapp-cc73d.firebasestorage.app"
-    },
-    "client": [
-        {
-            "client_info": {
-                "mobilesdk_app_id": "1:430743004571:android:8a309f94c37fc86408ed3e",
-                "android_client_info": {
-                    "package_name": "com.raglab.jobcardapp"
-                }
-            },
-            "oauth_client": [],
-            "api_key": [
-                {
-                    "current_key": "AIzaSyDeuOqODTreFXkamyRv-teaLCDudolp94A"
-                }
-            ],
-            "services": {
-                "appinvite_service": {
-                    "other_platform_oauth_client": []
-                }
-            }
+  "project_info": {
+    "project_number": "430743004571",
+    "project_id": "jobcardapp-cc73d",
+    "storage_bucket": "jobcardapp-cc73d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430743004571:android:8a309f94c37fc86408ed3e",
+        "android_client_info": {
+          "package_name": "com.raglab.jobcardapp"
         }
-    ],
-    "configuration_version": "1"
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeuOqODTreFXkamyRv-teaLCDudolp94A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
