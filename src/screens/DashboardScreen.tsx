@@ -1,11 +1,10 @@
 import { Text, View } from "react-native";
-import { storage } from "../storage/storage";
 
 export default function DashboardScreen() {
     return (
         <View>
             <Text>
-                Dashboard {storage.getString('user')}
+                Dashboard
             </Text>
 
         </View>

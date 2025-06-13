@@ -1,6 +1,8 @@
 import { MMKV } from 'react-native-mmkv';
 
-export const storage = new MMKV();
+export const storage = new MMKV({
+    id: 'jobCardStorage',
+});
 
 // Example helpers
 export function setAuthToken(token: string) {
