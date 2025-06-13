@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignUpScreen from '../screens/auth/SignUpScreen';
 import DashboardScreen from '../screens/DashboardScreen';
+import TabNavigator from './TabNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +27,7 @@ const RootNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             {user ? (
                 // User is signed in
-                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                <Stack.Screen name="Main" component={TabNavigator} />
             ) : (
                 // User is not signed in
                 <>
