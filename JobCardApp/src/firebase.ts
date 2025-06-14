@@ -3,14 +3,20 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 export const getJobs = async () => {
-    const snapshot = await firestore().collection('jobs').get();
+    try {
+        const snapshot = await firestore().collection('jobs').get();
 
-    const jobs = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-    }));
+        const jobs = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
 
-    console.log(jobs)
+        return jobs;
+    } catch (error) {
+        console.error('Error fetching jobs:', error);
+        throw error; // you could also return []
+    }
+
 }
 
 
