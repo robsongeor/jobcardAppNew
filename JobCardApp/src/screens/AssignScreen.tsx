@@ -16,6 +16,8 @@ const AssignScreen = () => {
     const [lastDoc, setLastDoc] = useState<FirebaseFirestoreTypes.DocumentSnapshot | null>(null);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [totalFetched, setTotalFetched] = useState(0)
+    const maxResults = 30;
 
     const loadMoreJobs = async () => {
         if (loading || !hasMore || query.length < 3) return;
@@ -25,12 +27,12 @@ const AssignScreen = () => {
         try {
             console.log("Searching for:", query);
 
-            const { jobs: newJobs, lastDoc: newLastDoc } = await searchJobsTrigrams(query, lastDoc || undefined);
+            const { jobs: newJobs, lastDoc: newLastDoc } = await searchJobsTrigrams(query, totalFetched, maxResults, lastDoc || undefined);
             setJobs(prev => [...prev, ...(newJobs || [])]);
             setLastDoc(newLastDoc || null);
             setHasMore(!!newLastDoc); // if there's no lastDoc returned, we've reached the end
-            console.log('New jobs:', newJobs);
-            console.log('New lastDoc:', newLastDoc);
+
+            setTotalFetched(prev => prev + newJobs.length)
 
         } catch (error) {
             console.error('Failed to load more jobs:', error);
@@ -43,17 +45,24 @@ const AssignScreen = () => {
     const handleSearch = async () => {
         if (query.length < 3 || loading) return;
 
-        setSearchTriggered(true); // ✅ mark that search was triggered
+        setSearchTriggered(true);
         setLoading(true);
         setJobs([]);
         setLastDoc(null);
         setHasMore(true);
+        setTotalFetched(0); // ✅ reset on new search
 
         try {
-            const { jobs: newJobs, lastDoc: newLastDoc } = await searchJobsTrigrams(query);
+            const { jobs: newJobs, lastDoc: newLastDoc } = await searchJobsTrigrams(
+                query,
+                0,
+                maxResults,
+                undefined,
+            );
             setJobs(newJobs);
             setLastDoc(newLastDoc || null);
             setHasMore(!!newLastDoc);
+            setTotalFetched(newJobs.length); // ✅ update count
         } catch (error) {
             console.error("Error searching jobs:", error);
         } finally {
@@ -61,7 +70,7 @@ const AssignScreen = () => {
         }
     };
 
-    console.log('Jobs in render:', jobs);
+
 
 
     return (

@@ -11,8 +11,16 @@ import { Job } from './types/types';
 */
 export const searchJobsTrigrams = async (
     searchTerm: string,
+    totalFetched: number = 0,
+    maxTotalResults: number = 30,
     lastDoc?: FirebaseFirestoreTypes.DocumentSnapshot
 ): Promise<{ jobs: Job[]; lastDoc?: FirebaseFirestoreTypes.DocumentSnapshot }> => {
+
+    // Returns if max results loaded
+    if (totalFetched >= maxTotalResults) {
+        console.log("Max search limit reached:", maxTotalResults);
+        return { jobs: [], lastDoc };
+    }
 
     const db = getFirestore();
 
@@ -22,7 +30,7 @@ export const searchJobsTrigrams = async (
     let q = query(
         collection(db, 'jobs'),
         where('trigrams', 'array-contains', firstTrigram),
-        limit(20)
+        limit(10)
     );
 
     if (lastDoc) {
@@ -30,7 +38,7 @@ export const searchJobsTrigrams = async (
             collection(db, 'jobs'),
             where('trigrams', 'array-contains', firstTrigram),
             startAfter(lastDoc),
-            limit(20)
+            limit(10)
         );
     }
 
