@@ -16,16 +16,20 @@ export default function JobInfoBlock({ job }: JobInfoBlockProps) {
                 <Text style={styles.jobTitle}>{job.job}</Text>
             </View>
 
-            <View style={styles.machineBlock}>
-                <View style={styles.machineRow}>
-                    <Text style={styles.machineValue}>
-                        {job.machine.make} {job.machine.model}
-                    </Text>
-                    <Text style={styles.machineValue}>
-                        SN: {job.machine.serialNumber}
-                    </Text>
+            {job.machine ? (
+                <View style={styles.machineBlock}>
+                    <View style={styles.machineRow}>
+                        <Text style={styles.machineValue}>
+                            {job.machine.make || 'N/A'} {job.machine.model || 'N/A'}
+                        </Text>
+                        <Text style={styles.machineValue}>
+                            SN: {job.machine.serialNumber || 'N/A'}
+                        </Text>
+                    </View>
                 </View>
-            </View>
+            ) : (
+                <Text style={styles.machineValue}>Machine info not available</Text>
+            )}
 
             <View style={styles.descriptionBlock}>
                 <Text style={styles.label}>Job Description</Text>

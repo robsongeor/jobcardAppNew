@@ -1,24 +1,40 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter } from '@react-native-firebase/firestore';
+
+
 import { Job } from './types/types';
 
 /* Searchs firestore for first trigram (3chars of search term) 
     used to reduce retrieving to many docs from firestore (worst case ~1500)
     use pagination to reduce the chance of large queries 
 */
-export const searchJobsTrigams = async (searchTerm: string): Promise<Job[]> => {
+export const searchJobsTrigrams = async (
+    searchTerm: string,
+    lastDoc?: FirebaseFirestoreTypes.DocumentSnapshot
+): Promise<{ jobs: Job[]; lastDoc?: FirebaseFirestoreTypes.DocumentSnapshot }> => {
+
     const db = getFirestore();
 
     const clean = searchTerm.toLowerCase().trim();
     const firstTrigram = searchTerm.substring(0, 3);
 
-    const jobQuery = query(
+    let q = query(
         collection(db, 'jobs'),
-        where('trigrams', 'array-contains', firstTrigram)
+        where('trigrams', 'array-contains', firstTrigram),
+        limit(20)
     );
 
-    const snapshot = await getDocs(jobQuery);
+    if (lastDoc) {
+        q = query(
+            collection(db, 'jobs'),
+            where('trigrams', 'array-contains', firstTrigram),
+            startAfter(lastDoc),
+            limit(20)
+        );
+    }
+
+    const snapshot = await getDocs(q);
 
     const results: Job[] = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -30,7 +46,14 @@ export const searchJobsTrigams = async (searchTerm: string): Promise<Job[]> => {
         job.job.toLowerCase().includes(clean)
     );
 
-    return filtered;
+    console.log("First trigram:", firstTrigram);
+    console.log("Docs returned from Firestore:", snapshot.docs.length);
+
+
+    return {
+        jobs: filtered,
+        lastDoc: snapshot.docs[snapshot.docs.length - 1],
+    };
 }
 
 
