@@ -1,6 +1,6 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc } from '@react-native-firebase/firestore';
 
 
 import { Job } from './types/types';
@@ -86,4 +86,41 @@ export const getUserData = async (uid: string) => {
 
 
 }
+
+export const assignJobToUser = async (
+    jobId: string,
+    uid: string,
+): Promise<boolean> => {
+    try {
+        const db = getFirestore();
+        const jobRef = doc(db, 'jobs', jobId);
+        const jobSnap = await getDoc(jobRef);
+
+        if (!jobSnap.exists()) {
+            console.warn('Job not found:', jobId);
+            return false;
+        }
+
+        const jobData = jobSnap.data();
+        const currentAssigned: string[] = jobData?.assignedTo ?? [];
+
+        // Only add UID if it's not already assigned
+        if (!currentAssigned.includes(uid)) {
+            const updatedAssigned = [...currentAssigned, uid];
+
+            await updateDoc(jobRef, {
+                assignedTo: updatedAssigned,
+            });
+
+            console.log(`Assigned job ${jobId} to UID ${uid}`);
+        } else {
+            console.log(`ℹUser ${uid} already assigned to job ${jobId}`);
+        }
+
+        return true;
+    } catch (error) {
+        console.error('❌ Firestore error during job assignment:', error);
+        return false;
+    }
+};
 export { auth, firestore };

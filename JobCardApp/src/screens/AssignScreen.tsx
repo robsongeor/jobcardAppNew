@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SearchBar from '../components/SearchBar';
-import { auth, getUserData, searchJobsTrigrams } from '../firebase';
+import { assignJobToUser, auth, getUserData, searchJobsTrigrams } from '../firebase';
 import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
@@ -76,18 +76,21 @@ const AssignScreen = () => {
     //Assigning Job to user
     const handleAssignJob = async () => {
         console.log(getStoredUserField('uid'))
-        // if (!selectedJobId || !auth.currentUser) return;
 
-        // try {
-        //     const jobRef = doc(db, 'jobs', selectedJobId);
-        //     await updateDoc(jobRef, {
-        //         assignedTo: auth.currentUser.uid,
-        //     });
-        //     console.log('Job assigned!');
-        //     setSelectedJobId(null); // clear selection after assigning
-        // } catch (error) {
-        //     console.error('Failed to assign job:', error);
-        // }
+
+        if (!selectedJobId) return;
+
+        const uid = getStoredUserField('uid');
+
+        if (!uid) {
+            console.warn('User info missing from storage')
+        } else {
+            const success = await assignJobToUser(selectedJobId, uid);
+            if (success) setSelectedJobId(null);
+        }
+
+
+
     };
 
 
