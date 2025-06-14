@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Import the screens you want as tabs
 import DashboardScreen from '../screens/DashboardScreen';
 import JobsScreen from '../screens/JobsScreen'; // create this if you haven’t yet
+import AssignScreen from '../screens/AssignScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,7 @@ const TabNavigator: React.FC = () => (
     >
         <Tab.Screen name="Dashboard" component={DashboardScreen} />
         <Tab.Screen name="Jobs" component={JobsScreen} />
+        <Tab.Screen name="Assign" component={AssignScreen} />
     </Tab.Navigator>
 );
 
