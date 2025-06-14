@@ -1,6 +1,6 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc } from '@react-native-firebase/firestore';
 
 
 import { Job } from './types/types';
@@ -64,6 +64,26 @@ export const searchJobsTrigrams = async (
     };
 }
 
+export const getUserData = async (uid: string) => {
+    try {
+        const db = getFirestore();
+        const userRef = doc(db, "users", uid)
+        const snapshot = await getDoc(userRef)
+
+        if (snapshot.exists()) {
+            return snapshot.data();
+
+        } else {
+            console.warn('No user data found for UID:', uid);
+            return null;
+        }
+
+    } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        return null;
+    }
 
 
+
+}
 export { auth, firestore };

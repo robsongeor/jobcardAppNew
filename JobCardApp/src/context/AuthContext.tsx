@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { storage } from '../storage/storage';
+import { getUserData } from '../firebase';
 
 type User = FirebaseAuthTypes.User | null;
 
@@ -39,7 +40,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(u);
 
             if (u) {
-                storage.set('user', JSON.stringify(u.toJSON()));
+                //User collection retrieval
+                const firestoreUser = await getUserData(u.uid);
+
+                const mergedUser = {
+                    ...u.toJSON(),          // includes uid, email, etc.
+                    ...firestoreUser,       // includes name, role, etc.
+                };
+                storage.set('user', JSON.stringify(mergedUser));
+
             } else {
                 storage.delete('user');
             }

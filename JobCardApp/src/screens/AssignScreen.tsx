@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SearchBar from '../components/SearchBar';
-import { searchJobsTrigrams } from '../firebase';
+import { auth, getUserData, searchJobsTrigrams } from '../firebase';
 import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { getStoredUserField } from '../storage/storage';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
     const [searchTriggered, setSearchTriggered] = useState(false);
+    const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
+
 
 
     const [jobs, setJobs] = useState<Job[]>([])
@@ -70,6 +73,22 @@ const AssignScreen = () => {
         }
     };
 
+    //Assigning Job to user
+    const handleAssignJob = async () => {
+        console.log(getStoredUserField('uid'))
+        // if (!selectedJobId || !auth.currentUser) return;
+
+        // try {
+        //     const jobRef = doc(db, 'jobs', selectedJobId);
+        //     await updateDoc(jobRef, {
+        //         assignedTo: auth.currentUser.uid,
+        //     });
+        //     console.log('Job assigned!');
+        //     setSelectedJobId(null); // clear selection after assigning
+        // } catch (error) {
+        //     console.error('Failed to assign job:', error);
+        // }
+    };
 
 
 
@@ -81,7 +100,12 @@ const AssignScreen = () => {
                 <FlatList
                     data={jobs}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <JobInfoBlock job={item} />}
+                    renderItem={({ item }) =>
+                        <JobInfoBlock
+                            job={item}
+                            isSelected={item.id === selectedJobId}
+                            onPress={() => setSelectedJobId(item.id === selectedJobId ? null : item.id)}
+                        />}
                     onEndReached={loadMoreJobs}
                     onEndReachedThreshold={0.5}
                     ListFooterComponent={loading ? <Text style={{ textAlign: 'center', padding: 16 }}>Loading more...</Text> : null}
@@ -91,9 +115,41 @@ const AssignScreen = () => {
                     Enter at least 3 characters and press Search.
                 </Text>
             )}
+
+            <View style={styles.assignButtonContainer}>
+                <TouchableOpacity
+                    disabled={!selectedJobId}
+                    style={[
+                        styles.assignButton,
+                        !selectedJobId && { backgroundColor: 'grey' },
+                    ]}
+                    onPress={handleAssignJob}
+                >
+                    <Text style={styles.assignButtonText}>Assign</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 
 };
+
+const styles = StyleSheet.create({
+    assignButtonContainer: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+    },
+    assignButton: {
+        backgroundColor: '#007AFF',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+    },
+    assignButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+
+})
 
 export default AssignScreen;

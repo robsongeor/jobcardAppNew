@@ -29,7 +29,7 @@ export default function LoginScreen() {
         try {
             const userCred = await auth().signInWithEmailAndPassword(email, password);
             console.log("✅ Logged in:", userCred.user.uid);
-            // TODO: navigate to your dashboard, e.g. navigation.replace("Dashboard")
+
         } catch (err: any) {
             console.error(err);
             Alert.alert("Login failed", err.message || "Unknown error");

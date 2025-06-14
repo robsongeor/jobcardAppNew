@@ -1,43 +1,52 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
 
 type JobInfoBlockProps = {
     job: Job;
+    onPress?: () => void;
+    isSelected?: boolean;
 };
 
-export default function JobInfoBlock({ job }: JobInfoBlockProps) {
+export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockProps) {
     return (
-        <View style={styles.card}>
-            <View style={styles.topRow}>
-                <View style={styles.fleetCustomerRow}>
-                    <Text style={styles.fleet}>{job.fleet}</Text>
-                    <Text style={styles.customer}>{job.customerName}</Text>
-                </View>
-                <Text style={styles.jobTitle}>{job.job}</Text>
-            </View>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[isSelected && styles.selected]}>
 
-            {job.machine ? (
-                <View style={styles.machineBlock}>
-                    <View style={styles.machineRow}>
-                        <Text style={styles.machineValue}>
-                            {job.machine.make || 'N/A'} {job.machine.model || 'N/A'}
-                        </Text>
-                        <Text style={styles.machineValue}>
-                            SN: {job.machine.serialNumber || 'N/A'}
-                        </Text>
+
+
+            <View style={styles.card}>
+                <View style={styles.topRow}>
+                    <View style={styles.fleetCustomerRow}>
+                        <Text style={styles.fleet}>{job.fleet}</Text>
+                        <Text style={styles.customer}>{job.customerName}</Text>
                     </View>
+                    <Text style={styles.jobTitle}>{job.job}</Text>
                 </View>
-            ) : (
-                <Text style={styles.machineValue}>Machine info not available</Text>
-            )}
 
-            <View style={styles.descriptionBlock}>
-                <Text style={styles.label}>Job Description</Text>
-                <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
-                    {job.description}
-                </Text>
+                {job.machine ? (
+                    <View style={styles.machineBlock}>
+                        <View style={styles.machineRow}>
+                            <Text style={styles.machineValue}>
+                                {job.machine.make || 'N/A'} {job.machine.model || 'N/A'}
+                            </Text>
+                            <Text style={styles.machineValue}>
+                                SN: {job.machine.serialNumber || 'N/A'}
+                            </Text>
+                        </View>
+                    </View>
+                ) : (
+                    <Text style={styles.machineValue}>Machine info not available</Text>
+                )}
+
+                <View style={styles.descriptionBlock}>
+                    <Text style={styles.label}>Job Description</Text>
+                    <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
+                        {job.description}
+                    </Text>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -111,5 +120,9 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 12,
         color: "#444",
+    },
+    selected: {
+        borderColor: 'blue',
+        borderWidth: 2,
     },
 });
