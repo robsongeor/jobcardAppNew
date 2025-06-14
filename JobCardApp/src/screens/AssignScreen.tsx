@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import SearchBar from '../components/SearchBar';
+import { getJobs } from '../firebase';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
@@ -8,6 +9,8 @@ const AssignScreen = () => {
     const handleSearch = () => {
         console.log("searching", query)
     }
+
+    getJobs();
 
     return (
         <View style={{ flex: 1 }}>
