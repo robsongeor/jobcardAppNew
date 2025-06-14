@@ -1,14 +1,18 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore } from '@react-native-firebase/firestore';
+import { Job } from './types/types';
 
-export const getJobs = async () => {
+export const getJobs = async (): Promise<Job[]> => {
     try {
-        const snapshot = await firestore().collection('jobs').get();
+        const db = getFirestore();
+        const jobsRef = collection(db, 'jobs');
+
+        const snapshot = await getDocs(jobsRef);
 
         const jobs = snapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data(),
+            ...(doc.data() as Omit<Job, 'id'>),
         }));
 
         return jobs;
