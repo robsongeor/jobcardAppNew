@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar';
 import { getJobs } from '../firebase';
 import { Job } from '../types/types';
 import { Text } from 'react-native-gesture-handler';
+import JobInfoBlock from '../components/JobInfoBlock';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
@@ -33,7 +34,9 @@ const AssignScreen = () => {
             <SearchBar value={query} onChangeText={setQuery} handleSearch={handleSearch} />
 
             {jobs.map((job) => (
-                <Text key={job.id}>{job.fleet}</Text>
+                <JobInfoBlock
+                    job={job}
+                />
             ))}
 
         </View>

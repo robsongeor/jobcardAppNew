@@ -1,0 +1,111 @@
+import { Text, View, StyleSheet } from "react-native";
+import { Job } from "../types/types";
+
+type JobInfoBlockProps = {
+    job: Job;
+};
+
+export default function JobInfoBlock({ job }: JobInfoBlockProps) {
+    return (
+        <View style={styles.card}>
+            <View style={styles.topRow}>
+                <View style={styles.fleetCustomerRow}>
+                    <Text style={styles.fleet}>{job.fleet}</Text>
+                    <Text style={styles.customer}>{job.customerName}</Text>
+                </View>
+                <Text style={styles.jobTitle}>{job.job}</Text>
+            </View>
+
+            <View style={styles.machineBlock}>
+                <View style={styles.machineRow}>
+                    <Text style={styles.machineValue}>
+                        {job.machine.make} {job.machine.model}
+                    </Text>
+                    <Text style={styles.machineValue}>
+                        SN: {job.machine.serialNumber}
+                    </Text>
+                </View>
+            </View>
+
+            <View style={styles.descriptionBlock}>
+                <Text style={styles.label}>Job Description</Text>
+                <Text style={styles.description} numberOfLines={3} ellipsizeMode="tail">
+                    {job.description}
+                </Text>
+            </View>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: "#fefefe",
+        padding: 14,
+        marginHorizontal: 12,
+        marginVertical: 6,
+        borderRadius: 14,
+        borderWidth: 0,
+        shadowColor: "#999",
+        shadowOpacity: 0.06,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 5,
+        elevation: 1,
+    },
+    topRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+    },
+    fleetCustomerRow: {
+        flexDirection: "row",
+        flexShrink: 1,
+        flexWrap: "wrap",
+    },
+    fleet: {
+        fontSize: 14,
+        fontWeight: "800",
+        color: "#3752e2",
+        textTransform: "uppercase",
+        marginRight: 8,
+    },
+    customer: {
+        fontSize: 14,
+        fontWeight: "400",
+        textTransform: "uppercase",
+        color: "#aaa",
+        flexShrink: 1,
+        minWidth: 150,
+    },
+    jobTitle: {
+        fontSize: 14,
+        fontWeight: "800",
+        color: "#222",
+        maxWidth: "30%",
+        textAlign: "right",
+    },
+    machineBlock: {
+        paddingTop: 4,
+    },
+    machineRow: {
+        marginBottom: 2,
+    },
+    machineValue: {
+        textTransform: "uppercase",
+        fontSize: 12,
+        color: "#333",
+        flexShrink: 1,
+    },
+    descriptionBlock: {
+        marginTop: 4,
+    },
+    label: {
+        fontSize: 12,
+        color: "#999",
+        textTransform: "uppercase",
+        letterSpacing: 0.5,
+    },
+    description: {
+        fontSize: 12,
+        color: "#444",
+    },
+});
