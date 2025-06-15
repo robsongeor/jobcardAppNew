@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 type FieldProps = {
     label?: string;
@@ -9,10 +9,10 @@ type FieldProps = {
 export default function Field({ label, children }: FieldProps) {
 
     return (
-        <View style={styles.card}>
+        <ScrollView style={styles.card}>
             {label && <Text> {label} </Text>}
             {children}
-        </View>
+        </ScrollView>
     )
 }
 

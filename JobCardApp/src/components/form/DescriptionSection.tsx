@@ -13,7 +13,6 @@ type DescriptionSectionProps = {
 
 export default function DescriptionSection({ description, setDescription }: DescriptionSectionProps) {
 
-
     const updateField = (name: string, value: string) => {
         const updated = {
             ...description,
