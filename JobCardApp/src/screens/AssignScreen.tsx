@@ -5,7 +5,7 @@ import { assignJobToUser, auth, getUserData, searchJobsTrigrams } from '../fireb
 import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { addAssignedJob, getStoredUserField } from '../storage/storage';
+import { getStoredUserField } from '../storage/storage';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
@@ -85,7 +85,6 @@ const AssignScreen = () => {
         } else {
             const job = await assignJobToUser(selectedJobId, uid);
             if (job) {
-                addAssignedJob(job)
                 setSelectedJobId(null)
             };
         }

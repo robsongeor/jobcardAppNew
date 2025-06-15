@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from '../screens/DashboardScreen';
 import JobsScreen from '../screens/JobsScreen'; // create this if you haven’t yet
 import AssignScreen from '../screens/AssignScreen';
+import JobsStackNavigator from './JobStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,7 @@ const TabNavigator: React.FC = () => (
         }}
     >
         <Tab.Screen name="Dashboard" component={DashboardScreen} />
-        <Tab.Screen name="Jobs" component={JobsScreen} />
+        <Tab.Screen name="Jobs" component={JobsStackNavigator} />
         <Tab.Screen name="Assign" component={AssignScreen} />
     </Tab.Navigator>
 );
