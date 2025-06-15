@@ -3,7 +3,6 @@ import {
     Button,
     StyleSheet,
     Text,
-    TextInput,
     TouchableOpacity,
     View,
     KeyboardAvoidingView,
@@ -74,41 +73,60 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
             keyboardVerticalOffset={80}
         >
             <View style={{ flex: 1 }}>
-                <ScrollView >
-                    <Field label="Activity">
-                        {activity.map((a, index) => (
-                            <View key={a.id} style={styles.activityCard}>
-                                <View style={styles.activityRow}>
-                                    <View style={styles.activityTextBlock}>
-                                        <Text style={styles.value}>
-                                            {new Date(a.date).toLocaleDateString("en-NZ", {
+                <Field>
+                    {/* Sticky Table Header */}
+                    <View style={styles.tableHeader}>
+                        <Text style={[styles.headerCell, { flex: 2 }]}>Date</Text>
+                        <Text style={styles.headerCell}>Hours</Text>
+                        <Text style={styles.headerCell}>KMs</Text>
+                        <Text style={[styles.headerCell, { flex: 1.5 }]}>Actions</Text>
+                    </View>
+                    <ScrollView style={{ maxHeight: 240 }}>
+                        {activity.length === 0 ? (
+                            <View style={styles.emptyState}>
+                                <Text style={styles.emptyText}>No activities yet. Add one below!</Text>
+                            </View>
+                        ) : (
+                            activity.map((a, index) => (
+                                <View
+                                    key={a.id}
+                                    style={[
+                                        styles.tableRow,
+                                        isEdit === index && styles.editingRow,
+                                    ]}
+                                >
+                                    <Text style={[styles.rowCell, { flex: 2 }]}>
+                                        {a.date
+                                            ? new Date(a.date).toLocaleDateString("en-NZ", {
                                                 day: "2-digit",
                                                 month: "short",
                                                 year: "numeric",
-                                            })}
-                                        </Text>
-                                        <Text style={styles.value}>{a.hours} hrs</Text>
-                                        <Text style={styles.value}>{a.kms} km</Text>
-                                    </View>
-                                    <View style={styles.iconButtonRow}>
+                                            })
+                                            : ""}
+                                    </Text>
+                                    <Text style={styles.rowCell}>{a.hours}</Text>
+                                    <Text style={styles.rowCell}>{a.kms}</Text>
+                                    <View style={[styles.rowCell, { flex: 1.5, flexDirection: "row", gap: 8 }]}>
                                         <TouchableOpacity
                                             onPress={() => fillFieldsOnEdit(index)}
                                             style={[styles.iconButton, styles.editButton]}
+                                            activeOpacity={0.7}
                                         >
-                                            <Text style={styles.iconText}>✏️</Text>
+                                            <Text style={styles.iconText}></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             onPress={() => deleteActivity(index)}
                                             style={[styles.iconButton, styles.deleteButton]}
+                                            activeOpacity={0.7}
                                         >
-                                            <Text style={styles.iconText}>🗑️</Text>
+                                            <Text style={styles.iconText}></Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            </View>
-                        ))}
-                    </Field>
-                </ScrollView>
+                            ))
+                        )}
+                    </ScrollView>
+                </Field>
 
                 {/* Fixed input area at the bottom */}
                 <View style={styles.bottomInputs}>
@@ -116,20 +134,20 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                         <Label label="Date" />
                         <DateInput date={date} setDate={setDate} />
                     </View>
-
                     <SmallTextInput
                         value={hours}
                         onChangeText={setHours}
                         label="Hours"
                     />
-
                     <SmallTextInput
                         value={kms}
                         onChangeText={setKms}
                         label="KMs"
                     />
-
-                    <Button title={isEdit !== null ? "Update Activity" : "Add Activity"} onPress={addActivity} />
+                    <Button
+                        title={isEdit !== null ? "Update Activity" : "Add Activity"}
+                        onPress={addActivity}
+                    />
                 </View>
             </View>
         </KeyboardAvoidingView>
@@ -137,36 +155,39 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
 }
 
 const styles = StyleSheet.create({
-    // ... keep your previous styles
-    activityCard: {
-        backgroundColor: "#fefefe",
-        padding: 12,
-        marginBottom: 12,
-        borderRadius: 12,
-        shadowColor: "#999",
-        shadowOpacity: 0.06,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 1,
-    },
-    activityRow: {
+    tableHeader: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        backgroundColor: "#f2f2f2",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 4,
+        marginBottom: 2,
+    },
+    headerCell: {
+        flex: 1,
+        fontWeight: "bold",
+        fontSize: 14,
+        color: "#222",
+        textAlign: "left",
+    },
+    tableRow: {
+        flexDirection: "row",
+        backgroundColor: "#fff",
+        borderBottomWidth: 1,
+        borderColor: "#ececec",
         alignItems: "center",
+        paddingVertical: 8,
+        paddingHorizontal: 4,
     },
-    activityTextBlock: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 12,
+    editingRow: {
+        backgroundColor: "#e3f1ff",
     },
-    value: {
+    rowCell: {
+        flex: 1,
         fontSize: 13,
         color: "#444",
-        marginRight: 12,
-    },
-    iconButtonRow: {
-        flexDirection: "row",
-        gap: 8,
+        textAlign: "left",
     },
     iconButton: {
         width: 32,
@@ -174,6 +195,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         alignItems: "center",
         justifyContent: "center",
+        marginRight: 6,
     },
     editButton: {
         backgroundColor: "#007AFF",
@@ -186,8 +208,15 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
     },
-
-    // NEW styles for the input area at the bottom:
+    emptyState: {
+        padding: 32,
+        alignItems: "center",
+    },
+    emptyText: {
+        color: "#888",
+        fontSize: 15,
+        fontStyle: "italic",
+    },
     bottomInputs: {
         padding: 16,
         backgroundColor: "#fff",
@@ -196,19 +225,5 @@ const styles = StyleSheet.create({
     },
     inputRowVertical: {
         marginBottom: 12,
-    },
-    inputLabel: {
-        fontSize: 14,
-        fontWeight: "600",
-        marginBottom: 4,
-        marginLeft: 2,
-    },
-    quantityInput: {
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 6,
-        padding: 10,
-        fontSize: 16,
-        backgroundColor: "#fafafa",
     },
 });
