@@ -123,4 +123,29 @@ export const assignJobToUser = async (
         return null;
     }
 };
+
+export const listenToAssignedJobs = (
+    uid: string,
+    onUpdate: (jobs: Job[]) => void
+): (() => void) => {
+    const db = getFirestore();
+    const jobsRef = collection(db, 'jobs');
+
+    const q = query(jobsRef, where('assignedTo', 'array-contains', uid));
+
+    const unsubscribe = firestore().collection('jobs')
+        .where('assignedTo', 'array-contains', uid)
+        .onSnapshot(snapshot => {
+            const jobs: Job[] = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...(doc.data() as Omit<Job, 'id'>),
+            }));
+            onUpdate(jobs);
+        }, error => {
+            console.error("Error listening to assigned jobs:", error);
+        });
+
+    return unsubscribe; // So caller can clean up
+};
+
 export { auth, firestore };
