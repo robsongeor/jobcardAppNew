@@ -14,6 +14,7 @@ const TabNavigator: React.FC = () => (
     <Tab.Navigator
         screenOptions={{
             headerShown: false,
+            tabBarHideOnKeyboard: true
             // you can add icons, styling, etc. here later
         }}
     >
