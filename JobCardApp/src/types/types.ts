@@ -13,3 +13,22 @@ export type Job = {
     site: string;
     status: string;
 };
+
+export type JobActivityType = {
+    id: string;
+    date: string;
+    hours: string;
+    kms: string;
+}
+
+export type JobDescriptionType = {
+    orderNo: string;
+    hours: string;
+    report: string;
+};
+
+export type QuantityInputType = {
+    id: string;
+    descValue: string;
+    quantityValue: string;
+}

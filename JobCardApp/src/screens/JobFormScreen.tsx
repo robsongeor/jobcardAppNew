@@ -1,19 +1,39 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { JobsStackParamList } from '../navigation/JobStackNavigator';
+import { useJobFormData } from '../hooks/useJobFormData';
+import ActivitySection from '../components/form/ActivitySection';
+import DescriptionSection from '../components/form/DescriptionSection';
+import PartsSection from '../components/form/PartsSection';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
 
 const JobFormScreen = () => {
-    const route = useRoute<JobFormRouteProp>();
-    const { jobId } = route.params;
+    const { jobId } = useRoute<JobFormRouteProp>().params;
+    const { form, updateField } = useJobFormData(jobId);
+    ;
 
+    if (!form) return null; // or a loading state
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>📝 Job Card for ID: {jobId}</Text>
-            {/* We’ll add inputs, status, notes, etc. next */}
+
+            <DescriptionSection
+                description={form.description}
+                setDescription={(updated) => updateField('description', updated)}
+            />
+
+            <ActivitySection
+                activity={form.activity ?? []}
+                setActivity={(updated) => updateField('activity', updated)}
+            />
+
+            <PartsSection
+                parts={form.parts ?? []}
+                setParts={(updated) => updateField('parts', updated)}
+            />
+
         </View>
     );
 };
@@ -24,9 +44,14 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#fff',
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    input: {
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 12,
+        borderRadius: 8,
+        minHeight: 120,
+        textAlignVertical: 'top',
     },
 });
 
