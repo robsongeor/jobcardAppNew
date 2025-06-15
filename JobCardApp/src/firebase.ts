@@ -90,7 +90,7 @@ export const getUserData = async (uid: string) => {
 export const assignJobToUser = async (
     jobId: string,
     uid: string,
-): Promise<boolean> => {
+): Promise<Job | null> => {
     try {
         const db = getFirestore();
         const jobRef = doc(db, 'jobs', jobId);
@@ -98,7 +98,7 @@ export const assignJobToUser = async (
 
         if (!jobSnap.exists()) {
             console.warn('Job not found:', jobId);
-            return false;
+            return null;
         }
 
         const jobData = jobSnap.data();
@@ -117,10 +117,10 @@ export const assignJobToUser = async (
             console.log(`ℹUser ${uid} already assigned to job ${jobId}`);
         }
 
-        return true;
+        return { id: jobId, ...jobData } as Job;
     } catch (error) {
         console.error('❌ Firestore error during job assignment:', error);
-        return false;
+        return null;
     }
 };
 export { auth, firestore };
