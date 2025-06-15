@@ -24,7 +24,7 @@ const JobsScreen = () => {
                 renderItem={({ item }) => (
                     <JobInfoBlock
                         job={item}
-                        onPress={() => navigation.navigate('JobForm', { jobId: item.id })}
+                        onPress={() => navigation.navigate('JobForm', { jobId: item.id, job: item })}
                     />
                 )}
             />

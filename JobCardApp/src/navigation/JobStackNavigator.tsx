@@ -3,10 +3,11 @@ import React from 'react';
 import JobsScreen from '../screens/JobsScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import JobFormScreen from '../screens/JobFormScreen';
+import { Job } from '../types/types';
 
 export type JobsStackParamList = {
     JobsList: undefined;
-    JobForm: { jobId: string }; // or { job: Job } if passing whole job
+    JobForm: { jobId: string, job: Job }; // or { job: Job } if passing whole job
 };
 
 const Stack = createNativeStackNavigator<JobsStackParamList>();

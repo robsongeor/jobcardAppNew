@@ -1,3 +1,4 @@
+//JobInfoBlock.tsx
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
 

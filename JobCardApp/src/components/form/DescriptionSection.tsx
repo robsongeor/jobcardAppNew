@@ -1,6 +1,6 @@
 
 
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Field from "./FormInputs/Field";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import { JobDescriptionType } from "../../types/types";
@@ -24,15 +24,14 @@ export default function DescriptionSection({ description, setDescription }: Desc
     }
 
     return (
-        <View>
-            <Field label="Hours">
+        <View style={styles.card}>
+            <Field>
                 <SmallTextInput
                     label="Order Number"
                     value={description.orderNo}
                     onChangeText={(value) => updateField("orderNo", value)}
                 />
                 <SmallTextInput
-                    // multiline
                     label="Hours"
                     value={description.hours}
                     onChangeText={(value) => updateField("hours", value)}
@@ -43,10 +42,24 @@ export default function DescriptionSection({ description, setDescription }: Desc
                     value={description.report}
                     onChangeText={(value) => updateField("report", value)}
                 />
-
-                <Text> {description.report}</Text>
             </Field>
         </View>
 
     )
 }
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: "#fefefe",
+        padding: 14,
+        marginHorizontal: 12,
+        marginVertical: 6,
+        borderRadius: 14,
+        borderWidth: 0,
+        shadowColor: "#999",
+        shadowOpacity: 0.06,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 5,
+        elevation: 1,
+    },
+});
