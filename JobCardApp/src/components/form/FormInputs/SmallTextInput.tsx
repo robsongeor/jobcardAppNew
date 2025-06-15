@@ -1,5 +1,6 @@
 import React from "react";
 import { TextInput, View, Text, StyleSheet } from "react-native";
+import Label from "./Label";
 
 type InputProps = {
     label: string;
@@ -16,7 +17,9 @@ export default function SmallTextInput({
 }: InputProps) {
     return (
         <View style={styles.inputBlock}>
-            <Text style={styles.label}>{label}</Text>
+            <Label
+                label={label}
+            />
             <TextInput
                 multiline={multiline}
                 value={value}
@@ -32,13 +35,6 @@ export default function SmallTextInput({
 const styles = StyleSheet.create({
     inputBlock: {
         marginBottom: 12,
-    },
-    label: {
-        fontSize: 12,
-        color: "#999",
-        textTransform: "uppercase",
-        marginBottom: 4,
-        letterSpacing: 0.5,
     },
     input: {
         fontSize: 13,

@@ -5,6 +5,7 @@ import DateInput from "./FormInputs/DateInput";
 import Field from "./FormInputs/Field";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Label from "./FormInputs/Label";
 
 export default function SignSection() {
     const [date, setDate] = useState("");
@@ -51,7 +52,7 @@ export default function SignSection() {
             />
 
             <View style={styles.dateInputGroup}>
-                <Text style={styles.label}>Date</Text>
+                <Label label="date" />
                 <DateInput date={date} setDate={setDate} />
             </View>
         </Field>

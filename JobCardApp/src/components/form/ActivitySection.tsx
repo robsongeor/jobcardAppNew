@@ -6,11 +6,16 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
 } from "react-native";
 import Field from "./FormInputs/Field";
 import DateInput from "./FormInputs/DateInput";
 import uuid from "react-native-uuid";
 import { JobActivityType } from "../../types/types";
+import SmallTextInput from "./FormInputs/SmallTextInput";
+import Label from "./FormInputs/Label";
 
 type ActivitySectionProps = {
     activity: JobActivityType[];
@@ -63,96 +68,76 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     };
 
     return (
-        <Field label="Activity">
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            keyboardVerticalOffset={80}
+        >
+            <View style={{ flex: 1 }}>
+                <ScrollView >
+                    <Field label="Activity">
+                        {activity.map((a, index) => (
+                            <View key={a.id} style={styles.activityCard}>
+                                <View style={styles.activityRow}>
+                                    <View style={styles.activityTextBlock}>
+                                        <Text style={styles.value}>
+                                            {new Date(a.date).toLocaleDateString("en-NZ", {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                            })}
+                                        </Text>
+                                        <Text style={styles.value}>{a.hours} hrs</Text>
+                                        <Text style={styles.value}>{a.kms} km</Text>
+                                    </View>
+                                    <View style={styles.iconButtonRow}>
+                                        <TouchableOpacity
+                                            onPress={() => fillFieldsOnEdit(index)}
+                                            style={[styles.iconButton, styles.editButton]}
+                                        >
+                                            <Text style={styles.iconText}>✏️</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => deleteActivity(index)}
+                                            style={[styles.iconButton, styles.deleteButton]}
+                                        >
+                                            <Text style={styles.iconText}>🗑️</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        ))}
+                    </Field>
+                </ScrollView>
 
-            {activity.map((a, index) => (
-                <View key={a.id} style={styles.activityCard}>
-                    <View style={styles.activityRow}>
-                        <View style={styles.activityTextBlock}>
-                            <Text style={styles.value}>
-                                {new Date(a.date).toLocaleDateString("en-NZ", {
-                                    day: "2-digit",
-                                    month: "short",
-                                    year: "numeric",
-                                })}
-                            </Text>
-                            <Text style={styles.value}>{a.hours} hrs</Text>
-                            <Text style={styles.value}>{a.kms} km</Text>
-                        </View>
-
-                        <View style={styles.iconButtonRow}>
-                            <TouchableOpacity
-                                onPress={() => fillFieldsOnEdit(index)}
-                                style={[styles.iconButton, styles.editButton]}
-                            >
-                                <Text style={styles.iconText}>✏️</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => deleteActivity(index)}
-                                style={[styles.iconButton, styles.deleteButton]}
-                            >
-                                <Text style={styles.iconText}>🗑️</Text>
-                            </TouchableOpacity>
-                        </View>
+                {/* Fixed input area at the bottom */}
+                <View style={styles.bottomInputs}>
+                    <View style={styles.inputRowVertical}>
+                        <Label label="Date" />
+                        <DateInput date={date} setDate={setDate} />
                     </View>
+
+                    <SmallTextInput
+                        value={hours}
+                        onChangeText={setHours}
+                        label="Hours"
+                    />
+
+                    <SmallTextInput
+                        value={kms}
+                        onChangeText={setKms}
+                        label="KMs"
+                    />
+
+                    <Button title={isEdit !== null ? "Update Activity" : "Add Activity"} onPress={addActivity} />
                 </View>
-            ))}
-
-            <View style={styles.inputRow}>
-                <DateInput date={date} setDate={setDate} />
-                <TextInput
-                    value={hours}
-                    onChangeText={setHours}
-                    keyboardType="numeric"
-                    placeholder="hours"
-                    style={styles.quantityInput}
-                />
-                <TextInput
-                    value={kms}
-                    onChangeText={setKms}
-                    keyboardType="numeric"
-                    placeholder="kms"
-                    style={styles.quantityInput}
-                />
             </View>
-
-            <Button title="Add Activity" onPress={addActivity} />
-        </Field>
-
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
-    card: {
-        backgroundColor: "#fefefe",
-        padding: 14,
-        marginHorizontal: 12,
-        marginVertical: 6,
-        borderRadius: 14,
-        borderWidth: 0,
-        shadowColor: "#999",
-        shadowOpacity: 0.06,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 5,
-        elevation: 1,
-    },
-
-    inputRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 12,
-        width: "100%",
-    },
-
-    quantityInput: {
-        flex: 1,
-        minWidth: 60,
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 6,
-        padding: 10,
-    },
-
+    // ... keep your previous styles
     activityCard: {
         backgroundColor: "#fefefe",
         padding: 12,
@@ -164,30 +149,25 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 1,
     },
-
     activityRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
     },
-
     activityTextBlock: {
         flexDirection: "row",
         flexWrap: "wrap",
         gap: 12,
     },
-
     value: {
         fontSize: 13,
         color: "#444",
         marginRight: 12,
     },
-
     iconButtonRow: {
         flexDirection: "row",
         gap: 8,
     },
-
     iconButton: {
         width: 32,
         height: 32,
@@ -195,18 +175,40 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-
     editButton: {
         backgroundColor: "#007AFF",
     },
-
     deleteButton: {
         backgroundColor: "#FF3B30",
     },
-
     iconText: {
         color: "white",
         fontSize: 16,
         fontWeight: "bold",
+    },
+
+    // NEW styles for the input area at the bottom:
+    bottomInputs: {
+        padding: 16,
+        backgroundColor: "#fff",
+        borderTopWidth: 1,
+        borderColor: "#eee",
+    },
+    inputRowVertical: {
+        marginBottom: 12,
+    },
+    inputLabel: {
+        fontSize: 14,
+        fontWeight: "600",
+        marginBottom: 4,
+        marginLeft: 2,
+    },
+    quantityInput: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 6,
+        padding: 10,
+        fontSize: 16,
+        backgroundColor: "#fafafa",
     },
 });
