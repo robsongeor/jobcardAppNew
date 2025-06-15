@@ -5,8 +5,6 @@ import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
 import QuantityInput from "./FormInputs/QuantityInput";
 
-
-
 type PartsSectionProps = {
     parts: QuantityInputType[];
     setParts: (newParts: QuantityInputType[]) => void

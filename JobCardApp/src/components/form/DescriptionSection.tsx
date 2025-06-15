@@ -24,26 +24,26 @@ export default function DescriptionSection({ description, setDescription }: Desc
     }
 
     return (
-        <View style={styles.card}>
-            <Field>
-                <SmallTextInput
-                    label="Order Number"
-                    value={description.orderNo}
-                    onChangeText={(value) => updateField("orderNo", value)}
-                />
-                <SmallTextInput
-                    label="Hours"
-                    value={description.hours}
-                    onChangeText={(value) => updateField("hours", value)}
-                />
-                <SmallTextInput
-                    multiline
-                    label="Report"
-                    value={description.report}
-                    onChangeText={(value) => updateField("report", value)}
-                />
-            </Field>
-        </View>
+
+        <Field>
+            <SmallTextInput
+                label="Order Number"
+                value={description.orderNo}
+                onChangeText={(value) => updateField("orderNo", value)}
+            />
+            <SmallTextInput
+                label="Hours"
+                value={description.hours}
+                onChangeText={(value) => updateField("hours", value)}
+            />
+            <SmallTextInput
+                multiline
+                label="Report"
+                value={description.report}
+                onChangeText={(value) => updateField("report", value)}
+            />
+        </Field>
+
 
     )
 }

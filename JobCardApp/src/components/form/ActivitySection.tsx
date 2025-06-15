@@ -63,63 +63,62 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     };
 
     return (
-        <View style={styles.card}>
-            <Field label="Activity">
+        <Field label="Activity">
 
-                {activity.map((a, index) => (
-                    <View key={a.id} style={styles.activityCard}>
-                        <View style={styles.activityRow}>
-                            <View style={styles.activityTextBlock}>
-                                <Text style={styles.value}>
-                                    {new Date(a.date).toLocaleDateString("en-NZ", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                    })}
-                                </Text>
-                                <Text style={styles.value}>{a.hours} hrs</Text>
-                                <Text style={styles.value}>{a.kms} km</Text>
-                            </View>
+            {activity.map((a, index) => (
+                <View key={a.id} style={styles.activityCard}>
+                    <View style={styles.activityRow}>
+                        <View style={styles.activityTextBlock}>
+                            <Text style={styles.value}>
+                                {new Date(a.date).toLocaleDateString("en-NZ", {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                })}
+                            </Text>
+                            <Text style={styles.value}>{a.hours} hrs</Text>
+                            <Text style={styles.value}>{a.kms} km</Text>
+                        </View>
 
-                            <View style={styles.iconButtonRow}>
-                                <TouchableOpacity
-                                    onPress={() => fillFieldsOnEdit(index)}
-                                    style={[styles.iconButton, styles.editButton]}
-                                >
-                                    <Text style={styles.iconText}>✏️</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => deleteActivity(index)}
-                                    style={[styles.iconButton, styles.deleteButton]}
-                                >
-                                    <Text style={styles.iconText}>🗑️</Text>
-                                </TouchableOpacity>
-                            </View>
+                        <View style={styles.iconButtonRow}>
+                            <TouchableOpacity
+                                onPress={() => fillFieldsOnEdit(index)}
+                                style={[styles.iconButton, styles.editButton]}
+                            >
+                                <Text style={styles.iconText}>✏️</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => deleteActivity(index)}
+                                style={[styles.iconButton, styles.deleteButton]}
+                            >
+                                <Text style={styles.iconText}>🗑️</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                ))}
-
-                <View style={styles.inputRow}>
-                    <DateInput date={date} setDate={setDate} />
-                    <TextInput
-                        value={hours}
-                        onChangeText={setHours}
-                        keyboardType="numeric"
-                        placeholder="hours"
-                        style={styles.quantityInput}
-                    />
-                    <TextInput
-                        value={kms}
-                        onChangeText={setKms}
-                        keyboardType="numeric"
-                        placeholder="kms"
-                        style={styles.quantityInput}
-                    />
                 </View>
+            ))}
 
-                <Button title="Add Activity" onPress={addActivity} />
-            </Field>
-        </View>
+            <View style={styles.inputRow}>
+                <DateInput date={date} setDate={setDate} />
+                <TextInput
+                    value={hours}
+                    onChangeText={setHours}
+                    keyboardType="numeric"
+                    placeholder="hours"
+                    style={styles.quantityInput}
+                />
+                <TextInput
+                    value={kms}
+                    onChangeText={setKms}
+                    keyboardType="numeric"
+                    placeholder="kms"
+                    style={styles.quantityInput}
+                />
+            </View>
+
+            <Button title="Add Activity" onPress={addActivity} />
+        </Field>
+
     );
 }
 
