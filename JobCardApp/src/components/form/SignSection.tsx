@@ -7,10 +7,14 @@ import SmallTextInput from "./FormInputs/SmallTextInput";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Label from "./FormInputs/Label";
 
-export default function SignSection() {
+type SignSectionProps = {
+    setIsSigning: (value: boolean) => void;
+}
+
+export default function SignSection({ setIsSigning }: SignSectionProps) {
     const [date, setDate] = useState("");
     const [customerName, setCustomerName] = useState("");
-    const [isSigning, setIsSigning] = useState(false);
+
 
     const handleOK = (signature: string) => {
         console.log("Signature base64:", signature);
@@ -30,20 +34,20 @@ export default function SignSection() {
     return (
         <Field>
             <Text style={styles.label}>Customer Signature</Text>
-            <GestureDetector gesture={blockingGesture}>
-                <View style={styles.signatureBox}>
-                    <Signature
-                        onOK={handleOK}
-                        onClear={handleClear}
-                        onBegin={handleBegin}
-                        onEnd={handleEnd}
-                        descriptionText="Sign above"
-                        clearText="Clear"
-                        confirmText="Save"
-                        webStyle={`.m-signature-pad--footer { display: none; margin: 0px; }`}
-                    />
-                </View>
-            </GestureDetector>
+
+            <View style={styles.signatureBox}>
+                <Signature
+                    onOK={handleOK}
+                    onClear={handleClear}
+                    onBegin={handleBegin}
+                    onEnd={handleEnd}
+                    descriptionText="Sign above"
+                    clearText="Clear"
+                    confirmText="Save"
+                    webStyle={`.m-signature-pad--footer { display: none; margin: 0px; }`}
+                />
+            </View>
+
 
             <SmallTextInput
                 label="Customer Name"

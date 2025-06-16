@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { JobsStackParamList } from '../navigation/JobStackNavigator';
 import { useJobFormData } from '../hooks/useJobFormData';
 import ActivitySection from '../components/form/ActivitySection';
@@ -17,6 +17,16 @@ const JobFormScreen = () => {
 
     const Tab = createMaterialTopTabNavigator();
 
+    const [isSigning, setIsSigning] = useState(false);
+
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        navigation.setOptions({
+            gestureEnabled: !isSigning,
+        });
+    }, [isSigning]);
+
 
     const { jobId, job } = useRoute<JobFormRouteProp>().params;
     const { form, updateField } = useJobFormData(jobId);
@@ -24,7 +34,10 @@ const JobFormScreen = () => {
 
     if (!form) return null; // or a loading state
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            screenOptions={{
+                swipeEnabled: !isSigning,
+            }}>
             <Tab.Screen name="Info">
                 {() => (
                     <>
@@ -56,9 +69,7 @@ const JobFormScreen = () => {
             </Tab.Screen>
 
             <Tab.Screen name="Sign">
-                {() => (
-                    <SignSection />
-                )}
+                {() => <SignSection setIsSigning={setIsSigning} />}
             </Tab.Screen>
         </Tab.Navigator>
     );
