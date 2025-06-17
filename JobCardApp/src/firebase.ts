@@ -4,6 +4,7 @@ import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFir
 
 
 import { Job } from './types/types';
+import { JobFormData } from './hooks/useJobFormData';
 
 /* Searchs firestore for first trigram (3chars of search term) 
     used to reduce retrieving to many docs from firestore (worst case ~1500)
@@ -146,6 +147,10 @@ export const listenToAssignedJobs = (
         });
 
     return unsubscribe; // So caller can clean up
+};
+
+export const submitJobCardToFireStore = (formData: JobFormData) => {
+    console.log("Submitted to FireStore")
 };
 
 export { auth, firestore };

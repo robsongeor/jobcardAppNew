@@ -1,12 +1,19 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BottomRightButton from "./Buttons/BottomRightButton";
 import { reload } from "@react-native-firebase/auth";
+import { submitJobCardToFireStore } from "../../firebase";
+import { JobFormData } from "../../hooks/useJobFormData";
 
 type SubmitSectionProps = {
-    data: any // Replace 'any' with your JobFormData type if available
+    data: JobFormData // Replace 'any' with your JobFormData type if available
 };
 
 export default function SubmitSection({ data }: SubmitSectionProps) {
+
+    const handleSubmit = (data: JobFormData) => {
+        submitJobCardToFireStore(data)
+    }
+
     return (
         <View style={styles.container}>
 
@@ -52,7 +59,7 @@ export default function SubmitSection({ data }: SubmitSectionProps) {
             <BottomRightButton
                 label="submit"
                 disabled={false}
-                onPress={() => console.log(data)}
+                onPress={() => handleSubmit(data)}
             />
 
         </View>
