@@ -9,6 +9,7 @@ import PartsSection from '../components/form/PartsSection';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SignSection from '../components/form/SignSection';
+import SubmitSection from '../components/form/SubmitSection';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -71,6 +72,11 @@ const JobFormScreen = () => {
             <Tab.Screen name="Sign">
                 {() => <SignSection setIsSigning={setIsSigning} />}
             </Tab.Screen>
+
+            <Tab.Screen name="Submit">
+                {() => <SubmitSection data={form} />}
+            </Tab.Screen>
+
         </Tab.Navigator>
     );
 };

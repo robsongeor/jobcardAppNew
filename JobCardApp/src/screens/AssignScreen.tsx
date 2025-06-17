@@ -6,6 +6,7 @@ import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { getStoredUserField } from '../storage/storage';
+import BottomRightButton from '../components/form/Buttons/BottomRightButton';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
@@ -115,41 +116,16 @@ const AssignScreen = () => {
                     Enter at least 3 characters and press Search.
                 </Text>
             )}
+            <BottomRightButton
+                label='assign'
+                disabled={!selectedJobId}
+                onPress={handleAssignJob}
+            />
 
-            <View style={styles.assignButtonContainer}>
-                <TouchableOpacity
-                    disabled={!selectedJobId}
-                    style={[
-                        styles.assignButton,
-                        !selectedJobId && { backgroundColor: 'grey' },
-                    ]}
-                    onPress={handleAssignJob}
-                >
-                    <Text style={styles.assignButtonText}>Assign</Text>
-                </TouchableOpacity>
-            </View>
         </View>
     );
 
 };
 
-const styles = StyleSheet.create({
-    assignButtonContainer: {
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-    },
-    assignButton: {
-        backgroundColor: '#007AFF',
-        paddingVertical: 12,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-    },
-    assignButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-
-})
 
 export default AssignScreen;

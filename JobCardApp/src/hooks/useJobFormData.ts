@@ -3,7 +3,7 @@ import { storage } from '../storage/storage';
 import { JobActivityType, JobDescriptionType, QuantityInputType } from '../types/types';
 
 
-type JobFormData = {
+export type JobFormData = {
     jobId: string;
     lastUpdated: number;
     activity: JobActivityType[];
@@ -30,6 +30,8 @@ export function useJobFormData(jobId: string) {
                     orderNo: "",
                     hours: "",
                     report: "",
+                    chargeable: false,
+                    chargeableComment: ""
                 },
                 parts: [],
             };
