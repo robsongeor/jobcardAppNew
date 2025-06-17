@@ -4,6 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 import Field from "./FormInputs/Field";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import { JobDescriptionType } from "../../types/types";
+import SmallCheckBoxInput from "./FormInputs/SmallCheckBoxInput";
+
+
 
 
 type DescriptionSectionProps = {
@@ -13,7 +16,7 @@ type DescriptionSectionProps = {
 
 export default function DescriptionSection({ description, setDescription }: DescriptionSectionProps) {
 
-    const updateField = (name: string, value: string) => {
+    const updateField = (name: string, value: string | boolean) => {
         const updated = {
             ...description,
             [name]: value
@@ -25,6 +28,15 @@ export default function DescriptionSection({ description, setDescription }: Desc
     return (
 
         <Field>
+
+            <SmallCheckBoxInput
+                label="Chargeable"
+                inputPlaceholder="reason (damage, customer unit, etc)"
+                checkBoxValue={description.chargeable}
+                onCheckBoxChange={(value) => updateField("chargeable", value)}
+                value={description.chargeableComment}
+                onChangeText={(value) => updateField("chargeableComment", value)}
+            />
             <SmallTextInput
                 label="Order Number"
                 value={description.orderNo}

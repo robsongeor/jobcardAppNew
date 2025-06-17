@@ -25,6 +25,8 @@ export type JobDescriptionType = {
     orderNo: string;
     hours: string;
     report: string;
+    chargeable: boolean;
+    chargeableComment: string
 };
 
 export type QuantityInputType = {
