@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type TableHeader = {
     label: string;
@@ -23,42 +23,63 @@ type EditTableProps = {
 export default function EditTable({ headers, rows, deleteRow, fillFieldsOnEdit, isEdit }: EditTableProps) {
 
     return (
-        <View>
+
+
+
+        <View style={{ flex: 1 }}>
+            {/* Sticky Header (always visible) */}
             <View style={styles.tableHeader}>
                 {headers.map((header, index) => (
-                    <Text style={[styles.headerCell, { flex: header.flex }]} key={index}>{header.label}</Text>
+                    <Text style={[styles.headerCell, { flex: header.flex }]} key={index}>
+                        {header.label}
+                    </Text>
                 ))}
                 <Text style={[styles.headerCell, { flex: 1.5 }]}>Actions</Text>
             </View>
 
-            {rows.map((row, rowIndex) => (
-                <View key={rowIndex} style={styles.tableRow}>
-                    {row.map((cell, cellIndex) => (
-                        <Text key={cellIndex} style={[styles.rowCell, { flex: cell.flex ?? 1 }, isEdit === rowIndex && styles.editingRow]}>
-                            {cell.value}
-                        </Text>
-                    ))}
+            {/* Scrollable body */}
+            <ScrollView>
+                {rows.map((row, rowIndex) => (
+                    <View key={rowIndex} style={styles.tableRow}>
+                        {row.map((cell, cellIndex) => (
+                            <Text
+                                key={cellIndex}
+                                style={[
+                                    styles.rowCell,
+                                    { flex: cell.flex ?? 1 },
+                                    isEdit === rowIndex && styles.editingRow,
+                                ]}
+                            >
+                                {cell.value}
+                            </Text>
+                        ))}
 
-
-                    <View style={[styles.rowCell, { flex: 1.5, flexDirection: "row", gap: 8 }]}>
-                        <TouchableOpacity
-                            onPress={() => fillFieldsOnEdit(rowIndex)}
-                            style={[styles.iconButton, styles.editButton]}
-                            activeOpacity={0.7}
+                        <View
+                            style={[
+                                styles.rowCell,
+                                { flex: 1.5, flexDirection: "row", gap: 8 },
+                            ]}
                         >
-                            <Text style={styles.iconText}></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => deleteRow(rowIndex)}
-                            style={[styles.iconButton, styles.deleteButton]}
-                            activeOpacity={0.7}
-                        >
-                            <Text style={styles.iconText}></Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => fillFieldsOnEdit(rowIndex)}
+                                style={[styles.iconButton, styles.editButton]}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.iconText}>✏️</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => deleteRow(rowIndex)}
+                                style={[styles.iconButton, styles.deleteButton]}
+                                activeOpacity={0.7}
+                            >
+                                <Text style={styles.iconText}>🗑️</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            ))}
+                ))}
+            </ScrollView>
         </View>
+
     )
 }
 

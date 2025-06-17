@@ -67,8 +67,8 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
     };
 
     return (
-        <View>
-            <Field label="Parts">
+        <View style={{ flex: 1 }}>
+            <Field scrollView={false}>
                 <EditTable
                     headers={headers}
                     rows={rows}
@@ -81,12 +81,12 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
                 <SmallTextInput
                     value={quantity}
                     onChangeText={setQuantity}
-                    label="Hours"
+                    label="Quantity"
                 />
                 <SmallTextInput
                     value={description}
                     onChangeText={setDescription}
-                    label="KMs"
+                    label="Part Description"
                 />
             </ListInputs>
         </View>
