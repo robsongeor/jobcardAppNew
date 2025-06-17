@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { JobsStackParamList } from '../navigation/JobStackNavigator';
 import SearchBar from '../components/SearchBar';
+import { JobFormData } from '../hooks/useJobFormData';
 
 const JobsScreen = () => {
 
@@ -16,18 +17,34 @@ const JobsScreen = () => {
 
     const { assignedJobs } = useAssignedJobs();
 
+    function jobMatchesQuery(job: any, query: string) {
+        // Search top-level string properties
+        for (const key in job) {
+            const value = job[key];
+            if (typeof value === "string" && value.toLowerCase().includes(query.toLowerCase())) {
+                return true;
+            }
+            // If key is 'machine', search inside its string properties
+            if (key === "machine" && typeof value === "object" && value !== null) {
+                for (const mKey in value) {
+                    const mValue = value[mKey];
+                    if (
+                        typeof mValue === "string" &&
+                        mValue.toLowerCase().includes(query.toLowerCase())
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
     const filteredJobs = () => {
-        //Only filters non nested tags. Need to incorporate machine info (make, model, serial)
-        const jobs = assignedJobs.filter((job) =>
-            Object.values(job).some(value =>
-                typeof value === "string" && value.toLowerCase().includes(query.toLowerCase())
-            )
-        );
-
-        //If string empty return full jobs list
-        return query.length === 0 ? assignedJobs : jobs;
+        if (query.length === 0) return assignedJobs;
+        return assignedJobs.filter(job => jobMatchesQuery(job, query));
     };
-
 
     return (
         <View>
