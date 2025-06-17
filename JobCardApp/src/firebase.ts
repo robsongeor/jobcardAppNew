@@ -1,6 +1,6 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc } from '@react-native-firebase/firestore';
 
 
 import { Job } from './types/types';
@@ -149,8 +149,19 @@ export const listenToAssignedJobs = (
     return unsubscribe; // So caller can clean up
 };
 
-export const submitJobCardToFireStore = (formData: JobFormData) => {
-    console.log("Submitted to FireStore")
+export const submitJobCardToFireStore = async (jobCardData: JobFormData): Promise<boolean> => {
+    try {
+        const db = getFirestore();
+        // Use jobCardData.jobId as document ID
+        await setDoc(doc(db, 'jobcards', jobCardData.jobId), jobCardData);
+
+        console.log("Submitted to FireStore");
+        return true;
+    } catch (error) {
+        console.error("Error submitting to FireStore:", error);
+        return false;
+    }
+
 };
 
 export { auth, firestore };
