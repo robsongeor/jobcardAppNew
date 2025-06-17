@@ -4,6 +4,10 @@ import { QuantityInputType } from "../../types/types";
 import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
 import QuantityInput from "./FormInputs/QuantityInput";
+import { useState } from "react";
+import EditTable from "./FormInputs/EditTable";
+import ListInputs from "./FormInputs/ListInputs";
+import SmallTextInput from "./FormInputs/SmallTextInput";
 
 type PartsSectionProps = {
     parts: QuantityInputType[];
@@ -11,57 +15,80 @@ type PartsSectionProps = {
 }
 
 export default function PartsSection({ parts, setParts }: PartsSectionProps) {
+    const [quantity, setQuantity] = useState("");
+    const [description, setDescription] = useState("");
+    const [isEdit, setIsEdit] = useState<number | null>(null);
 
-    // Add Parts Field
-    const addPartField = () => {
-        const id = uuid.v4() as string
-        setParts([...parts, { id: id, descValue: '', quantityValue: '' }]);
+
+    const headers = [
+        { label: "Quantity", flex: 1 },
+        { label: "Part Description", flex: 3 }
+    ]
+
+    const rows = parts.map(part => [
+        { value: part.quantityValue, flex: 1 },
+        { value: part.descValue, flex: 3 }
+    ]);
+
+    const addPart = () => {
+        const index = isEdit === null ? parts.length : isEdit;
+        const editing = isEdit !== null;
+
+        const data = {
+            id: uuid.v4() as string,
+            quantityValue: quantity,
+            descValue: description,
+        };
+
+        const updated = [...parts];
+        if (editing) {
+            updated.splice(index, 1, data);
+        } else {
+            updated.push(data);
+        }
+
+        setParts(updated);
+        setIsEdit(null);
+        setQuantity("");
+        setDescription("");
     };
 
-    const updatePart = (index: number, key: 'descValue' | 'quantityValue', value: string) => {
-        const newParts = [...parts];
-        newParts[index][key] = value;
-        setParts(newParts);
+    const deletePart = (index: number) => {
+        const updated = [...parts];
+        updated.splice(index, 1);
+        setParts(updated);
     };
 
-    const removeField = (id: string) => {
-        const newParts = parts.filter((part) => part.id !== id);
-        setParts(newParts);
+    const fillFieldsOnEdit = (index: number) => {
+        const { descValue, quantityValue } = parts[index];
+        setQuantity(quantityValue);
+        setDescription(descValue);
+        setIsEdit(index);
     };
+
     return (
-        <Field label="Parts">
-            {parts.map((part, index) => (
-                <View
-                    key={part.id}
-                    style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <QuantityInput
-                            descValue={part.descValue}
-                            setDescValue={(value) => updatePart(index, 'descValue', value)}
-                            quantityValue={part.quantityValue}
-                            setQuantityValue={(value) => updatePart(index, 'quantityValue', value)}
-                        />
-                    </View>
-
-                    {index !== 0 && (
-                        <TouchableOpacity
-                            onPress={() => removeField(part.id)}
-                            style={{
-                                marginLeft: 8,
-                                backgroundColor: '#e74c3c',
-                                paddingVertical: 8,
-                                paddingHorizontal: 12,
-                                borderRadius: 6,
-                            }}
-                        >
-                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>✕</Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
-            ))}
-
-            <Button title="Add Part" onPress={addPartField} />
-        </Field>
+        <View>
+            <Field label="Parts">
+                <EditTable
+                    headers={headers}
+                    rows={rows}
+                    deleteRow={deletePart}
+                    fillFieldsOnEdit={fillFieldsOnEdit}
+                    isEdit={isEdit}
+                />
+            </Field>
+            <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart}>
+                <SmallTextInput
+                    value={quantity}
+                    onChangeText={setQuantity}
+                    label="Hours"
+                />
+                <SmallTextInput
+                    value={description}
+                    onChangeText={setDescription}
+                    label="KMs"
+                />
+            </ListInputs>
+        </View>
     )
 }

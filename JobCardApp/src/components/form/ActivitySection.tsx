@@ -15,6 +15,9 @@ import uuid from "react-native-uuid";
 import { JobActivityType } from "../../types/types";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import Label from "./FormInputs/Label";
+import SmallDateInput from "./FormInputs/SmallDateInput";
+import ListInputs from "./FormInputs/ListInputs";
+import EditTable from "./FormInputs/EditTable";
 
 type ActivitySectionProps = {
     activity: JobActivityType[];
@@ -71,10 +74,13 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : undefined}
             keyboardVerticalOffset={80}
+
+
         >
+
+
             <View style={{ flex: 1 }}>
                 <Field>
-                    {/* Sticky Table Header */}
                     <View style={styles.tableHeader}>
                         <Text style={[styles.headerCell, { flex: 2 }]}>Date</Text>
                         <Text style={styles.headerCell}>Hours</Text>
@@ -128,12 +134,12 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                     </ScrollView>
                 </Field>
 
-                {/* Fixed input area at the bottom */}
-                <View style={styles.bottomInputs}>
-                    <View style={styles.inputRowVertical}>
-                        <Label label="Date" />
-                        <DateInput date={date} setDate={setDate} />
-                    </View>
+                <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity}>
+                    <SmallDateInput
+                        label="Date"
+                        date={date}
+                        setDate={setDate}
+                    />
                     <SmallTextInput
                         value={hours}
                         onChangeText={setHours}
@@ -144,11 +150,10 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                         onChangeText={setKms}
                         label="KMs"
                     />
-                    <Button
-                        title={isEdit !== null ? "Update Activity" : "Add Activity"}
-                        onPress={addActivity}
-                    />
-                </View>
+                </ListInputs>
+
+                {/* Fixed input area at the bottom */}
+
             </View>
         </KeyboardAvoidingView>
     );
@@ -217,12 +222,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontStyle: "italic",
     },
-    bottomInputs: {
-        padding: 16,
-        backgroundColor: "#fff",
-        borderTopWidth: 1,
-        borderColor: "#eee",
-    },
+
     inputRowVertical: {
         marginBottom: 12,
     },

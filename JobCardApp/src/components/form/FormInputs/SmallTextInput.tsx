@@ -1,8 +1,9 @@
 import React from "react";
 import { TextInput, View, Text, StyleSheet } from "react-native";
 import Label from "./Label";
+import DateInput from "./DateInput";
 
-type InputProps = {
+type SmallTextInputProps = {
     label: string;
     value: string;
     onChangeText: (value: string) => void;
@@ -14,9 +15,9 @@ export default function SmallTextInput({
     value,
     onChangeText,
     multiline = false,
-}: InputProps) {
+}: SmallTextInputProps) {
     return (
-        <View style={styles.inputBlock}>
+        <View style={SmallInputStyles.inputBlock}>
             <Label
                 label={label}
             />
@@ -26,13 +27,15 @@ export default function SmallTextInput({
                 onChangeText={onChangeText}
                 placeholder={`Enter ${label.toLowerCase()}`}
                 placeholderTextColor="#aaa"
-                style={[styles.input, multiline && styles.multiline]}
+                style={[SmallInputStyles.input, multiline && SmallInputStyles.multiline]}
             />
         </View>
     );
 }
 
-const styles = StyleSheet.create({
+
+
+export const SmallInputStyles = StyleSheet.create({
     inputBlock: {
         marginBottom: 12,
     },
