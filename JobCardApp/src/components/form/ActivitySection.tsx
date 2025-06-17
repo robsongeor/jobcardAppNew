@@ -30,6 +30,18 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const [kms, setKms] = useState("");
     const [isEdit, setIsEdit] = useState<number | null>(null);
 
+    const headers = [
+        { label: "Date", flex: 2 },
+        { label: "Hours", flex: 1 },
+        { label: "Mileage", flex: 1 }
+    ]
+
+    const rows = activity.map(activity => [
+        { value: activity.date, flex: 2 },
+        { value: activity.hours, flex: 1 },
+        { value: activity.kms, flex: 1 }
+    ]);
+
     const addActivity = () => {
         const index = isEdit === null ? activity.length : isEdit;
         const editing = isEdit !== null;
@@ -74,88 +86,42 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : undefined}
             keyboardVerticalOffset={80}
-
-
         >
+            <Field scrollView={false}>
+                <EditTable
+                    headers={headers}
+                    rows={rows}
+                    deleteRow={deleteActivity}
+                    fillFieldsOnEdit={fillFieldsOnEdit}
+                    isEdit={isEdit}
+                />
+            </Field>
 
 
-            <View style={{ flex: 1 }}>
-                <Field>
-                    <View style={styles.tableHeader}>
-                        <Text style={[styles.headerCell, { flex: 2 }]}>Date</Text>
-                        <Text style={styles.headerCell}>Hours</Text>
-                        <Text style={styles.headerCell}>KMs</Text>
-                        <Text style={[styles.headerCell, { flex: 1.5 }]}>Actions</Text>
-                    </View>
-                    <ScrollView style={{ maxHeight: 240 }}>
-                        {activity.length === 0 ? (
-                            <View style={styles.emptyState}>
-                                <Text style={styles.emptyText}>No activities yet. Add one below!</Text>
-                            </View>
-                        ) : (
-                            activity.map((a, index) => (
-                                <View
-                                    key={a.id}
-                                    style={[
-                                        styles.tableRow,
-                                        isEdit === index && styles.editingRow,
-                                    ]}
-                                >
-                                    <Text style={[styles.rowCell, { flex: 2 }]}>
-                                        {a.date
-                                            ? new Date(a.date).toLocaleDateString("en-NZ", {
-                                                day: "2-digit",
-                                                month: "short",
-                                                year: "numeric",
-                                            })
-                                            : ""}
-                                    </Text>
-                                    <Text style={styles.rowCell}>{a.hours}</Text>
-                                    <Text style={styles.rowCell}>{a.kms}</Text>
-                                    <View style={[styles.rowCell, { flex: 1.5, flexDirection: "row", gap: 8 }]}>
-                                        <TouchableOpacity
-                                            onPress={() => fillFieldsOnEdit(index)}
-                                            style={[styles.iconButton, styles.editButton]}
-                                            activeOpacity={0.7}
-                                        >
-                                            <Text style={styles.iconText}></Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => deleteActivity(index)}
-                                            style={[styles.iconButton, styles.deleteButton]}
-                                            activeOpacity={0.7}
-                                        >
-                                            <Text style={styles.iconText}></Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            ))
-                        )}
-                    </ScrollView>
-                </Field>
 
-                <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity}>
-                    <SmallDateInput
-                        label="Date"
-                        date={date}
-                        setDate={setDate}
-                    />
-                    <SmallTextInput
-                        value={hours}
-                        onChangeText={setHours}
-                        label="Hours"
-                    />
-                    <SmallTextInput
-                        value={kms}
-                        onChangeText={setKms}
-                        label="KMs"
-                    />
-                </ListInputs>
 
-                {/* Fixed input area at the bottom */}
+            <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity}>
+                <SmallDateInput
+                    label="Date"
+                    date={date}
+                    setDate={setDate}
+                />
+                <SmallTextInput
+                    value={hours}
+                    onChangeText={setHours}
+                    label="Hours"
+                />
+                <SmallTextInput
+                    value={kms}
+                    onChangeText={setKms}
+                    label="KMs"
+                />
+            </ListInputs>
 
-            </View>
-        </KeyboardAvoidingView>
+            {/* Fixed input area at the bottom */}
+
+
+        </KeyboardAvoidingView >
     );
 }
 
