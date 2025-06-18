@@ -9,6 +9,7 @@ export type Job = {
         serialNumber: string;
     };
     assignedTo: string[];
+    assignedStatus: { [uid: string]: string }
     description: string;
     site: string;
     status: string;

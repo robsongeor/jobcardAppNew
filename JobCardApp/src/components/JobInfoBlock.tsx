@@ -1,6 +1,7 @@
 //JobInfoBlock.tsx
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
+import { getStoredUserField } from "../storage/storage";
 
 type JobInfoBlockProps = {
     job: Job;
@@ -9,6 +10,9 @@ type JobInfoBlockProps = {
 };
 
 export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockProps) {
+
+    const uid = getStoredUserField('uid');
+
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -23,6 +27,7 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
                         <Text style={styles.customer}>{job.customerName}</Text>
                     </View>
                     <Text style={styles.jobTitle}>{job.job}</Text>
+                    <Text> {job.assignedStatus[uid]} </Text>
                 </View>
 
                 {job.machine ? (

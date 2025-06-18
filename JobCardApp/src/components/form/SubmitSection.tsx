@@ -1,17 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BottomRightButton from "./Buttons/BottomRightButton";
 import { reload } from "@react-native-firebase/auth";
-import { submitJobCardToFireStore } from "../../firebase";
+import { submitJobCardToFireStore, updateAssignedStatus } from "../../firebase";
 import { JobFormData } from "../../hooks/useJobFormData";
+import { getStoredUserField } from "../../storage/storage";
 
 type SubmitSectionProps = {
     data: JobFormData // Replace 'any' with your JobFormData type if available
+    jobId: string
 };
 
-export default function SubmitSection({ data }: SubmitSectionProps) {
+export default function SubmitSection({ data, jobId }: SubmitSectionProps) {
 
     const handleSubmit = (data: JobFormData) => {
         submitJobCardToFireStore(data)
+        updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted")
     }
 
     return (

@@ -74,7 +74,7 @@ const JobFormScreen = () => {
             </Tab.Screen>
 
             <Tab.Screen name="Submit">
-                {() => <SubmitSection data={form} />}
+                {() => <SubmitSection data={form} jobId={job.id} />}
             </Tab.Screen>
 
         </Tab.Navigator>

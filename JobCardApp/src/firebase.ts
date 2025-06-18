@@ -104,15 +104,18 @@ export const assignJobToUser = async (
 
         const jobData = jobSnap.data();
         const currentAssigned: string[] = jobData?.assignedTo ?? [];
+        const currentAssignedTo = jobData?.assignedStatus ?? []
 
         // Only add UID if it's not already assigned
         if (!currentAssigned.includes(uid)) {
             const updatedAssigned = [...currentAssigned, uid];
+            const updatedAssignedStatus = { ...currentAssignedTo, [uid]: "assigned" }
 
             await updateDoc(jobRef, {
                 assignedTo: updatedAssigned,
+                assignedStatus: updatedAssignedStatus
             });
-
+            console.log(updatedAssignedStatus, "updated assigned")
             console.log(`Assigned job ${jobId} to UID ${uid}`);
         } else {
             console.log(`ℹUser ${uid} already assigned to job ${jobId}`);
@@ -163,5 +166,36 @@ export const submitJobCardToFireStore = async (jobCardData: JobFormData): Promis
     }
 
 };
+
+export const updateAssignedStatus = async (jobId: string, uid: string, status: string): Promise<boolean> => {
+    try {
+        const db = getFirestore();
+        const jobRef = doc(db, 'jobs', jobId);
+        const jobSnap = await getDoc(jobRef);
+
+        if (!jobSnap.exists()) {
+            console.warn('Job not found:', jobId);
+            return false;
+        }
+
+        const jobData = jobSnap.data();
+        // Default to empty object if missing
+        const currentAssignedStatus: Record<string, string> = jobData?.assignedStatus ?? {};
+
+        // Merge in the new status for this UID
+        const updatedAssignedStatus = {
+            ...currentAssignedStatus,
+            [uid]: status
+        };
+
+        await updateDoc(jobRef, { assignedStatus: updatedAssignedStatus });
+
+        console.log(`Updated status for ${uid} on job ${jobId} to "${status}"`);
+        return true;
+    } catch (error) {
+        console.error('❌ Firestore error during status update:', error);
+        return false;
+    }
+}
 
 export { auth, firestore };
