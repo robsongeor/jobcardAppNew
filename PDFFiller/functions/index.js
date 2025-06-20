@@ -1,11 +1,11 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({origin: true});
-const {PDFDocument} = require("pdf-lib");
+const cors = require("cors")({ origin: true });
+const { PDFDocument } = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
-const {userInfo} = require("./pass");
+const { userInfo } = require("./pass");
 
 
 admin.initializeApp();
@@ -64,12 +64,12 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
 
       const mach = data.machine;
 
-      const makemodel = `${mach.make} ${mach.model}${mach.serialNumber}`;
+      const makemodel = `${mach.make} ${mach.model} ${mach.serialNumber}`;
       form.getTextField("make").setText(makemodel || "");
       form.getTextField("hours").setText(data.description.hours || "");
 
       // Report
-      const chargeable = data.description.chargeable ? "yes" : "no";
+      const chargeable = data.description.chargeable ? "Yes" : "No";
       form.getTextField("chargeable").setText(chargeable || "");
       form.getTextField("reason").setText(data.description.chargeableComment ||
         "");
