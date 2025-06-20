@@ -1,11 +1,12 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({ origin: true });
-const { PDFDocument } = require("pdf-lib");
+const cors = require("cors")({origin: true});
+const {PDFDocument} = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
-const { userInfo } = require("./pass");
+const {userInfo} = require("./pass");
+const {formatDate} = require("./formatter");
 
 
 admin.initializeApp();
@@ -76,14 +77,16 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
       form.getTextField("report").setText(data.description.report || "");
 
       // Client Signature
-
+      const clientDateF = formatDate(data.signed.clientDate);
       form.getTextField("clientName").setText(data.signed.clientName || "");
-      form.getTextField("clientDate").setText(data.signed.clientDate || "");
+      form.getTextField("clientDate").setText(clientDateF || "");
 
 
       // Hours & Mileage
       data.activity.forEach((element, index) => {
-        form.getTextField(`date${index + 1}`).setText(element.date || "");
+        const dateF = formatDate(element.date);
+
+        form.getTextField(`date${index + 1}`).setText(dateF || "");
         form.getTextField(`hour${index + 1}`).setText(element.hours || "");
         form.getTextField(`mile${index + 1}`).setText(element.kms || "");
       });

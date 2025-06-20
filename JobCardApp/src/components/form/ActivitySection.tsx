@@ -18,6 +18,7 @@ import Label from "./FormInputs/Label";
 import SmallDateInput from "./FormInputs/SmallDateInput";
 import ListInputs from "./FormInputs/ListInputs";
 import EditTable from "./FormInputs/EditTable";
+import { formatDate } from "../helpers/formatters";
 
 type ActivitySectionProps = {
     activity: JobActivityType[];
@@ -37,7 +38,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     ]
 
     const rows = activity.map(activity => [
-        { value: activity.date, flex: 2 },
+        { value: formatDate(activity.date), flex: 2 },
         { value: activity.hours, flex: 1 },
         { value: activity.kms, flex: 1 }
     ]);
@@ -96,9 +97,6 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                     isEdit={isEdit}
                 />
             </Field>
-
-
-
 
             <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity}>
                 <SmallDateInput
