@@ -1,21 +1,56 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BottomRightButton from "./Buttons/BottomRightButton";
-import { reload } from "@react-native-firebase/auth";
+import { firebase, reload } from "@react-native-firebase/auth";
 import { submitJobCardToFireStore, updateAssignedStatus } from "../../firebase";
 import { JobFormData } from "../../hooks/useJobFormData";
 import { getStoredUserField } from "../../storage/storage";
+import { Job } from "../../types/types";
 
 type SubmitSectionProps = {
     data: JobFormData // Replace 'any' with your JobFormData type if available
     jobId: string
+    job: Job
 };
 
-export default function SubmitSection({ data, jobId }: SubmitSectionProps) {
+export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) {
 
-    const handleSubmit = (data: JobFormData) => {
-        submitJobCardToFireStore(data)
-        updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted")
-    }
+    const handleSubmit = async (data: JobFormData) => {
+        // Save to Firestore as before
+        await submitJobCardToFireStore(data);
+        await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
+
+        console.log({ ...job, ...data })
+
+        // Get Firebase Auth user token
+        const user = firebase.auth().currentUser;
+        if (!user) {
+            // Handle not logged in (show error or redirect to login)
+            return;
+        }
+        const idToken = await user.getIdToken();
+
+        // POST to your PDF/email Cloud Function
+        const response = await fetch('https://generatejobcardpdf-hjkqebqdtq-uc.a.run.app', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + idToken,
+            },
+            body: JSON.stringify({ ...job, ...data }), // send the form data as JSON
+        });
+
+        // Optionally, handle the response
+        if (response.ok) {
+            const result = await response.json();
+            // Show a success message or update UI
+            console.log("Job card submitted and emailed successfully!");
+        } else {
+            // Handle error (show error message)
+            const err = await response.text();
+            console.log("Error sending job card: " + err);
+        }
+    };
+
 
     return (
         <View style={styles.container}>
