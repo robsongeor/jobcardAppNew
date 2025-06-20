@@ -1,22 +1,17 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({origin: true});
-const {PDFDocument} = require("pdf-lib");
+const cors = require("cors")({ origin: true });
+const { PDFDocument } = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
+const { userInfo } = require("./pass");
 
 
 admin.initializeApp();
 
 // Setup email transport using a Gmail account
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "liftrucksservice@gmail.com", // your jobcard email address
-    pass: "avid ycuj pzgm pfna", // use an App Password, not your main password!
-  },
-});
+const transporter = nodemailer.createTransport(userInfo);
 
 
 exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
