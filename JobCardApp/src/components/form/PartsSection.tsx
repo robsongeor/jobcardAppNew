@@ -1,9 +1,8 @@
 
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { QuantityInputType } from "../../types/types";
 import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
-import QuantityInput from "./FormInputs/QuantityInput";
 import { useState } from "react";
 import EditTable from "./FormInputs/EditTable";
 import ListInputs from "./FormInputs/ListInputs";
