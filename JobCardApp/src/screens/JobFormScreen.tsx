@@ -29,6 +29,8 @@ const JobFormScreen = () => {
     }, [isSigning]);
 
 
+
+
     const { jobId, job } = useRoute<JobFormRouteProp>().params;
     const { form, updateField } = useJobFormData(jobId);
     ;
@@ -70,7 +72,7 @@ const JobFormScreen = () => {
             </Tab.Screen>
 
             <Tab.Screen name="Sign">
-                {() => <SignSection setIsSigning={setIsSigning} />}
+                {() => <SignSection setIsSigning={setIsSigning} signed={form.signed} setSignatures={(updated) => updateField('signed', updated)} />}
             </Tab.Screen>
 
             <Tab.Screen name="Submit">

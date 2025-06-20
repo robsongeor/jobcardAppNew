@@ -35,3 +35,10 @@ export type QuantityInputType = {
     descValue: string;
     quantityValue: string;
 }
+
+export type SignInputsType = {
+    signature: string;
+    clientName: string;
+    clientDate: string;
+
+}

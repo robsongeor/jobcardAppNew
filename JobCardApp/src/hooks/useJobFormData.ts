@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { storage } from '../storage/storage';
-import { JobActivityType, JobDescriptionType, QuantityInputType } from '../types/types';
+import { JobActivityType, JobDescriptionType, QuantityInputType, SignInputsType } from '../types/types';
 
 
 export type JobFormData = {
@@ -9,6 +9,7 @@ export type JobFormData = {
     activity: JobActivityType[];
     description: JobDescriptionType
     parts: QuantityInputType[];
+    signed: SignInputsType;
 };
 
 export function useJobFormData(jobId: string) {
@@ -34,6 +35,11 @@ export function useJobFormData(jobId: string) {
                     chargeableComment: ""
                 },
                 parts: [],
+                signed: {
+                    signature: "",
+                    clientName: "",
+                    clientDate: "",
+                }
             };
             storage.set(key, JSON.stringify(newForm));
             setForm(newForm);

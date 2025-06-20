@@ -1,11 +1,11 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({ origin: true });
-const { PDFDocument } = require("pdf-lib");
+const cors = require("cors")({origin: true});
+const {PDFDocument} = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
-const { userInfo } = require("./pass");
+const {userInfo} = require("./pass");
 
 
 admin.initializeApp();
@@ -77,8 +77,8 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
 
       // Client Signature
       if (data.signed) {
-        form.getTextField("clientName").setText(data.signed.name || "");
-        form.getTextField("clientDate").setText(data.signed.date || "");
+        form.getTextField("clientName").setText(data.signed.clientName || "");
+        form.getTextField("clientDate").setText(data.signed.clientDate || "");
       }
 
 
