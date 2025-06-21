@@ -97,7 +97,7 @@ const AssignScreen = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            <SearchBar value={query} onChangeText={setQuery} handleSearch={handleSearch} />
+            <SearchBar value={query} onChangeText={setQuery} handleSearch={handleSearch} autoSearch={false} />
 
             {searchTriggered ? (
                 <FlatList

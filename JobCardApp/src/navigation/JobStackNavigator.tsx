@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator<JobsStackParamList>();
 const JobsStackNavigator = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="JobsList" component={JobsScreen} options={{ title: 'My Jobs' }} />
+            <Stack.Screen name="JobsList" component={JobsScreen} options={{ headerShown: false }} />
             <Stack.Screen
                 name="JobForm"
                 component={JobFormScreen}

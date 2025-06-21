@@ -62,6 +62,7 @@ const JobsScreen = () => {
                 value={query}
                 onChangeText={setQuery}
                 handleSearch={() => console.log(query)}
+                autoSearch={true}
             />
             <View style={styles.toggleContainer}>
                 <TouchableOpacity

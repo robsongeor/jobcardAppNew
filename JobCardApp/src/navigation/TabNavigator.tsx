@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator: React.FC = () => (
     <Tab.Navigator
         screenOptions={{
-            headerShown: false,
+            headerShown: true,
             tabBarHideOnKeyboard: true
             // you can add icons, styling, etc. here later
         }}
