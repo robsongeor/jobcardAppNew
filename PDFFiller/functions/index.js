@@ -179,7 +179,49 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
   });
 });
 
-console.log("generateJobCardPDF function loaded!");
+const {onSchedule} = require("firebase-functions/v2/scheduler");
+
+// Runs every day at midnight UTC
+exports.scheduledJobStatusUpdate =
+  onSchedule("every day 00:00", async (event) => {
+    const db = admin.firestore();
+    const jobsRef = db.collection("jobs");
+
+    // Query jobs with status "assigned"
+    const snapshot = await jobsRef.where("status", "==", "assigned").get();
+
+    if (snapshot.empty) {
+      console.log("No assigned jobs found.");
+      return;
+    }
+
+    const now = Date.now();
+    const twoWeeks = 2 * 7 * 24 * 60 * 60 * 1000;
+    const batch = db.batch();
+
+    snapshot.forEach((doc) => {
+      const job = doc.data();
+
+      if (job.assignedDate && typeof job.assignedDate === "object") {
+        let isOverdue = false;
+        Object.keys(job.assignedDate).forEach((uid) => {
+          const isoStr = job.assignedDate[uid];
+          const assignedTime = Date.parse(isoStr);
+          if (assignedTime && assignedTime + twoWeeks < now) {
+            isOverdue = true;
+          }
+        });
+
+        if (isOverdue) {
+          batch.update(doc.ref, {status: "overdue"});
+        }
+      }
+    });
+
+    await batch.commit();
+    console.log("Checked and updated overdue jobs.");
+  });
+
 
 // npx eslint . --fix
 // firebase deploy --only functions
