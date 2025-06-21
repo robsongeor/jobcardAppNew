@@ -91,10 +91,6 @@ const AssignScreen = () => {
         }
     };
 
-
-
-
-
     return (
         <View style={{ flex: 1 }}>
             <SearchBar value={query} onChangeText={setQuery} handleSearch={handleSearch} autoSearch={false} />
@@ -119,7 +115,7 @@ const AssignScreen = () => {
                 </Text>
             )}
             <BottomRightButton
-                label='assign'
+                label='Assign'
                 disabled={!selectedJobId}
                 onPress={handleAssignJob}
             />
