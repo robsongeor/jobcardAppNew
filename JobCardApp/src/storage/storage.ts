@@ -76,7 +76,7 @@ export function getRecentActivity(): RecentActivityType[] {
 export function convertJobToRecent(job: Job, status: string): RecentActivityType {
     let title = "";
 
-    console.log(status)
+
 
     if (status === "submitted") {
         title = "Submitted Job Card"
@@ -86,7 +86,6 @@ export function convertJobToRecent(job: Job, status: string): RecentActivityType
         title = "Assigned to Job"
     }
 
-    console.log(job.job)
 
     return {
         id: job.id,
@@ -105,7 +104,7 @@ export function getJobsByStatus(status: string): Job[] {
         const allJobs = JSON.parse(jobsStr);
         const assigned = allJobs.filter((job: Job) => job.assignedStatus[getStoredUserField('uid')] === status)
 
-        console.log(assigned.length)
+
 
         return assigned;
     } catch {
@@ -118,22 +117,17 @@ export function getOverdueJobs(): Job[] {
 
     const overdue = assigned.filter((job: Job) => {
 
-        console.log(job.assignedDate[getStoredUserField('uid')])
+
         const dateAssigned = new Date(job.assignedDate[getStoredUserField('uid')]).getTime()
         const dateNow = new Date().getTime()
         const twoWeeks = 2 * 7 * 24 * 60 * 60 * 1000
 
-        console.log({
-            dateAssigned,
-            twoWeeksLater: dateAssigned + twoWeeks,
-            dateNow
-        });
 
 
         return twoWeeks + dateAssigned < dateNow
     })
 
-    console.log(overdue)
+
 
     return overdue;
 }

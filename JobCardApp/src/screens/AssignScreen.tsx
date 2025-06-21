@@ -75,11 +75,39 @@ const AssignScreen = () => {
         }
     };
 
+    /*
+        Updates jobs array to reflect changes and prevent needing to refetch from firestore
+        just to update styles
+    */
+    const shallowUpdateSelectedJob = () => {
+        const updatedStatusJob = jobs.find((job) => job.id === selectedJobId)
+        if (!updatedStatusJob) return;
+
+        const updatedJob = {
+            ...updatedStatusJob,
+            assignedStatus: {
+                ...updatedStatusJob.assignedStatus,
+                [getStoredUserField('uid')]: "assigned"
+            }
+        };
+
+        // Rebuild the jobs array
+        const updatedJobs = jobs.map(job =>
+            job.id === selectedJobId ? updatedJob : job
+        );
+
+        setJobs(updatedJobs);
+    }
+
     //Assigning Job to user
     const handleAssignJob = async () => {
         if (!selectedJobId) return;
 
         const uid = getStoredUserField('uid');
+
+
+        shallowUpdateSelectedJob();
+
 
         if (!uid) {
             console.warn('User info missing from storage')
