@@ -103,45 +103,9 @@ const styles = StyleSheet.create({
         flex: 1,
         position: "relative"
     },
-    sectionTitle: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginTop: 16,
-        marginBottom: 4,
-        color: "#222",
-    },
-    fieldValue: {
-        marginBottom: 4,
-        fontSize: 16,
-        color: "#333",
-    },
-    itemBlock: {
-        marginBottom: 8,
-        paddingLeft: 12,
-        borderLeftWidth: 2,
-        borderLeftColor: "#eee",
-    },
-    submitButton: {
-        backgroundColor: "#007aff",
-        borderRadius: 8,
-        paddingVertical: 14,
-        marginTop: 24,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.15,
-        shadowRadius: 3,
-        elevation: 3,
-    },
-    submitButtonText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
-        letterSpacing: 1,
-    },
     loadingOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -151,20 +115,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     },
-    successButton: {
-        marginTop: 18,
-        backgroundColor: '#007AFF',
-        borderRadius: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 32,
-        alignItems: 'center',
-    },
-    successButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-
-
-
 });
+

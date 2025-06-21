@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Job } from "../../types/types";
 import { JobFormData } from "../../hooks/useJobFormData";
 
 type JobDetailsOverviewType = {
@@ -53,12 +52,6 @@ export default function JobDetailsOverview({ data }: JobDetailsOverviewType) {
 
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        backgroundColor: "#fff",
-        flex: 1,
-        position: "relative"
-    },
     sectionTitle: {
         fontWeight: 'bold',
         fontSize: 18,
@@ -77,50 +70,5 @@ const styles = StyleSheet.create({
         borderLeftWidth: 2,
         borderLeftColor: "#eee",
     },
-    submitButton: {
-        backgroundColor: "#007aff",
-        borderRadius: 8,
-        paddingVertical: 14,
-        marginTop: 24,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.15,
-        shadowRadius: 3,
-        elevation: 3,
-    },
-    submitButtonText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
-        letterSpacing: 1,
-    },
-    loadingOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    loadingText: {
-        marginTop: 14,
-        color: '#007AFF',
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    successButton: {
-        marginTop: 18,
-        backgroundColor: '#007AFF',
-        borderRadius: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 32,
-        alignItems: 'center',
-    },
-    successButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-
-
-
 });
+
