@@ -43,3 +43,4 @@ export type SignInputsType = {
 
 }
 
+export type TabType = 'all' | 'assigned' | 'submitted';
