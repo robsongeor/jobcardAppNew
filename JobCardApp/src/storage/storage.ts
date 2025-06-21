@@ -53,6 +53,7 @@ export const addRecentActivity = (data: RecentActivityType) => {
     // 4. Write back to MMKV as JSON string
     storage.set("recentActivity", JSON.stringify(recentActivity));
     EventBus.emit("recentActivityUpdated"); // Must be after storage.set!
+    EventBus.emit("jobsUpdated"); // Must be after storage.set!
 };
 
 export function getRecentActivity(): RecentActivityType[] {
@@ -94,5 +95,20 @@ export function convertJobToRecent(job: Job, status: string): RecentActivityType
         status: status,
         jobNumber: job.job,
         fleet: job.fleet,
+    }
+}
+
+export function getJobsByStatus(status: string): Job[] {
+    const jobsStr = storage.getString("assignedJobs");
+    if (!jobsStr) return [];
+    try {
+        const allJobs = JSON.parse(jobsStr);
+        const assigned = allJobs.filter((job: Job) => job.assignedStatus[getStoredUserField('uid')] === status)
+
+        console.log(assigned.length)
+
+        return assigned;
+    } catch {
+        return [];
     }
 }
