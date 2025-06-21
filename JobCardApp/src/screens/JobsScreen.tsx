@@ -11,13 +11,10 @@ import { updateAssignedStatus } from '../firebase';
 import { getStoredUserField } from '../storage/storage';
 import JobsFilters from '../components/JobsFilters';
 
-
-
 const JobsScreen = () => {
 
     const [query, setQuery] = useState("");
     const [activeTab, setActiveTab] = useState<TabType>('assigned');
-
 
     type NavigationProp = NativeStackNavigationProp<JobsStackParamList, 'JobForm'>;
     const navigation = useNavigation<NavigationProp>();
