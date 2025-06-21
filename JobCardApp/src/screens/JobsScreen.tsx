@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { FlatList, SafeAreaView } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +7,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { JobsStackParamList } from '../navigation/JobStackNavigator';
 import SearchBar from '../components/SearchBar';
 import { Job, TabType } from '../types/types';
-import { updateAssignedStatus } from '../firebase';
 import { getStoredUserField } from '../storage/storage';
 import JobsFilters from '../components/JobsFilters';
 
@@ -55,11 +54,8 @@ const JobsScreen = () => {
             tabFilter = assignedJobs.filter(job => job.assignedStatus[getStoredUserField('uid')] === activeTab)
         }
 
-
         if (query.length === 0) {
             return tabFilter.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10))
-
-
         }
         const filtered = tabFilter.filter(job => jobMatchesQuery(job, query));
         return filtered.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10))
