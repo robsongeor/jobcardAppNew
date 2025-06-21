@@ -12,8 +12,8 @@ export default function RecentActivity({ activity }: RecentActivityProps) {
     return (
         <View style={{ marginTop: 18 }}>
             <Text style={styles.sectionTitle}>Recent Activity</Text>
-            {activity.map(item => (
-                <View key={item.id} style={styles.activityRow}>
+            {activity.map((item, index) => (
+                <View key={index} style={styles.activityRow}>
                     <Icon
                         name={
                             item.status === "submitted"

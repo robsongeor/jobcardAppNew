@@ -108,7 +108,7 @@ export const assignJobToUser = async (
         if (!currentAssigned.includes(uid)) {
             const updatedAssigned = [...currentAssigned, uid];
             const updatedAssignedStatus = { ...currentAssignedTo, [uid]: "assigned" }
-            const updatedAssignedDate = { ...currentAssignedTo, [uid]: new Date() }
+            const updatedAssignedDate = { ...currentAssignedTo, [uid]: new Date().toISOString() }
 
             await updateDoc(jobRef, {
                 assignedTo: updatedAssigned,

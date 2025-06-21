@@ -10,6 +10,7 @@ export type Job = {
     };
     assignedTo: string[];
     assignedStatus: { [uid: string]: string }
+    assignedDate: { [uid: string]: string },
     description: string;
     site: string;
     status: string;

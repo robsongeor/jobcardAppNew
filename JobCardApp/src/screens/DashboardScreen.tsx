@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { addRecentActivity, getJobsByStatus, getRecentActivity, getStoredUserField } from "../storage/storage";
+import { addRecentActivity, getJobsByStatus, getOverdueJobs, getRecentActivity, getStoredUserField } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
 import { RecentActivityType } from "../types/types";
@@ -10,6 +10,7 @@ import { EventBus } from "../utils/EventBus";
 export default function DashboardScreen() {
     const name = getStoredUserField('name').split(" ")[0];
     const [recentActivityList, setRecentActivityList] = useState<RecentActivityType[]>([]);
+    const [overdue, setOverdue] = useState(getOverdueJobs().length)
 
     const [assigned, setAssigned] = useState(getJobsByStatus("assigned").length)
 
@@ -38,6 +39,17 @@ export default function DashboardScreen() {
         };
     }, []);
 
+    useEffect(() => {
+        const updateOverdue = () => setOverdue(getOverdueJobs().length);
+        updateOverdue();
+
+        EventBus.on("jobsUpdated", updateOverdue);
+
+        return () => {
+            EventBus.off("jobsUpdated", updateOverdue)
+        }
+    })
+
 
 
     return (
@@ -47,7 +59,7 @@ export default function DashboardScreen() {
             </Text>
             <View style={styles.statsContainer}>
                 <StatCard label="Assigned" value={assigned} unit="Jobs" color={COLORS.primary} icon="user-plus" style={{ marginRight: 4 }} />
-                <StatCard label="Overdue" value={10} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
+                <StatCard label="Overdue" value={overdue} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
             </View>
             <RecentActivity activity={recentActivityList} />
 
