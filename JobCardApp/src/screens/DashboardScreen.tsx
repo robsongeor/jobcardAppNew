@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { addRecentActivity, getJobsByStatus, getRecentActivity, getStoredUserField } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
@@ -40,7 +40,7 @@ export default function DashboardScreen() {
 
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
             <Text style={styles.greeting}>
                 Hello, <Text style={styles.username}>{name}</Text>
             </Text>
@@ -51,14 +51,14 @@ export default function DashboardScreen() {
             <RecentActivity activity={recentActivityList} />
 
 
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 21, // Adjust as needed for your layout
-        marginHorizontal: 22, // Adds horizontal space
+        paddingTop: 21, // Adjust as needed for your layout
+        paddingHorizontal: 22, // Adds horizontal space
 
     },
     statsContainer: {
