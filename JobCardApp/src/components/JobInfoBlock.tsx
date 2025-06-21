@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
 import Icon from "react-native-vector-icons/Feather";
+import COLORS from "../constants/COLORS";
 
 type JobInfoBlockProps = {
     job: Job;
@@ -16,14 +17,25 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
 
     function getStatusIcon(status: string | undefined) {
         if (status === 'submitted') {
-            return <Icon name="check-circle" size={21} color="#4BB543" />;
+            return <Icon name="check-circle" size={21} color={COLORS.success} />;
         }
         if (status === 'assigned') {
-            return <Icon name="plus-circle" size={21} color="#007AFF" />
+            return <Icon name="plus-circle" size={21} color={COLORS.primary} />
 
         }
 
-        return <Icon name="minus-circle" size={21} color="#aaa" />;
+        return <Icon name="minus-circle" size={21} color={COLORS.greyed} />;
+    }
+
+    function getStatusColor(status: string | undefined) {
+        if (status === 'submitted') {
+            return { color: COLORS.success };
+        }
+        if (status === 'assigned') {
+            return { color: COLORS.primary };
+        }
+
+        return { color: COLORS.greyedText }
     }
 
 
@@ -37,7 +49,7 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
             <View style={styles.card}>
                 <View style={styles.topRow}>
                     <View style={styles.fleetCustomerRow}>
-                        <Text style={styles.fleet}>{job.fleet}</Text>
+                        <Text style={[styles.fleet, getStatusColor(job.assignedStatus[uid])]}>{job.fleet}</Text>
                         <Text style={styles.customer}>{job.customerName}</Text>
                     </View>
                     <Text style={styles.jobTitle}>{job.job}</Text>
@@ -98,7 +110,7 @@ const styles = StyleSheet.create({
     fleet: {
         fontSize: 14,
         fontWeight: "800",
-        color: "#3752e2",
+
         textTransform: "uppercase",
         marginRight: 8,
     },
