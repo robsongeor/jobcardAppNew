@@ -6,6 +6,8 @@ import { JobFormData } from "../../hooks/useJobFormData";
 import { getStoredUserField } from "../../storage/storage";
 import { Job } from "../../types/types";
 import { useState } from "react";
+import Icon from "react-native-vector-icons/Feather";
+import JobDetailsOverview from "./JobDetailsOverview";
 
 type SubmitSectionProps = {
     data: JobFormData // Replace 'any' with your JobFormData type if available
@@ -16,20 +18,16 @@ type SubmitSectionProps = {
 export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) {
 
     const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
 
     const handleSubmit = async (data: JobFormData) => {
         setLoading(true)
 
         try {
-
-
             // Save to Firestore as before
             await submitJobCardToFireStore(data);
             await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
-
-
-
-            console.log({ ...job, ...data })
 
             // Get Firebase Auth user token
             const user = firebase.auth().currentUser;
@@ -52,8 +50,8 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             // Optionally, handle the response
             if (response.ok) {
                 const result = await response.json();
+                setShowSuccess(true)
                 // Show a success message or update UI
-                console.log("Job card submitted and emailed successfully!");
             } else {
                 // Handle error (show error message)
                 const err = await response.text();
@@ -74,54 +72,25 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
                 </View>
             </Modal>
 
+            <Modal visible={showSuccess} transparent animationType="fade">
+                <TouchableOpacity onPress={() => setShowSuccess(false)} style={styles.loadingOverlay}>
+                    <Icon name="check-circle" size={48} color="#4BB543" />
+                    <Text style={styles.loadingText}>Submitted Successfully!</Text>
+                </TouchableOpacity>
+            </Modal>
+
             <View style={styles.container}>
 
 
-
-                {/* Job Info */}
-                <Text style={styles.sectionTitle}>Job ID:</Text>
-                <Text style={styles.fieldValue}>{data.jobId}</Text>
-
-                <Text style={styles.sectionTitle}>Last Updated:</Text>
-                <Text style={styles.fieldValue}>
-                    {new Date(data.lastUpdated).toLocaleString()}
-                </Text>
-
-                {/* Description */}
-                <Text style={styles.sectionTitle}>Description</Text>
-                {Object.entries(data.description).map(([key, value]) => (
-                    <Text key={key} style={styles.fieldValue}>
-                        {key}: {value === true ? 'Yes' : value === false ? 'No' : String(value)}
-                    </Text>
-                ))}
-
-                {/* Activity */}
-                <Text style={styles.sectionTitle}>Activity</Text>
-                {data.activity.map((item: any, idx: number) => (
-                    <View key={item.id || idx} style={styles.itemBlock}>
-                        <Text style={styles.fieldValue}>Date: {item.date}</Text>
-                        <Text style={styles.fieldValue}>Hours: {item.hours}</Text>
-                        <Text style={styles.fieldValue}>KMs: {item.kms}</Text>
-                    </View>
-                ))}
-
-                {/* Parts */}
-                <Text style={styles.sectionTitle}>Parts</Text>
-                {data.parts.map((item: any, idx: number) => (
-                    <View key={item.id || idx} style={styles.itemBlock}>
-                        <Text style={styles.fieldValue}>Qty: {item.quantityValue}</Text>
-                        <Text style={styles.fieldValue}>Description: {item.descValue}</Text>
-                    </View>
-                ))}
-
-
+                <JobDetailsOverview
+                    data={data}
+                />
 
                 <BottomRightButton
                     label="submit"
                     disabled={false}
                     onPress={() => handleSubmit(data)}
                 />
-
             </View>
         </>
     );
@@ -181,7 +150,21 @@ const styles = StyleSheet.create({
         color: '#007AFF',
         fontSize: 18,
         fontWeight: 'bold'
-    }
+    },
+    successButton: {
+        marginTop: 18,
+        backgroundColor: '#007AFF',
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 32,
+        alignItems: 'center',
+    },
+    successButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+
 
 
 });
