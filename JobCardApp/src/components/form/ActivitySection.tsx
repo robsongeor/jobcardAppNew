@@ -72,9 +72,22 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
         const updated = [...activity];
         updated.splice(index, 1);
         setActivity(updated);
+
+        setIsEdit(null)
+        setDate("");
+        setHours("");
+        setKms("");
     };
 
     const fillFieldsOnEdit = (index: number) => {
+        if (isEdit === index) {
+            setIsEdit(null)
+            setDate("");
+            setHours("");
+            setKms("");
+            return
+        }
+
         const { date, hours, kms } = activity[index];
         setDate(date);
         setHours(hours);
@@ -98,7 +111,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                 />
             </Field>
 
-            <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity}>
+            <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity} deleteFunction={deleteActivity}>
                 <SmallDateInput
                     label="Date"
                     date={date}

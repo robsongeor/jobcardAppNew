@@ -77,7 +77,7 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
                     isEdit={isEdit}
                 />
             </Field>
-            <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart}>
+            <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart} deleteFunction={deletePart}>
                 {/* <SmallTextInput
                     value={quantity}
                     onChangeText={setQuantity}
