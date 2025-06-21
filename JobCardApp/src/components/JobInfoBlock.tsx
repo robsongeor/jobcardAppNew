@@ -14,6 +14,19 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
 
     const uid = getStoredUserField('uid');
 
+    function getStatusIcon(status: string | undefined) {
+        if (status === 'submitted') {
+            return <Icon name="check-circle" size={21} color="#4BB543" />;
+        }
+        if (status === 'assigned') {
+            return <Icon name="plus-circle" size={21} color="#007AFF" />
+
+        }
+
+        return <Icon name="minus-circle" size={21} color="#aaa" />;
+    }
+
+
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -54,10 +67,9 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
                 </View>
             </View>
             <View style={styles.checkCircleContainer}>
-                {job.assignedStatus[uid] === 'submitted' ?
-                    <Icon name="check-circle" size={21} color="#4BB543" /> :
-                    <Icon name="circle" size={21} color="#007AFF" />}
+                {getStatusIcon(job.assignedStatus[uid])}
             </View>
+
 
 
         </TouchableOpacity>
