@@ -2,6 +2,7 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
+import Icon from "react-native-vector-icons/Feather";
 
 type JobInfoBlockProps = {
     job: Job;
@@ -27,7 +28,7 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
                         <Text style={styles.customer}>{job.customerName}</Text>
                     </View>
                     <Text style={styles.jobTitle}>{job.job}</Text>
-                    <Text> {job.assignedStatus[uid]} </Text>
+
                 </View>
 
                 {job.machine ? (
@@ -52,6 +53,13 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
                     </Text>
                 </View>
             </View>
+            <View style={styles.checkCircleContainer}>
+                {job.assignedStatus[uid] === 'submitted' ?
+                    <Icon name="check-circle" size={21} color="#4BB543" /> :
+                    <Icon name="circle" size={21} color="#007AFF" />}
+            </View>
+
+
         </TouchableOpacity>
     );
 }
@@ -126,4 +134,13 @@ const styles = StyleSheet.create({
         borderColor: 'blue',
         borderWidth: 2,
     },
+    checkCircleContainer: {
+        position: 'absolute',
+        right: 10,
+        bottom: 10,
+        padding: 2,
+
+
+    },
+
 });
