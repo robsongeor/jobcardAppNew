@@ -99,44 +99,52 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
           "");
       });
 
-      // Signature
-      // 1. Get the signature base64 data (strip the prefix)
-      const signatureBase64 =
-        data.signed.signature.replace(/^data:image\/png;base64,/, "");
+      if (data.signed && data.signed.signature &&
+        data.signed.signature.trim() !== "") {
+        try {
+          // 1. Get the signature base64 data (strip the prefix)
+          const signatureBase64 =
+            data.signed.signature.replace(/^data:image\/png;base64,/, "");
+          if (signatureBase64) {
+            // 2. Convert it to a Uint8Array (binary buffer)
+            const page = pdfDoc.getPages()[0];
+            const signatureBytes = Buffer.from(signatureBase64, "base64");
 
-      // 2. Convert it to a Uint8Array (binary buffer)
-      const page = pdfDoc.getPages()[0]; // or choose a different page if needed
-      const signatureBytes = Buffer.from(signatureBase64, "base64");
+            // Box dimensions (same as before)
+            const boxX = 5.5064 * 72;
+            const boxY = (11.6929 - 10.8718) * 72;
+            const targetWidth = 2.2627 * 72;
+            const targetHeight = 0.8449 * 72;
 
-      // 1. Define box dimensions (in points)
-      const boxX = 5.5064 * 72; // example value, adjust for your form!
-      const boxY = (11.6929 - 10.8718) * 72;
-      const targetWidth = 2.2627 * 72;
-      const targetHeight = 0.8449 * 72;
+            // Embed signature and get dimensions
+            const signatureImage = await pdfDoc.embedPng(signatureBytes);
+            const pngWidth = signatureImage.width;
+            const pngHeight = signatureImage.height;
 
-      // 2. Embed signature and get dimensions
-      const signatureImage = await pdfDoc.embedPng(signatureBytes);
-      const pngWidth = signatureImage.width;
-      const pngHeight = signatureImage.height;
+            // Calculate scale and position
+            const widthScale = targetWidth / pngWidth;
+            const heightScale = targetHeight / pngHeight;
+            const scale = Math.min(widthScale, heightScale, 1);
 
-      // 3. Calculate scale and position
-      const widthScale = targetWidth / pngWidth;
-      const heightScale = targetHeight / pngHeight;
-      const scale = Math.min(widthScale, heightScale, 1); // avoid upscaling
+            const drawnWidth = pngWidth * scale;
+            const drawnHeight = pngHeight * scale;
 
-      const drawnWidth = pngWidth * scale;
-      const drawnHeight = pngHeight * scale;
+            const signatureX = boxX + (targetWidth - drawnWidth) / 2;
+            const signatureY = boxY + (targetHeight - drawnHeight) / 2;
 
-      const signatureX = boxX + (targetWidth - drawnWidth) / 2;
-      const signatureY = boxY + (targetHeight - drawnHeight) / 2;
-
-      // 4. Draw the image
-      page.drawImage(signatureImage, {
-        x: signatureX,
-        y: signatureY,
-        width: drawnWidth,
-        height: drawnHeight,
-      });
+            // Draw the image
+            page.drawImage(signatureImage, {
+              x: signatureX,
+              y: signatureY,
+              width: drawnWidth,
+              height: drawnHeight,
+            });
+          }
+        } catch (err) {
+          console.warn("Could not embed signature (may be missing):", err);
+          // Optionally, continue without failing
+        }
+      }
 
 
       // Generate the PDF buffer
@@ -173,4 +181,5 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
 
 console.log("generateJobCardPDF function loaded!");
 
-
+// npx eslint . --fix
+// firebase deploy --only functions
