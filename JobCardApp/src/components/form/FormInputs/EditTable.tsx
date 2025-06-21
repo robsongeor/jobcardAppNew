@@ -24,8 +24,6 @@ export default function EditTable({ headers, rows, deleteRow, fillFieldsOnEdit, 
 
     return (
 
-
-
         <View style={{ flex: 1 }}>
             {/* Sticky Header (always visible) */}
             <View style={styles.tableHeader}>
@@ -87,11 +85,8 @@ const styles = StyleSheet.create({
     tableHeader: {
         flexDirection: "row",
         backgroundColor: "#f2f2f2",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 4,
-        marginBottom: 2,
+        paddingVertical: 14,
+
     },
     headerCell: {
         flex: 1,
@@ -99,24 +94,31 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#222",
         textAlign: "left",
+        paddingHorizontal: 14,
     },
     tableRow: {
         flexDirection: "row",
         backgroundColor: "#fff",
-        borderBottomWidth: 1,
-        borderColor: "#ececec",
         alignItems: "center",
-        paddingVertical: 8,
-        paddingHorizontal: 4,
+
     },
     editingRow: {
         backgroundColor: "#e3f1ff",
     },
     rowCell: {
+
         flex: 1,
         fontSize: 13,
         color: "#444",
         textAlign: "left",
+        paddingVertical: 8,
+        paddingHorizontal: 4,
+
+        borderWidth: 1,
+        borderColor: "#ececec",
+        height: "100%",
+        textAlignVertical: "center"
+
     },
     iconButton: {
         width: 32,
@@ -145,9 +147,5 @@ const styles = StyleSheet.create({
         color: "#888",
         fontSize: 15,
         fontStyle: "italic",
-    },
-
-    inputRowVertical: {
-        marginBottom: 12,
     },
 });

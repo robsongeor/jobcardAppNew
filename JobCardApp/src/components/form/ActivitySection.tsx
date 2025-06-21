@@ -34,13 +34,13 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const headers = [
         { label: "Date", flex: 2 },
         { label: "Hours", flex: 1 },
-        { label: "Mileage", flex: 1 }
+        { label: "Mileage", flex: 1.3 }
     ]
 
     const rows = activity.map(activity => [
         { value: formatDate(activity.date), flex: 2 },
         { value: activity.hours, flex: 1 },
-        { value: activity.kms, flex: 1 }
+        { value: activity.kms, flex: 1.3 }
     ]);
 
     const addActivity = () => {
