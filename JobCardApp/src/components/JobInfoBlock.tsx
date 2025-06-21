@@ -24,6 +24,9 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
             return <Icon name="plus-circle" size={21} color={COLORS.primary} />
 
         }
+        if (status === 'overdue') {
+            return <Icon name="alert-circle" size={21} color={COLORS.error} />
+        }
 
         return <Icon name="minus-circle" size={21} color={COLORS.greyed} />;
     }
@@ -35,6 +38,10 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
         if (status === 'assigned') {
             return { color: COLORS.primary };
         }
+        if (status === 'overdue') {
+            return { color: COLORS.error };
+        }
+
 
         return { color: COLORS.greyedText }
     }
