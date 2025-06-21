@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
 import BottomRightButton from "./Buttons/BottomRightButton";
 import { firebase, reload } from "@react-native-firebase/auth";
 import { submitJobCardToFireStore, updateAssignedStatus } from "../../firebase";
 import { JobFormData } from "../../hooks/useJobFormData";
 import { getStoredUserField } from "../../storage/storage";
 import { Job } from "../../types/types";
+import { useState } from "react";
 
 type SubmitSectionProps = {
     data: JobFormData // Replace 'any' with your JobFormData type if available
@@ -14,93 +15,115 @@ type SubmitSectionProps = {
 
 export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) {
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (data: JobFormData) => {
-        // Save to Firestore as before
-        await submitJobCardToFireStore(data);
-        await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
+        setLoading(true)
 
-        console.log({ ...job, ...data })
+        try {
 
-        // Get Firebase Auth user token
-        const user = firebase.auth().currentUser;
-        if (!user) {
-            // Handle not logged in (show error or redirect to login)
-            return;
-        }
-        const idToken = await user.getIdToken();
 
-        // POST to your PDF/email Cloud Function
-        const response = await fetch('https://generatejobcardpdf-hjkqebqdtq-uc.a.run.app', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + idToken,
-            },
-            body: JSON.stringify({ ...job, ...data }), // send the form data as JSON
-        });
+            // Save to Firestore as before
+            await submitJobCardToFireStore(data);
+            await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
 
-        // Optionally, handle the response
-        if (response.ok) {
-            const result = await response.json();
-            // Show a success message or update UI
-            console.log("Job card submitted and emailed successfully!");
-        } else {
-            // Handle error (show error message)
-            const err = await response.text();
-            console.log("Error sending job card: " + err);
+
+
+            console.log({ ...job, ...data })
+
+            // Get Firebase Auth user token
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                // Handle not logged in (show error or redirect to login)
+                return;
+            }
+            const idToken = await user.getIdToken();
+
+            // POST to your PDF/email Cloud Function
+            const response = await fetch('https://generatejobcardpdf-hjkqebqdtq-uc.a.run.app', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + idToken,
+                },
+                body: JSON.stringify({ ...job, ...data }), // send the form data as JSON
+            });
+
+            // Optionally, handle the response
+            if (response.ok) {
+                const result = await response.json();
+                // Show a success message or update UI
+                console.log("Job card submitted and emailed successfully!");
+            } else {
+                // Handle error (show error message)
+                const err = await response.text();
+                console.log("Error sending job card: " + err);
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
 
     return (
-        <View style={styles.container}>
+        <>
+            <Modal visible={loading} transparent animationType="fade">
+                <View style={styles.loadingOverlay}>
+                    <ActivityIndicator size="large" color="#007AFF" />
+                    <Text style={styles.loadingText}>Submitting...</Text>
+                </View>
+            </Modal>
+
+            <View style={styles.container}>
 
 
-            {/* Job Info */}
-            <Text style={styles.sectionTitle}>Job ID:</Text>
-            <Text style={styles.fieldValue}>{data.jobId}</Text>
 
-            <Text style={styles.sectionTitle}>Last Updated:</Text>
-            <Text style={styles.fieldValue}>
-                {new Date(data.lastUpdated).toLocaleString()}
-            </Text>
+                {/* Job Info */}
+                <Text style={styles.sectionTitle}>Job ID:</Text>
+                <Text style={styles.fieldValue}>{data.jobId}</Text>
 
-            {/* Description */}
-            <Text style={styles.sectionTitle}>Description</Text>
-            {Object.entries(data.description).map(([key, value]) => (
-                <Text key={key} style={styles.fieldValue}>
-                    {key}: {value === true ? 'Yes' : value === false ? 'No' : String(value)}
+                <Text style={styles.sectionTitle}>Last Updated:</Text>
+                <Text style={styles.fieldValue}>
+                    {new Date(data.lastUpdated).toLocaleString()}
                 </Text>
-            ))}
 
-            {/* Activity */}
-            <Text style={styles.sectionTitle}>Activity</Text>
-            {data.activity.map((item: any, idx: number) => (
-                <View key={item.id || idx} style={styles.itemBlock}>
-                    <Text style={styles.fieldValue}>Date: {item.date}</Text>
-                    <Text style={styles.fieldValue}>Hours: {item.hours}</Text>
-                    <Text style={styles.fieldValue}>KMs: {item.kms}</Text>
-                </View>
-            ))}
+                {/* Description */}
+                <Text style={styles.sectionTitle}>Description</Text>
+                {Object.entries(data.description).map(([key, value]) => (
+                    <Text key={key} style={styles.fieldValue}>
+                        {key}: {value === true ? 'Yes' : value === false ? 'No' : String(value)}
+                    </Text>
+                ))}
 
-            {/* Parts */}
-            <Text style={styles.sectionTitle}>Parts</Text>
-            {data.parts.map((item: any, idx: number) => (
-                <View key={item.id || idx} style={styles.itemBlock}>
-                    <Text style={styles.fieldValue}>Qty: {item.quantityValue}</Text>
-                    <Text style={styles.fieldValue}>Description: {item.descValue}</Text>
-                </View>
-            ))}
+                {/* Activity */}
+                <Text style={styles.sectionTitle}>Activity</Text>
+                {data.activity.map((item: any, idx: number) => (
+                    <View key={item.id || idx} style={styles.itemBlock}>
+                        <Text style={styles.fieldValue}>Date: {item.date}</Text>
+                        <Text style={styles.fieldValue}>Hours: {item.hours}</Text>
+                        <Text style={styles.fieldValue}>KMs: {item.kms}</Text>
+                    </View>
+                ))}
+
+                {/* Parts */}
+                <Text style={styles.sectionTitle}>Parts</Text>
+                {data.parts.map((item: any, idx: number) => (
+                    <View key={item.id || idx} style={styles.itemBlock}>
+                        <Text style={styles.fieldValue}>Qty: {item.quantityValue}</Text>
+                        <Text style={styles.fieldValue}>Description: {item.descValue}</Text>
+                    </View>
+                ))}
 
 
 
-            <BottomRightButton
-                label="submit"
-                disabled={false}
-                onPress={() => handleSubmit(data)}
-            />
+                <BottomRightButton
+                    label="submit"
+                    disabled={false}
+                    onPress={() => handleSubmit(data)}
+                />
 
-        </View>
+            </View>
+        </>
     );
 }
 
@@ -147,5 +170,18 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         letterSpacing: 1,
     },
+    loadingOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.2)',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    loadingText: {
+        marginTop: 14,
+        color: '#007AFF',
+        fontSize: 18,
+        fontWeight: 'bold'
+    }
+
 
 });
