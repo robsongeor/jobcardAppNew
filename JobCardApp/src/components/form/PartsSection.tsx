@@ -7,6 +7,7 @@ import { useState } from "react";
 import EditTable from "./FormInputs/EditTable";
 import ListInputs from "./FormInputs/ListInputs";
 import SmallTextInput from "./FormInputs/SmallTextInput";
+import QuantityInput from "./QuantityInput";
 
 type PartsSectionProps = {
     parts: QuantityInputType[];
@@ -77,10 +78,14 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
                 />
             </Field>
             <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart}>
-                <SmallTextInput
+                {/* <SmallTextInput
                     value={quantity}
                     onChangeText={setQuantity}
                     label="Quantity"
+                /> */}
+                <QuantityInput
+                    quantity={quantity}
+                    setQuantity={setQuantity}
                 />
                 <SmallTextInput
                     value={description}
