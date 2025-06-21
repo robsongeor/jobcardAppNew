@@ -90,7 +90,7 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             <View style={styles.container}>
                 <JobDetailsOverview data={data} job={job} />
                 <BottomRightButton
-                    label="submit"
+                    label="Submit"
                     disabled={loading}
                     onPress={() => handleSubmit(data)}
                     icon={"send"}
