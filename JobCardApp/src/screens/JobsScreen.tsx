@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, FlatList, TouchableOpacity, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { useNavigation } from '@react-navigation/native';
@@ -70,7 +70,9 @@ const JobsScreen = () => {
     };
 
     return (
-        <View>
+        <SafeAreaView style={{ flex: 1 }}>
+
+
             <SearchBar
                 value={query}
                 onChangeText={setQuery}
@@ -85,6 +87,7 @@ const JobsScreen = () => {
 
 
             <FlatList
+                style={{ flex: 1 }}
                 data={filteredJobs()}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
@@ -92,9 +95,10 @@ const JobsScreen = () => {
                         job={item}
                         onPress={() => handleOpen(item)}
                     />
+
                 )}
             />
-        </View>
+        </SafeAreaView>
     )
 
 
