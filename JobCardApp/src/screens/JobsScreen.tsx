@@ -78,45 +78,6 @@ const JobsScreen = () => {
                 setActiveTab={setActiveTab}
             />
 
-            {/* <View style={styles.toggleContainer}>
-                <TouchableOpacity
-                    style={[
-                        styles.toggleButton,
-                        styles.toggleButtonLeft,
-                        activeTab === 'all' ? styles.toggleButtonActive : styles.toggleButtonInactive,
-                    ]}
-                    onPress={() => setActiveTab('all')}
-                >
-                    <Text style={activeTab === 'all' ? styles.toggleTextActive : styles.toggleTextInactive}>
-                        All
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.toggleButton,
-                        styles.toggleButtonLeft,
-                        activeTab === 'assigned' ? styles.toggleButtonActive : styles.toggleButtonInactive,
-                    ]}
-                    onPress={() => setActiveTab('assigned')}
-                >
-                    <Text style={activeTab === 'assigned' ? styles.toggleTextActive : styles.toggleTextInactive}>
-                        Assigned
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.toggleButton,
-                        styles.toggleButtonRight,
-                        activeTab === 'submitted' ? styles.toggleButtonActive : styles.toggleButtonInactive,
-                    ]}
-                    onPress={() => setActiveTab('submitted')}
-                >
-                    <Text style={activeTab === 'submitted' ? styles.toggleTextActive : styles.toggleTextInactive}>
-                        Submitted
-                    </Text>
-                </TouchableOpacity>
-            </View> */}
-
 
             <FlatList
                 data={filteredJobs()}
@@ -134,36 +95,6 @@ const JobsScreen = () => {
 
 }
 
-const styles = StyleSheet.create({
-    toggleContainer: {
-        flexDirection: 'row',
-        margin: 10,
-    },
-    toggleButton: {
-        flex: 1,
-        padding: 12,
-        borderRadius: 6,
-        alignItems: 'center',
-    },
-    toggleButtonLeft: {
-        marginRight: 4,
-    },
-    toggleButtonRight: {
-        marginLeft: 4,
-    },
-    toggleButtonActive: {
-        backgroundColor: '#007AFF',
-    },
-    toggleButtonInactive: {
-        backgroundColor: '#f0f0f0',
-    },
-    toggleTextActive: {
-        color: '#fff',
-    },
-    toggleTextInactive: {
-        color: '#000',
-    },
-});
 
 
 export default JobsScreen;
