@@ -57,11 +57,16 @@ const JobsScreen = () => {
 
         if (activeTab !== 'all') {
             tabFilter = assignedJobs.filter(job => job.assignedStatus[getStoredUserField('uid')] === activeTab)
-        } else
+        }
 
 
-            if (query.length === 0) return tabFilter;
-        return tabFilter.filter(job => jobMatchesQuery(job, query));
+        if (query.length === 0) {
+            return tabFilter.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10))
+
+
+        }
+        const filtered = tabFilter.filter(job => jobMatchesQuery(job, query));
+        return filtered.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10))
     };
 
     return (
