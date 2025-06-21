@@ -5,8 +5,9 @@ import { assignJobToUser, auth, getUserData, searchJobsTrigrams } from '../fireb
 import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { getStoredUserField } from '../storage/storage';
+import { addRecentActivity, convertJobToRecent, getStoredUserField } from '../storage/storage';
 import BottomRightButton from '../components/form/Buttons/BottomRightButton';
+import { EventBus } from '../utils/EventBus';
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
@@ -76,7 +77,6 @@ const AssignScreen = () => {
 
     //Assigning Job to user
     const handleAssignJob = async () => {
-        //Store locally first, on success update assignedTo field in firebase
         if (!selectedJobId) return;
 
         const uid = getStoredUserField('uid');
@@ -86,6 +86,8 @@ const AssignScreen = () => {
         } else {
             const job = await assignJobToUser(selectedJobId, uid);
             if (job) {
+
+
                 setSelectedJobId(null)
             };
         }

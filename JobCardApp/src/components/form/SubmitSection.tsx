@@ -3,7 +3,7 @@ import BottomRightButton from "./Buttons/BottomRightButton";
 import { firebase } from "@react-native-firebase/auth";
 import { submitJobCardToFireStore, updateAssignedStatus } from "../../firebase";
 import { JobFormData } from "../../hooks/useJobFormData";
-import { getStoredUserField } from "../../storage/storage";
+import { addRecentActivity, convertJobToRecent, getStoredUserField } from "../../storage/storage";
 import { Job } from "../../types/types";
 import { useEffect, useState } from "react";
 import JobDetailsOverview from "./JobDetailsOverview";
@@ -57,6 +57,7 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             });
             if (response.ok) {
                 setShowSuccess(true);
+                addRecentActivity(convertJobToRecent(job, "submitted"))
             } else {
                 const err = await response.text();
                 setErrorMsg("Error sending job card: " + err);
@@ -67,12 +68,14 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             setShowError(true);
         } finally {
             setLoading(false);
+
         }
     };
 
     const closeModal = () => {
         setShowModal(false);
         setShowSuccess(false);
+        setShowError(false);
     };
 
     return (

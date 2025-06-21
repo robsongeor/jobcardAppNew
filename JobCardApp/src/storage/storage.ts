@@ -1,5 +1,8 @@
 import { MMKV } from 'react-native-mmkv';
-import { Job } from '../types/types';
+import { Job, RecentActivityType } from '../types/types';
+import { formatDate, formatDateTime } from '../components/helpers/formatters';
+import { EventBus } from '../utils/EventBus';
+
 
 export const storage = new MMKV();
 
@@ -25,6 +28,71 @@ export const getStoredUserField = (field: string): string => {
     }
 };
 
+export const addRecentActivity = (data: RecentActivityType) => {
+    // 1. Read the current array
+    const recentActivityStr = storage.getString("recentActivity");
+    let recentActivity: RecentActivityType[] = [];
 
+    if (recentActivityStr) {
+        try {
+            recentActivity = JSON.parse(recentActivityStr);
+        } catch (e) {
+            // If the data is corrupted, start fresh
+            recentActivity = [];
+        }
+    }
 
-// You can add more getters/setters for in-progress job cards, user prefs, etc.
+    // 2. Create new item and add to the front
+    const newItem: RecentActivityType = data;
+
+    recentActivity.unshift(newItem); // add to start
+
+    // 3. (Optional) Limit the length (e.g. last 20)
+    if (recentActivity.length > 10) recentActivity = recentActivity.slice(0, 10);
+
+    // 4. Write back to MMKV as JSON string
+    storage.set("recentActivity", JSON.stringify(recentActivity));
+    EventBus.emit("recentActivityUpdated"); // Must be after storage.set!
+};
+
+export function getRecentActivity(): RecentActivityType[] {
+    //storage.delete("recentActivity")
+    const recentActivityStr = storage.getString("recentActivity");
+    let recentActivity: RecentActivityType[] = [];
+
+    if (recentActivityStr) {
+        try {
+            recentActivity = JSON.parse(recentActivityStr);
+        } catch (e) {
+            // If the data is corrupted, start fresh
+            recentActivity = [];
+        }
+    }
+
+    return recentActivity;
+}
+
+export function convertJobToRecent(job: Job, status: string): RecentActivityType {
+    let title = "";
+
+    console.log(status)
+
+    if (status === "submitted") {
+        title = "Submitted Job Card"
+    }
+
+    if (status === "assigned") {
+        title = "Assigned to Job"
+    }
+
+    console.log(job.job)
+
+    return {
+        id: job.id,
+        title: title,
+        date: formatDateTime(new Date(Date.now()).toISOString()),
+        status: status,
+        jobNumber: job.job,
+        fleet: job.fleet,
+    }
+}

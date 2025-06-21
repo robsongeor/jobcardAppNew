@@ -1,18 +1,31 @@
 import { Text, View, StyleSheet } from "react-native";
-import { getStoredUserField } from "../storage/storage";
+import { addRecentActivity, getRecentActivity, getStoredUserField } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
-import { recentActivityType } from "../types/types";
+import { RecentActivityType } from "../types/types";
 import RecentActivity from "../components/RecentActivity";
+import { useEffect, useState } from "react";
+import { EventBus } from "../utils/EventBus";
 
 export default function DashboardScreen() {
     const name = getStoredUserField('name').split(" ")[0];
+    const [recentActivityList, setRecentActivityList] = useState<RecentActivityType[]>([]);
 
-    const recentActivityList: recentActivityType[] = [
-        { id: 1, title: "Submitted Job Card", date: "2024-06-20", status: "submitted" },
-        { id: 2, title: "Job Assigned", date: "2024-06-19", status: "assigned" },
-        { id: 3, title: "Completed Inspection", date: "2024-06-19", status: "completed" },
-    ];
+    useEffect(() => {
+        setRecentActivityList(getRecentActivity());
+
+        const listener = () => setRecentActivityList(getRecentActivity());
+        EventBus.on("recentActivityUpdated", listener);
+
+        return () => {
+            EventBus.off("recentActivityUpdated", listener);
+        };
+    }, []);
+
+
+
+
+    console.log(recentActivityList.length)
 
 
     return (
@@ -25,6 +38,7 @@ export default function DashboardScreen() {
                 <StatCard label="Overdue" value={10} unit="Jobs" color={COLORS.error} icon="alert-circle" />
             </View>
             <RecentActivity activity={recentActivityList} />
+
 
         </View>
     );

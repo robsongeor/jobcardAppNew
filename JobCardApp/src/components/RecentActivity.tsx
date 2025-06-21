@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import COLORS from "../constants/colors";
-import { recentActivityType } from "../types/types";
+import { RecentActivityType } from "../types/types";
 
 type RecentActivityProps = {
-    activity: recentActivityType[]
+    activity: RecentActivityType[]
 }
 
 
@@ -33,7 +33,7 @@ export default function RecentActivity({ activity }: RecentActivityProps) {
                         style={{ marginRight: 8 }}
                     />
                     <View>
-                        <Text style={styles.activityTitle}>{item.title}</Text>
+                        <Text style={styles.activityTitle}>{item.title}: {item.jobNumber}</Text>
                         <Text style={styles.activityDate}>{item.date}</Text>
                     </View>
                 </View>
