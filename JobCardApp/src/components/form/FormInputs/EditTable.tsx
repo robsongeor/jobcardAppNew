@@ -1,16 +1,18 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-type TableHeader = {
+export type TableHeader = {
     label: string;
     flex?: number;
+    textAlign?: "auto" | "center" | "left" | "right" | "justify";
 };
 
-type RowCell = {
+export type RowCell = {
     value: string;
-    flex?: number
+    flex?: number;
+    textAlign?: "auto" | "center" | "left" | "right" | "justify";
 }
 
-type Row = RowCell[];
+export type Row = RowCell[];
 
 type EditTableProps = {
     headers: TableHeader[];
@@ -28,7 +30,7 @@ export default function EditTable({ headers, rows, deleteRow, fillFieldsOnEdit, 
             {/* Sticky Header (always visible) */}
             <View style={styles.tableHeader}>
                 {headers.map((header, index) => (
-                    <Text style={[styles.headerCell, { flex: header.flex }]} key={index}>
+                    <Text style={[styles.headerCell, { flex: header.flex, textAlign: header.textAlign }]} key={index}>
                         {header.label}
                     </Text>
                 ))}
@@ -44,7 +46,7 @@ export default function EditTable({ headers, rows, deleteRow, fillFieldsOnEdit, 
                                     key={cellIndex}
                                     style={[
                                         styles.rowCell,
-                                        { flex: cell.flex ?? 1 },
+                                        { flex: cell.flex ?? 1, textAlign: cell.textAlign },
                                         isEdit === rowIndex && styles.editingRow,
                                     ]}
                                 >
@@ -66,16 +68,19 @@ const styles = StyleSheet.create({
     tableHeader: {
         flexDirection: "row",
         backgroundColor: "#f2f2f2",
-        paddingVertical: 14,
+        alignItems: "center",
 
     },
     headerCell: {
-        flex: 1,
+
         fontWeight: "bold",
         fontSize: 14,
         color: "#222",
         textAlign: "left",
         paddingHorizontal: 14,
+        paddingVertical: 14,
+
+        borderColor: "#ececec", // or whatever color you prefer
     },
     tableRow: {
         flexDirection: "row",
@@ -87,46 +92,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#e3f1ff",
     },
     rowCell: {
-
-        flex: 1,
         fontSize: 13,
         color: "#444",
-        textAlign: "left",
-        paddingVertical: 8,
-        paddingHorizontal: 4,
 
-        borderWidth: 1,
+        paddingVertical: 14,
+        paddingHorizontal: 14,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
         borderColor: "#ececec",
-        height: "100%",
-        textAlignVertical: "center"
-
-    },
-    iconButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: "center",
-        justifyContent: "center",
-        marginRight: 6,
-    },
-    editButton: {
-        backgroundColor: "#007AFF",
-    },
-    deleteButton: {
-        backgroundColor: "#FF3B30",
-    },
-    iconText: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    emptyState: {
-        padding: 32,
-        alignItems: "center",
-    },
-    emptyText: {
-        color: "#888",
-        fontSize: 15,
-        fontStyle: "italic",
     },
 });
+

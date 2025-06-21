@@ -17,7 +17,7 @@ import SmallTextInput from "./FormInputs/SmallTextInput";
 import Label from "./FormInputs/Label";
 import SmallDateInput from "./FormInputs/SmallDateInput";
 import ListInputs from "./FormInputs/ListInputs";
-import EditTable from "./FormInputs/EditTable";
+import EditTable, { Row, RowCell, TableHeader } from "./FormInputs/EditTable";
 import { formatDate } from "../helpers/formatters";
 
 type ActivitySectionProps = {
@@ -31,17 +31,18 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const [kms, setKms] = useState("");
     const [isEdit, setIsEdit] = useState<number | null>(null);
 
-    const headers = [
-        { label: "Date", flex: 2 },
-        { label: "Hours", flex: 1 },
-        { label: "Mileage", flex: 1.3 }
-    ]
+    const headers: TableHeader[] = [
+        { label: "Date", flex: 2, textAlign: "left" },
+        { label: "Hours", flex: 1, textAlign: "right" },
+        { label: "Mileage", flex: 1.3, textAlign: "right" }
+    ];
 
-    const rows = activity.map(activity => [
-        { value: formatDate(activity.date), flex: 2 },
-        { value: activity.hours, flex: 1 },
-        { value: activity.kms, flex: 1.3 }
+    const rows: Row[] = activity.map(activity => [
+        { value: formatDate(activity.date), flex: 2, textAlign: "left" },
+        { value: activity.hours, flex: 1, textAlign: "right" },
+        { value: activity.kms, flex: 1.3, textAlign: "right" }
     ]);
+
 
     const addActivity = () => {
         const index = isEdit === null ? activity.length : isEdit;
