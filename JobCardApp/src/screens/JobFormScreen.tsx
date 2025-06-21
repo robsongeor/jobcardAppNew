@@ -4,10 +4,11 @@ import { useJobFormData } from '../hooks/useJobFormData';
 import ActivitySection from '../components/form/ActivitySection';
 import DescriptionSection from '../components/form/DescriptionSection';
 import PartsSection from '../components/form/PartsSection';
-import JobInfoBlock from '../components/JobInfoBlock';
+
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SignSection from '../components/form/SignSection';
 import SubmitSection from '../components/form/SubmitSection';
+import JobInfo from '../components/form/JobInfo';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -25,7 +26,7 @@ const JobFormScreen = () => {
             <Tab.Screen name="Info">
                 {() => (
                     <>
-                        <JobInfoBlock job={job} />
+                        <JobInfo job={job} />
                         <DescriptionSection
                             description={form.description}
                             setDescription={(updated) => updateField('description', updated)}
