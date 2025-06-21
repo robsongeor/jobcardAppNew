@@ -39,8 +39,9 @@ const styles = StyleSheet.create({
         paddingVertical: 9,
         backgroundColor: "#fff",
         gap: 14,
-        borderTopWidth: 1,
-        borderColor: "#ccc"
+
+        borderColor: "#ccc",
+        borderBottomWidth: 1,
     },
     button: {
         flex: 1,

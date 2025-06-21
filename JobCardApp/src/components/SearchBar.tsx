@@ -57,6 +57,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
+        borderBottomWidth: 1,
+        borderColor: "#ccc"
     },
     input: {
         height: '100%',
