@@ -32,15 +32,15 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const [isEdit, setIsEdit] = useState<number | null>(null);
 
     const headers: TableHeader[] = [
-        { label: "Date", flex: 2, textAlign: "left" },
+        { label: "Date", flex: 1, textAlign: "left" },
         { label: "Hours", flex: 1, textAlign: "right" },
-        { label: "Mileage", flex: 1.3, textAlign: "right" }
+        { label: "Mileage", flex: 1, textAlign: "right" }
     ];
 
     const rows: Row[] = activity.map(activity => [
-        { value: formatDate(activity.date), flex: 2, textAlign: "left" },
+        { value: formatDate(activity.date), flex: 1, textAlign: "left" },
         { value: activity.hours, flex: 1, textAlign: "right" },
-        { value: activity.kms, flex: 1.3, textAlign: "right" }
+        { value: activity.kms, flex: 1, textAlign: "right" }
     ]);
 
 

@@ -4,7 +4,7 @@ import { QuantityInputType } from "../../types/types";
 import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
 import { useState } from "react";
-import EditTable from "./FormInputs/EditTable";
+import EditTable, { Row, TableHeader } from "./FormInputs/EditTable";
 import ListInputs from "./FormInputs/ListInputs";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import QuantityInput from "./QuantityInput";
@@ -20,14 +20,16 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
     const [isEdit, setIsEdit] = useState<number | null>(null);
 
 
-    const headers = [
-        { label: "Quantity", flex: 1 },
-        { label: "Part Description", flex: 3 }
+    const headers: TableHeader[] = [
+        { label: "Part Description", flex: 7, textAlign: "left" },
+        { label: "Qty", flex: 1, textAlign: "right" },
+
     ]
 
-    const rows = parts.map(part => [
-        { value: part.quantityValue, flex: 1 },
-        { value: part.descValue, flex: 3 }
+    const rows: Row[] = parts.map(part => [
+        { value: part.descValue, flex: 7, textAlign: "left" },
+        { value: part.quantityValue, flex: 1, textAlign: "right" },
+
     ]);
 
     const addPart = () => {
