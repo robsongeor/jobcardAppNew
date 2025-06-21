@@ -84,9 +84,6 @@ export const getUserData = async (uid: string) => {
         console.error('Failed to fetch user data:', error);
         return null;
     }
-
-
-
 }
 
 export const assignJobToUser = async (
@@ -111,10 +108,12 @@ export const assignJobToUser = async (
         if (!currentAssigned.includes(uid)) {
             const updatedAssigned = [...currentAssigned, uid];
             const updatedAssignedStatus = { ...currentAssignedTo, [uid]: "assigned" }
+            const updatedAssignedDate = { ...currentAssignedTo, [uid]: new Date() }
 
             await updateDoc(jobRef, {
                 assignedTo: updatedAssigned,
-                assignedStatus: updatedAssignedStatus
+                assignedStatus: updatedAssignedStatus,
+                assignedDate: updatedAssignedDate
             });
             console.log(updatedAssignedStatus, "updated assigned")
             console.log(`Assigned job ${jobId} to UID ${uid}`);

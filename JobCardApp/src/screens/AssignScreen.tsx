@@ -86,8 +86,6 @@ const AssignScreen = () => {
         } else {
             const job = await assignJobToUser(selectedJobId, uid);
             if (job) {
-
-
                 setSelectedJobId(null)
             };
         }

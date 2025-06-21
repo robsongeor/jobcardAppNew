@@ -19,6 +19,7 @@ export default function DashboardScreen() {
         const listener = () => setRecentActivityList(getRecentActivity());
         EventBus.on("recentActivityUpdated", listener);
 
+
         return () => {
             EventBus.off("recentActivityUpdated", listener);
         };
