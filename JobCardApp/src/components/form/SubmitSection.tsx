@@ -21,6 +21,12 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
+    const [showError, setShowError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+
+
+
+
     useEffect(() => {
         let timeout: ReturnType<typeof setTimeout>;
         if (showSuccess) {
@@ -72,7 +78,12 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
                 const err = await response.text();
                 console.log("Error sending job card: " + err);
             }
-        } finally {
+        } catch (error: any) {
+            setErrorMsg(error.message || 'An unexpected error occurred.');
+            setShowError(true);
+        }
+
+        finally {
             setLoading(false);
         }
     };
@@ -103,6 +114,16 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
                         </TouchableOpacity>
                     </>}
 
+                    {showError && (
+                        <View style={{ alignItems: 'center' }}>
+                            <TouchableOpacity onPress={closeModal} style={styles.loadingOverlay}>
+                                <Icon name="x-circle" size={48} color="#D7263D" />
+                                <Text style={styles.errorText}>Submission Failed!</Text>
+                                <Text style={styles.errorText}>{errorMsg}</Text>
+
+                            </TouchableOpacity>
+                        </View>
+                    )}
 
                 </BlurView>
             </Modal>
@@ -143,5 +164,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     },
+    errorText: {
+        marginTop: 14,
+        color: '#D7263D',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    errorButtonText: {
+        color: '#fff',
+        backgroundColor: '#D7263D',
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingHorizontal: 24,
+        paddingVertical: 10,
+        borderRadius: 8,
+        marginTop: 10,
+        overflow: 'hidden'
+    },
+
 });
 
