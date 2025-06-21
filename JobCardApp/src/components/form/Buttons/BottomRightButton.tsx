@@ -7,9 +7,10 @@ type bottomRightButtonProps = {
     label: string
     disabled: boolean;
     onPress: () => void;
+    icon: string;
 }
 
-export default function BottomRightButton({ label, disabled, onPress }: bottomRightButtonProps) {
+export default function BottomRightButton({ label, disabled, onPress, icon }: bottomRightButtonProps) {
 
     return (
         <View style={styles.assignButtonContainer}>
@@ -23,7 +24,7 @@ export default function BottomRightButton({ label, disabled, onPress }: bottomRi
             >
                 <Text style={styles.assignButtonText}>{label}</Text>
                 <Icon
-                    name="user-plus"
+                    name={icon}
                     size={20}
                     color={COLORS.background}
                     style={styles.iconStyle}

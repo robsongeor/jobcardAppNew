@@ -118,6 +118,7 @@ const AssignScreen = () => {
                 label='Assign'
                 disabled={!selectedJobId}
                 onPress={handleAssignJob}
+                icon={"user-plus"}
             />
 
         </View>

@@ -85,11 +85,12 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             </Modal>
 
             <View style={styles.container}>
-                <JobDetailsOverview data={data} />
+                <JobDetailsOverview data={data} job={job} />
                 <BottomRightButton
                     label="submit"
                     disabled={loading}
                     onPress={() => handleSubmit(data)}
+                    icon={"send"}
                 />
             </View>
         </>
@@ -98,7 +99,6 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
         backgroundColor: "#fff",
         flex: 1,
         position: "relative"
