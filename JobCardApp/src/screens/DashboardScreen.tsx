@@ -20,7 +20,6 @@ export default function DashboardScreen() {
         const listener = () => setRecentActivityList(getRecentActivity());
         EventBus.on("recentActivityUpdated", listener);
 
-
         return () => {
             EventBus.off("recentActivityUpdated", listener);
         };
@@ -50,8 +49,6 @@ export default function DashboardScreen() {
         }
     })
 
-
-
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
             <Text style={styles.greeting}>
@@ -62,8 +59,6 @@ export default function DashboardScreen() {
                 <StatCard label="Overdue" value={overdue} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
             </View>
             <RecentActivity activity={recentActivityList} />
-
-
         </ScrollView>
     );
 }

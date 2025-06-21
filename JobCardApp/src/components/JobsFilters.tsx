@@ -8,12 +8,9 @@ type JobsFiltersType = {
 }
 
 export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType) {
-    const [all, setAll] = useState(true);
-
-
     return (
         <View style={styles.container}>
-            <Text>Status: </Text>
+
 
             <TouchableOpacity style={[styles.button, activeTab === 'all' && styles.buttonOn]} onPress={() => setActiveTab('all')}>
                 <Text style={[styles.buttonText, activeTab === 'all' && styles.buttonTextOn]}>All</Text>
@@ -25,6 +22,10 @@ export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType
 
             <TouchableOpacity style={[styles.button, activeTab === 'submitted' && styles.buttonOn]} onPress={() => setActiveTab("submitted")}>
                 <Text style={[styles.buttonText, activeTab === 'submitted' && styles.buttonTextOn]}>Submitted</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={[styles.button, activeTab === 'overdue' && styles.buttonOn]} onPress={() => setActiveTab("overdue")}>
+                <Text style={[styles.buttonText, activeTab === 'overdue' && styles.buttonTextOn]}>Overdue</Text>
             </TouchableOpacity>
         </View>
     )

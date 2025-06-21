@@ -44,7 +44,7 @@ export type SignInputsType = {
 
 }
 
-export type TabType = 'all' | 'assigned' | 'submitted';
+export type TabType = 'all' | 'assigned' | 'submitted' | 'overdue';
 
 export type RecentActivityType = {
     id: string;
