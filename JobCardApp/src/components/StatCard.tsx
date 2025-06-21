@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import COLORS from "../constants/colors";
 
@@ -9,12 +9,13 @@ type StatCardProps = {
     // icon?: ReactNode // if you want to add icons later
     color?: string;     // for customizing highlight color
     icon?: string;
+    style?: StyleProp<ViewStyle>;
 };
 
-export function StatCard({ label, value, unit, color = "#FFE066", icon }: StatCardProps) {
+export function StatCard({ label, value, unit, color = "#FFE066", icon, style }: StatCardProps) {
     return (
         <View style={styles.container}>
-            <View style={[styles.card, { backgroundColor: "#fff" }]}>
+            <View style={[styles.card, { backgroundColor: "#fff" }, style]}>
                 <View style={styles.iconWrapper}>
                     <Icon name={icon} size={24} color={color} />
                 </View>
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 
     },
     card: {
-        marginHorizontal: 4,
+
         marginBottom: 8,
         height: 120,
         borderRadius: 16,

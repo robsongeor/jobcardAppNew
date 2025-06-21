@@ -45,8 +45,8 @@ export default function DashboardScreen() {
                 Hello, <Text style={styles.username}>{name}</Text>
             </Text>
             <View style={styles.statsContainer}>
-                <StatCard label="Assigned" value={assigned} unit="Jobs" color={COLORS.primary} icon="user-plus" />
-                <StatCard label="Overdue" value={10} unit="Jobs" color={COLORS.error} icon="alert-circle" />
+                <StatCard label="Assigned" value={assigned} unit="Jobs" color={COLORS.primary} icon="user-plus" style={{ marginRight: 4 }} />
+                <StatCard label="Overdue" value={10} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
             </View>
             <RecentActivity activity={recentActivityList} />
 
