@@ -51,7 +51,6 @@ const JobsScreen = () => {
         return false;
     }
 
-
     const filteredJobs = () => {
         let tabFilter = assignedJobs;
 
@@ -71,8 +70,6 @@ const JobsScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-
-
             <SearchBar
                 value={query}
                 onChangeText={setQuery}
@@ -84,8 +81,6 @@ const JobsScreen = () => {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
             />
-
-
             <FlatList
                 style={{ flex: 1 }}
                 data={filteredJobs()}
@@ -100,10 +95,5 @@ const JobsScreen = () => {
             />
         </SafeAreaView>
     )
-
-
 }
-
-
-
 export default JobsScreen;
