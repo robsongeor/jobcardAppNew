@@ -41,17 +41,20 @@ export default function DescriptionSection({ description, setDescription }: Desc
                 label="Order Number"
                 value={description.orderNo}
                 onChangeText={(value) => updateField("orderNo", value)}
+
             />
             <SmallTextInput
                 label="Hours"
                 value={description.hours}
                 onChangeText={(value) => updateField("hours", value)}
+                required
             />
             <SmallTextInput
                 multiline
                 label="Report"
                 value={description.report}
                 onChangeText={(value) => updateField("report", value)}
+                required
             />
         </Field>
 

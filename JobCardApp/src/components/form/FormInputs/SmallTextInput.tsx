@@ -9,6 +9,7 @@ type SmallTextInputProps = {
     onChangeText: (value: string) => void;
     multiline?: boolean;
     children?: ReactNode;
+    required?: boolean;
 };
 
 export default function SmallTextInput({
@@ -17,7 +18,15 @@ export default function SmallTextInput({
     onChangeText,
     multiline = false,
     children,
+    required,
 }: SmallTextInputProps) {
+
+    const getRequired = (value: string) => {
+        if (value.trim().length === 0 && required) {
+            return { borderColor: "#FFD600" }
+        }
+    }
+
     return (
         <View style={SmallInputStyles.inputBlock}>
             <Label
@@ -30,7 +39,7 @@ export default function SmallTextInput({
                     onChangeText={onChangeText}
                     placeholder={`Enter ${label.toLowerCase()}`}
                     placeholderTextColor="#aaa"
-                    style={[SmallInputStyles.input, multiline && SmallInputStyles.multiline]}
+                    style={[SmallInputStyles.input, multiline && SmallInputStyles.multiline, getRequired(value)]}
                 />
                 {children}
             </View>
@@ -63,5 +72,9 @@ export const SmallInputStyles = StyleSheet.create({
     flex: {
         flexDirection: "row",
 
+    },
+    required: {
+        borderColor: "#FFD600", // a nice yellow (Material yellow 700)
+        borderWidth: 1,
     }
 });

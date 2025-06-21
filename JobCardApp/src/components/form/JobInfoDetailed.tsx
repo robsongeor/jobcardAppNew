@@ -42,7 +42,7 @@ export default function JobInfoDetailed({ job, data }: JobInfoDetailedProps) {
 
             <View style={styles.descriptionBlock}>
                 <Text style={styles.machineValue}>Report</Text>
-                <Text style={styles.machineValue}>({data.description.hours || ""} hours) </Text>
+                {data.description.hours.length > 0 && <Text style={styles.machineValue}>{data.description.hours} hours</Text>}
                 <Text>{data.description.report}</Text>
 
             </View>

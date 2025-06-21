@@ -22,6 +22,7 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
     const [showError, setShowError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
+
     useEffect(() => {
         let timeout: ReturnType<typeof setTimeout>;
         if (showSuccess) {
@@ -34,6 +35,8 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
             if (timeout) clearTimeout(timeout);
         };
     }, [showSuccess]);
+
+
 
     const handleSubmit = async (data: JobFormData) => {
         setShowModal(true);
