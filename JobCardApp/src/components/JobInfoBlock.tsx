@@ -3,7 +3,8 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
 import Icon from "react-native-vector-icons/Feather";
-import COLORS from "../constants/COLORS";
+import COLORS from "../constants/colors";
+
 
 type JobInfoBlockProps = {
     job: Job;

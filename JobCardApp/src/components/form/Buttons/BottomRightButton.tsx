@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Label from "../FormInputs/Label";
-import COLORS from "../../../constants/COLORS";
 import Icon from "react-native-vector-icons/Feather";
+import COLORS from "../../../constants/colors";
 
 type bottomRightButtonProps = {
     label: string
