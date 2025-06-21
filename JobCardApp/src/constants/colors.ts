@@ -6,7 +6,8 @@ const COLORS = {
     greyedText: '#AAA',
     danger: '#D7263D',
     background: '#fff',
-    white: '#fff'
+    white: '#fff',
+    error: '#ff0000'
     // ... add more as needed
 };
 

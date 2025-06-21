@@ -44,3 +44,10 @@ export type SignInputsType = {
 }
 
 export type TabType = 'all' | 'assigned' | 'submitted';
+
+export type recentActivityType = {
+    id: number;
+    title: string;
+    date: string;
+    status: string;
+}
