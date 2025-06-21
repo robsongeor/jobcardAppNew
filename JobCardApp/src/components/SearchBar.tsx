@@ -1,7 +1,8 @@
 // src/components/SearchBar.tsx
 import React from 'react';
 import { View, TextInput, StyleSheet, TextInputProps, Button, TouchableOpacity, Text } from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 
 interface SearchBarProps extends TextInputProps {
@@ -30,6 +31,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
     return (
         <View style={styles.container}>
+            <View style={styles.searchIcon}>
+                <Icon name="search" size={20} color="#444" />
+            </View>
+
             <TextInput
                 style={styles.input}
                 value={value}
@@ -40,7 +45,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 {...rest}
             />
             {!autoSearch && <TouchableOpacity style={styles.searchButton} onPress={handleSearch} activeOpacity={0.8}>
-                <Feather name="search" size={20} color="#fff" />
+                <Text style={styles.searchText}>Search</Text>
+
             </TouchableOpacity>}
 
 
@@ -51,31 +57,46 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        padding: 8,
+        height: 48,
         backgroundColor: '#fff',
-        borderRadius: 8,
-        flexDirection: "row"
+
+        flexDirection: "row",
+        alignItems: "center",
 
     },
     input: {
-        height: 40,
+        height: "100%",
         fontSize: 16,
         flex: 9,
+
+    },
+    searchIcon: {
+        width: 40,
+        height: "100%",
+
+
+        alignItems: "center",
+        justifyContent: "center",
+
     },
     searchButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        height: "100%",
+
         backgroundColor: "#007AFF",
         alignItems: "center",
         justifyContent: "center",
-        marginLeft: 8,
         shadowColor: "#000",
         shadowOpacity: 0.12,
         shadowOffset: { width: 0, height: 1 },
         shadowRadius: 2,
         elevation: 2, // For Android shadow
+        flex: 1.4,
+
     },
+    searchText: {
+
+        color: "#fff"
+    }
 });
 
 export default SearchBar;
