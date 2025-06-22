@@ -20,8 +20,6 @@ const TabNavigator: React.FC = () => (
         tabBar={(props) => <MyTabBar {...props} />}
         screenOptions={{
             headerShown: true,             // Show/hide the header
-
-
         }}
     >
         <Tab.Screen
@@ -29,7 +27,7 @@ const TabNavigator: React.FC = () => (
             component={DashboardScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Home',
-
+                headerShown: false,
                 header: () => <AppHeader title='Home'></AppHeader>
 
             })}
@@ -47,6 +45,7 @@ const TabNavigator: React.FC = () => (
             component={AssignScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Assign',
+                headerShown: false,
                 header: () => <AppHeader title='Assign'></AppHeader>
             })}
         />
@@ -55,6 +54,7 @@ const TabNavigator: React.FC = () => (
             component={SettingsScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Settings',
+                headerShown: false,
                 header: () => <AppHeader title='Settings'></AppHeader>
             })}
         />

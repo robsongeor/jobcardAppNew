@@ -6,6 +6,7 @@ import { RecentActivityType } from "../types/types";
 import RecentActivity from "../components/RecentActivity";
 import { useEffect, useState } from "react";
 import { EventBus } from "../utils/EventBus";
+import PADDING from "../constants/padding";
 
 export default function DashboardScreen() {
     const name = getStoredUserField('name').split(" ")[0];
@@ -70,7 +71,7 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 21, // Adjust as needed for your layout
-        paddingHorizontal: 22, // Adds horizontal space
+        paddingHorizontal: PADDING.horizontal, // Adds horizontal space
         backgroundColor: COLORS.background
 
     },

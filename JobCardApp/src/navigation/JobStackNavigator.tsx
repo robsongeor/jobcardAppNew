@@ -18,6 +18,7 @@ const JobsStackNavigator = () => {
         <Stack.Navigator>
             <Stack.Screen name="JobsList" component={JobsScreen}
                 options={({ route }) => ({
+                    headerShown: false,
                     header: () => <AppHeader title='Jobs'></AppHeader>
                 })} />
             <Stack.Screen

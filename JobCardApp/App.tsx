@@ -5,6 +5,8 @@ import { AuthProvider } from './src/context/AuthContext';
 import RootNavigator from './src/navigation/RootNavigator';
 import 'react-native-gesture-handler';
 import { AssignedJobsProvider } from './src/context/AssignedJobContext';
+import { StatusBar } from 'react-native';
+import COLORS from './src/constants/colors';
 
 
 export default function App() {
@@ -13,6 +15,7 @@ export default function App() {
       <AssignedJobsProvider>
         <NavigationContainer>
           <RootNavigator />
+          <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
         </NavigationContainer>
       </AssignedJobsProvider>
     </AuthProvider>

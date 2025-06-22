@@ -17,7 +17,7 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
         <View
             style={{
                 flexDirection: 'row',
-                alignItems: 'flex-end',
+                alignItems: 'center',
                 height: 64 + insets.top,
                 paddingTop: insets.top,
                 backgroundColor: COLORS.background,

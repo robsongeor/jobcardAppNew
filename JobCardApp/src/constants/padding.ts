@@ -1,6 +1,6 @@
 // colors.ts
 const PADDING = {
-    horizontal: 20,
+    horizontal: 14,
 
     // ... add more as needed
 };
