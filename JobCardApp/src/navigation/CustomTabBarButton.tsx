@@ -3,6 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { auth } from '../firebase';
+import COLORS from '../constants/colors';
 
 const iconMap: { [key: string]: string } = {
     Dashboard: 'home',
@@ -64,7 +65,7 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
             Animated.spring(gapAnimations[i], {
                 toValue: state.index === i ? 8 : 0,
                 useNativeDriver: false,
-                speed: 2,
+                speed: 10,
                 bounciness: 3,
             }).start();
         });
@@ -172,11 +173,10 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        backgroundColor: 'white',
+        backgroundColor: COLORS.background,
         paddingVertical: 24,
         paddingHorizontal: 14,
         justifyContent: 'space-around',
-
     },
     button: {
         flexDirection: "row",

@@ -11,6 +11,7 @@ import { Text } from 'react-native';
 import JobsScreen from '../screens/JobsScreen';
 import MyTabBar from './CustomTabBarButton';
 import COLORS from '../constants/colors';
+import AppHeader from '../components/AppHeader';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,8 +19,9 @@ const TabNavigator: React.FC = () => (
     <Tab.Navigator
         tabBar={(props) => <MyTabBar {...props} />}
         screenOptions={{
-            headerShown: true,
-            // Don't set tabBarButton here!
+            headerShown: true,             // Show/hide the header
+
+
         }}
     >
         <Tab.Screen
@@ -27,13 +29,15 @@ const TabNavigator: React.FC = () => (
             component={DashboardScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Home',
+                header: () => <AppHeader title='Home'></AppHeader>
             })}
         />
         <Tab.Screen
             name="Jobs"
-            component={JobsScreen}
+            component={JobsStackNavigator}
             options={({ route }) => ({
                 tabBarLabel: 'Jobs',
+                headerShown: false,
             })}
         />
         <Tab.Screen
@@ -41,6 +45,7 @@ const TabNavigator: React.FC = () => (
             component={AssignScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Assign',
+                header: () => <AppHeader title='Assign'></AppHeader>
             })}
         />
         <Tab.Screen
@@ -48,6 +53,7 @@ const TabNavigator: React.FC = () => (
             component={SettingsScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Settings',
+                header: () => <AppHeader title='Settings'></AppHeader>
             })}
         />
 

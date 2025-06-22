@@ -3,6 +3,7 @@ import JobsScreen from '../screens/JobsScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import JobFormScreen from '../screens/JobFormScreen';
 import { Job } from '../types/types';
+import AppHeader from '../components/AppHeader';
 
 export type JobsStackParamList = {
     JobsList: undefined;
@@ -15,12 +16,20 @@ const Stack = createNativeStackNavigator<JobsStackParamList>();
 const JobsStackNavigator = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="JobsList" component={JobsScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="JobsList" component={JobsScreen}
+                options={({ route }) => ({
+                    header: () => <AppHeader title='Jobs'></AppHeader>
+                })} />
             <Stack.Screen
                 name="JobForm"
                 component={JobFormScreen}
-                options={({ route }) => ({
-                    title: `${route.params.job.fleet.toUpperCase()} - ${route.params.job.job}`,
+                options={({ route, navigation }) => ({
+
+                    header: () => <AppHeader
+                        title={`${route.params.job.fleet.toUpperCase()} - ${route.params.job.job}`}
+                        onBack={() => navigation.goBack()}
+                    />
+
                 })}
             />
 

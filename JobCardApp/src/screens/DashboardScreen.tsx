@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 21, // Adjust as needed for your layout
         paddingHorizontal: 22, // Adds horizontal space
+        backgroundColor: COLORS.background
 
     },
     statsContainer: {
