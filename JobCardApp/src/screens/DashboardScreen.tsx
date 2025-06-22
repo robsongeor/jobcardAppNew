@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView, Button } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Button, TouchableOpacity } from "react-native";
 import { addRecentActivity, getJobsByStatus, getOverdueJobs, getRecentActivity, getStoredUserField } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
@@ -11,6 +11,7 @@ import { signOut } from "@react-native-firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import { useStoredUserDashboardStats } from "../hooks/useStoredUserDashboardStats";
+import Icon from "react-native-vector-icons/Feather";
 
 export default function DashboardScreen() {
     const { name, assigned, overdue, isUserLoaded } = useStoredUserDashboardStats();
@@ -46,11 +47,16 @@ export default function DashboardScreen() {
     return (
 
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
-            <Text style={styles.greeting}>
-                Hello, <Text style={styles.username}>{name}</Text>
-            </Text>
+            <View>
+                <Text style={styles.greeting}>
+                    Hello, <Text style={styles.username}>{name}</Text>
+                </Text>
+                <TouchableOpacity onPress={handleSignOut}>
+                    <Icon name="log-out" size={24} color={COLORS.primary} />
+                </TouchableOpacity>
+            </View>
 
-            <Button title="Sign Out" onPress={handleSignOut} />
+
 
             <Text style={styles.sectionTitle}>Stats</Text>
             <View style={styles.statsContainer}>
