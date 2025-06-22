@@ -10,44 +10,11 @@ import PADDING from "../constants/padding";
 import { signOut } from "@react-native-firebase/auth";
 import { auth } from "../firebase";
 import { useAuth } from "../context/AuthContext";
+import { useStoredUserDashboardStats } from "../hooks/useStoredUserDashboardStats";
 
 export default function DashboardScreen() {
-    const [name, setName] = useState("NO_NAME");
-    const [isUserLoaded, setIsUserLoaded] = useState(false);
-
+    const { name, assigned, overdue, isUserLoaded } = useStoredUserDashboardStats();
     const [recentActivityList, setRecentActivityList] = useState<RecentActivityType[]>([]);
-
-    const [overdue, setOverdue] = useState(0)
-    const [assigned, setAssigned] = useState(0)
-
-    useEffect(() => {
-        // Try to get name from storage immediately (in case already loaded)
-        const storedName = getStoredUserField('name');
-        if (storedName && storedName !== "NO_NAME") {
-            setName(storedName.split(" ")[0]);
-            setIsUserLoaded(true);
-            setAssigned(getJobsByStatus("assigned").length)
-            setOverdue(getOverdueJobs().length);
-        }
-
-        // Set up listener for when user is stored in storage (after Firestore merge)
-        const handleUserStored = () => {
-            const updatedName = getStoredUserField('name');
-            if (updatedName && updatedName !== "NO_NAME") {
-                setName(updatedName.split(" ")[0]);
-            }
-            setAssigned(getJobsByStatus("assigned").length);  // update assigned jobs
-            setOverdue(getOverdueJobs().length);              // update overdue jobs if needed
-            setIsUserLoaded(true);
-        };
-        EventBus.on("userStored", handleUserStored);
-
-        return () => {
-            EventBus.off("userStored", handleUserStored);
-        };
-    }, []);
-
-
 
     const handleSignOut = async () => {
         try {
@@ -68,30 +35,6 @@ export default function DashboardScreen() {
         return () => {
             EventBus.off("recentActivityUpdated", listener);
         };
-    }, []);
-
-
-    useEffect(() => {
-        const updateAssigned = () => setAssigned(getJobsByStatus("assigned").length);
-        updateAssigned(); // Run once on mount
-
-        EventBus.on("jobsUpdated", updateAssigned);
-
-        // Cleanup function (must return void)
-        return () => {
-            EventBus.off("jobsUpdated", updateAssigned);
-        };
-    }, []);
-
-    useEffect(() => {
-        const updateOverdue = () => setOverdue(getOverdueJobs().length);
-        updateOverdue();
-
-        EventBus.on("jobsUpdated", updateOverdue);
-
-        return () => {
-            EventBus.off("jobsUpdated", updateOverdue)
-        }
     }, []);
 
     if (!isUserLoaded) {
