@@ -16,9 +16,9 @@ export default function DashboardScreen() {
     const [isUserLoaded, setIsUserLoaded] = useState(false);
 
     const [recentActivityList, setRecentActivityList] = useState<RecentActivityType[]>([]);
-    const [overdue, setOverdue] = useState(getOverdueJobs().length)
 
-    const [assigned, setAssigned] = useState(getJobsByStatus("assigned").length)
+    const [overdue, setOverdue] = useState(0)
+    const [assigned, setAssigned] = useState(0)
 
     useEffect(() => {
         // Try to get name from storage immediately (in case already loaded)
@@ -26,6 +26,8 @@ export default function DashboardScreen() {
         if (storedName && storedName !== "NO_NAME") {
             setName(storedName.split(" ")[0]);
             setIsUserLoaded(true);
+            setAssigned(getJobsByStatus("assigned").length)
+            setOverdue(getOverdueJobs().length);
         }
 
         // Set up listener for when user is stored in storage (after Firestore merge)
@@ -34,6 +36,8 @@ export default function DashboardScreen() {
             if (updatedName && updatedName !== "NO_NAME") {
                 setName(updatedName.split(" ")[0]);
             }
+            setAssigned(getJobsByStatus("assigned").length);  // update assigned jobs
+            setOverdue(getOverdueJobs().length);              // update overdue jobs if needed
             setIsUserLoaded(true);
         };
         EventBus.on("userStored", handleUserStored);
@@ -88,14 +92,13 @@ export default function DashboardScreen() {
         return () => {
             EventBus.off("jobsUpdated", updateOverdue)
         }
-    })
+    }, []);
 
     if (!isUserLoaded) {
         return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Loading your dashboard...</Text>
         </View>;
     }
-
 
     return (
 
