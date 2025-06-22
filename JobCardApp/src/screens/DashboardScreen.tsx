@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Button } from "react-native";
 import { addRecentActivity, getJobsByStatus, getOverdueJobs, getRecentActivity, getStoredUserField } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
@@ -7,6 +7,8 @@ import RecentActivity from "../components/RecentActivity";
 import { useEffect, useState } from "react";
 import { EventBus } from "../utils/EventBus";
 import PADDING from "../constants/padding";
+import { signOut } from "@react-native-firebase/auth";
+import { auth } from "../firebase";
 
 export default function DashboardScreen() {
     const name = getStoredUserField('name').split(" ")[0];
@@ -14,6 +16,16 @@ export default function DashboardScreen() {
     const [overdue, setOverdue] = useState(getOverdueJobs().length)
 
     const [assigned, setAssigned] = useState(getJobsByStatus("assigned").length)
+
+    const handleSignOut = async () => {
+        try {
+            await auth().signOut();
+            // Optionally: navigate to login screen or show a message
+        } catch (e) {
+            // Handle errors (show toast, alert, etc)
+            console.log('Sign out error:', e);
+        }
+    };
 
     useEffect(() => {
         setRecentActivityList(getRecentActivity());
@@ -56,10 +68,10 @@ export default function DashboardScreen() {
                 Hello, <Text style={styles.username}>{name}</Text>
             </Text>
 
+            <Button title="Sign Out" onPress={handleSignOut} />
 
             <Text style={styles.sectionTitle}>Stats</Text>
             <View style={styles.statsContainer}>
-
                 <StatCard label="Assigned" value={assigned} unit="Jobs" color={COLORS.primary} icon="user-plus" style={{ marginRight: 4 }} />
                 <StatCard label="Overdue" value={overdue} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
             </View>
