@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         fontSize: 18,
         color: "#222",
-        marginBottom: 8,
+        marginBottom: 12,
     },
     activityRow: {
         flexDirection: "row",

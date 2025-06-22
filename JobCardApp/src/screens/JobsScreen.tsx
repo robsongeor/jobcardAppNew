@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView } from 'react-native';
+import { FlatList, SafeAreaView, Text, View } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { useNavigation } from '@react-navigation/native';
@@ -71,10 +71,7 @@ const JobsScreen = () => {
                 autoSearch={true}
             />
 
-            <JobsFilters
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-            />
+
             <FlatList
                 style={{ flex: 1 }}
                 data={filteredJobs()}
@@ -84,8 +81,15 @@ const JobsScreen = () => {
                         job={item}
                         onPress={() => handleOpen(item)}
                     />
+                )
+                }
 
-                )}
+                ListHeaderComponent={
+                    <JobsFilters
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
+                }
             />
         </SafeAreaView>
     )

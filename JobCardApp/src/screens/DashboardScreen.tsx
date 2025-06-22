@@ -54,7 +54,11 @@ export default function DashboardScreen() {
             <Text style={styles.greeting}>
                 Hello, <Text style={styles.username}>{name}</Text>
             </Text>
+
+
+            <Text style={styles.sectionTitle}>Stats</Text>
             <View style={styles.statsContainer}>
+
                 <StatCard label="Assigned" value={assigned} unit="Jobs" color={COLORS.primary} icon="user-plus" style={{ marginRight: 4 }} />
                 <StatCard label="Overdue" value={overdue} unit="Jobs" color={COLORS.error} icon="alert-circle" style={{ marginLeft: 4 }} />
             </View>
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     statsContainer: {
         flexDirection: "row",
         flexWrap: "wrap",
-        marginTop: 21,
+        marginTop: 12,
 
     },
     greeting: {
@@ -91,5 +95,11 @@ const styles = StyleSheet.create({
         color: "#868686",     // Soft gray (matches your mockup)
         fontWeight: "400",
         marginBottom: 24,
+    },
+    sectionTitle: {
+        fontWeight: "700",
+        fontSize: 18,
+        color: "#222",
+        marginTop: 24,
     },
 });

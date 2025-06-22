@@ -29,7 +29,9 @@ const TabNavigator: React.FC = () => (
             component={DashboardScreen}
             options={({ route }) => ({
                 tabBarLabel: 'Home',
+
                 header: () => <AppHeader title='Home'></AppHeader>
+
             })}
         />
         <Tab.Screen

@@ -35,36 +35,37 @@ export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        paddingHorizontal: PADDING.horizontal,
-        paddingVertical: 12,
-        paddingBottom: 20,
 
-        gap: 14,
+        alignItems: "center",
+
+        marginHorizontal: PADDING.horizontal,
+        marginVertical: 0,
+        marginBottom: 20,
+
 
     },
     button: {
-        flex: 1,
+
         justifyContent: "center",
         alignItems: "center",
 
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: '#007AFF',
-        marginHorizontal: 4,
+        borderColor: 'transparent',
+        paddingHorizontal: 14,
         paddingVertical: 6,
     },
     buttonOn: {
         backgroundColor: '#007AFF',
+        borderColor: '#007AFF',
     },
     buttonText: {
-        fontSize: 10,
+        fontSize: 13,
         color: "#007AFF",
         fontWeight: "bold",
     },
     buttonTextOn: {
-        fontSize: 10,
+
         color: "#fff",
         fontWeight: "bold",
     }

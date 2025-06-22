@@ -28,7 +28,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
     return (
         <View style={styles.container}>
-            <View style={styles.icon}>
+            <View style={[styles.icon, { paddingLeft: 14 }]}>
                 <Icon name="search" size={20} color="#444" />
             </View>
 
@@ -44,7 +44,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             />
 
             {value.length > 0 && (
-                <TouchableOpacity style={styles.icon} onPress={() => onChangeText("")}>
+                <TouchableOpacity style={[styles.icon, { paddingRight: 14 }]} onPress={() => onChangeText("")}>
                     <Icon name="x" size={20} color="#444" />
                 </TouchableOpacity>
             )}
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
 
         marginHorizontal: PADDING.horizontal,
-        marginVertical: 12,
+        marginVertical: PADDING.horizontal,
         borderRadius: 48,
     },
     input: {
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 14,
+
+
     },
 });
 
