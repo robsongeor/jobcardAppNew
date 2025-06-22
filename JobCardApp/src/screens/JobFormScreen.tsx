@@ -9,6 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import SignSection from '../components/form/SignSection';
 import SubmitSection from '../components/form/SubmitSection';
 import JobInfo from '../components/form/JobInfo';
+import FormTabBar from '../components/FormTabBar';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -22,7 +23,7 @@ const JobFormScreen = () => {
 
     if (!form) return null; // or a loading state
     return (
-        <Tab.Navigator>
+        <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
             <Tab.Screen name="Info">
                 {() => (
                     <>
