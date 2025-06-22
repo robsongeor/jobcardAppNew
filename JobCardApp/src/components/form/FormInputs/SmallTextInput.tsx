@@ -1,5 +1,5 @@
 import React, { Children, ReactNode } from "react";
-import { TextInput, View, Text, StyleSheet } from "react-native";
+import { TextInput, View, Text, StyleSheet, ViewStyle, StyleProp } from "react-native";
 import Label from "./Label";
 import DateInput from "./DateInput";
 import COLORS from "../../../constants/colors";
@@ -11,6 +11,7 @@ type SmallTextInputProps = {
     multiline?: boolean;
     children?: ReactNode;
     required?: boolean;
+    style?: StyleProp<ViewStyle>;
 };
 
 export default function SmallTextInput({
@@ -20,6 +21,7 @@ export default function SmallTextInput({
     multiline = false,
     children,
     required,
+    style,
 }: SmallTextInputProps) {
 
     const [isFocused, setIsFocused] = React.useState(false);
@@ -32,7 +34,7 @@ export default function SmallTextInput({
     }
 
     return (
-        <View style={SmallInputStyles.inputBlock}>
+        <View style={[SmallInputStyles.inputBlock, style]}>
             <Label
                 label={label}
             />

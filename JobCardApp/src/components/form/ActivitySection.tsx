@@ -1,24 +1,18 @@
 import { useState } from "react";
 import {
-    Button,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
+    Platform,
     View,
     KeyboardAvoidingView,
-    Platform,
-    ScrollView,
+    StyleSheet,
 } from "react-native";
-import Field from "./FormInputs/Field";
-import DateInput from "./FormInputs/DateInput";
 import uuid from "react-native-uuid";
 import { JobActivityType } from "../../types/types";
 import SmallTextInput from "./FormInputs/SmallTextInput";
-import Label from "./FormInputs/Label";
 import SmallDateInput from "./FormInputs/SmallDateInput";
 import ListInputs from "./FormInputs/ListInputs";
-import EditTable, { Row, RowCell, TableHeader } from "./FormInputs/EditTable";
+import EditTable, { Row, TableHeader } from "./FormInputs/EditTable";
 import { formatDate } from "../helpers/formatters";
+import Field from "./FormInputs/Field";
 
 type ActivitySectionProps = {
     activity: JobActivityType[];
@@ -42,7 +36,6 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
         { value: activity.hours, flex: 1, textAlign: "right" },
         { value: activity.kms, flex: 1, textAlign: "right" }
     ]);
-
 
     const addActivity = () => {
         const index = isEdit === null ? activity.length : isEdit;
@@ -74,7 +67,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
         updated.splice(index, 1);
         setActivity(updated);
 
-        setIsEdit(null)
+        setIsEdit(null);
         setDate("");
         setHours("");
         setKms("");
@@ -82,11 +75,11 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
 
     const fillFieldsOnEdit = (index: number) => {
         if (isEdit === index) {
-            setIsEdit(null)
+            setIsEdit(null);
             setDate("");
             setHours("");
             setKms("");
-            return
+            return;
         }
 
         const { date, hours, kms } = activity[index];
@@ -100,17 +93,17 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
         <KeyboardAvoidingView
             style={{ flex: 1 }}
             behavior={Platform.OS === "ios" ? "padding" : undefined}
-            keyboardVerticalOffset={80}
+            keyboardVerticalOffset={100}
         >
-            <Field scrollView={false}>
-                <EditTable
-                    headers={headers}
-                    rows={rows}
-                    deleteRow={deleteActivity}
-                    fillFieldsOnEdit={fillFieldsOnEdit}
-                    isEdit={isEdit}
-                />
-            </Field>
+
+            <EditTable
+                headers={headers}
+                rows={rows}
+                deleteRow={deleteActivity}
+                fillFieldsOnEdit={fillFieldsOnEdit}
+                isEdit={isEdit}
+            />
+
 
             <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity} deleteFunction={deleteActivity}>
                 <SmallDateInput
@@ -118,90 +111,29 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                     date={date}
                     setDate={setDate}
                 />
-                <SmallTextInput
-                    value={hours}
-                    onChangeText={setHours}
-                    label="Hours"
-                />
-                <SmallTextInput
-                    value={kms}
-                    onChangeText={setKms}
-                    label="KMs"
-                />
+                <View style={styles.twoColumn}>
+                    <SmallTextInput
+                        style={{ flex: 1, }}
+                        value={hours}
+                        onChangeText={setHours}
+                        label="Hours"
+                    />
+                    <SmallTextInput
+                        style={{ flex: 1, }}
+                        value={kms}
+                        onChangeText={setKms}
+                        label="KMs"
+                    />
+                </View>
             </ListInputs>
-
-            {/* Fixed input area at the bottom */}
-
-
-        </KeyboardAvoidingView >
+        </KeyboardAvoidingView>
     );
 }
 
 const styles = StyleSheet.create({
-    tableHeader: {
-        flexDirection: "row",
-        backgroundColor: "#f2f2f2",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        paddingVertical: 6,
-        paddingHorizontal: 4,
-        marginBottom: 2,
-    },
-    headerCell: {
-        flex: 1,
-        fontWeight: "bold",
-        fontSize: 14,
-        color: "#222",
-        textAlign: "left",
-    },
-    tableRow: {
-        flexDirection: "row",
-        backgroundColor: "#fff",
-        borderBottomWidth: 1,
-        borderColor: "#ececec",
-        alignItems: "center",
-        paddingVertical: 8,
-        paddingHorizontal: 4,
-    },
-    editingRow: {
-        backgroundColor: "#e3f1ff",
-    },
-    rowCell: {
-        flex: 1,
-        fontSize: 13,
-        color: "#444",
-        textAlign: "left",
-    },
-    iconButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: "center",
-        justifyContent: "center",
-        marginRight: 6,
-    },
-    editButton: {
-        backgroundColor: "#007AFF",
-    },
-    deleteButton: {
-        backgroundColor: "#FF3B30",
-    },
-    iconText: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    emptyState: {
-        padding: 32,
-        alignItems: "center",
-    },
-    emptyText: {
-        color: "#888",
-        fontSize: 15,
-        fontStyle: "italic",
-    },
 
-    inputRowVertical: {
-        marginBottom: 12,
-    },
-});
+    twoColumn: {
+        flexDirection: "row",
+        gap: 16,
+    }
+})
