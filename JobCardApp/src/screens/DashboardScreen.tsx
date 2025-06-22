@@ -9,13 +9,41 @@ import { EventBus } from "../utils/EventBus";
 import PADDING from "../constants/padding";
 import { signOut } from "@react-native-firebase/auth";
 import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 
 export default function DashboardScreen() {
-    const name = getStoredUserField('name').split(" ")[0];
+    const [name, setName] = useState("NO_NAME");
+    const [isUserLoaded, setIsUserLoaded] = useState(false);
+
     const [recentActivityList, setRecentActivityList] = useState<RecentActivityType[]>([]);
     const [overdue, setOverdue] = useState(getOverdueJobs().length)
 
     const [assigned, setAssigned] = useState(getJobsByStatus("assigned").length)
+
+    useEffect(() => {
+        // Try to get name from storage immediately (in case already loaded)
+        const storedName = getStoredUserField('name');
+        if (storedName && storedName !== "NO_NAME") {
+            setName(storedName.split(" ")[0]);
+            setIsUserLoaded(true);
+        }
+
+        // Set up listener for when user is stored in storage (after Firestore merge)
+        const handleUserStored = () => {
+            const updatedName = getStoredUserField('name');
+            if (updatedName && updatedName !== "NO_NAME") {
+                setName(updatedName.split(" ")[0]);
+            }
+            setIsUserLoaded(true);
+        };
+        EventBus.on("userStored", handleUserStored);
+
+        return () => {
+            EventBus.off("userStored", handleUserStored);
+        };
+    }, []);
+
+
 
     const handleSignOut = async () => {
         try {
@@ -62,7 +90,15 @@ export default function DashboardScreen() {
         }
     })
 
+    if (!isUserLoaded) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Loading your dashboard...</Text>
+        </View>;
+    }
+
+
     return (
+
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
             <Text style={styles.greeting}>
                 Hello, <Text style={styles.username}>{name}</Text>

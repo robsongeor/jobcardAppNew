@@ -9,6 +9,7 @@ import React, {
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { storage } from '../storage/storage';
 import { getUserData } from '../firebase';
+import { EventBus } from '../utils/EventBus';
 
 type User = FirebaseAuthTypes.User | null;
 
@@ -48,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     ...firestoreUser,       // includes name, role, etc.
                 };
                 storage.set('user', JSON.stringify(mergedUser));
+                EventBus.emit("userStored");
 
             } else {
                 storage.delete('user');
