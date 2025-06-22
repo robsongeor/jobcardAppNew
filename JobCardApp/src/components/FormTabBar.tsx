@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
-import PADDING from '../constants/padding';
 import COLORS from '../constants/colors';
 
 function getTabOffsets(widths: number[]) {
@@ -21,17 +20,22 @@ const FormTabBar: React.FC<MaterialTopTabBarProps> = ({
     position,
 }) => {
     const tabWidths = useRef<number[]>([]);
-    const [layoutCount, setLayoutCount] = React.useState(0);
+    const [measuredRoutes, setMeasuredRoutes] = useState<Set<number>>(new Set());
 
-    const offsets = getTabOffsets(tabWidths.current);
+    // Reset measurement if tab count changes
+    useEffect(() => {
+        tabWidths.current = new Array(state.routes.length).fill(0);
+        setMeasuredRoutes(new Set());
+    }, [state.routes.length]);
+
     const allWidthsMeasured =
+        measuredRoutes.size === state.routes.length &&
         tabWidths.current.length === state.routes.length &&
         tabWidths.current.every(w => w > 0);
 
-    // 1. Calculate max tab width
+    const offsets = getTabOffsets(tabWidths.current);
     const maxTabWidth = Math.max(...tabWidths.current, 1);
 
-    // 2. Calculate pill X
     const pillTranslateX = allWidthsMeasured
         ? position.interpolate({
             inputRange: state.routes.map((_, i) => i),
@@ -39,13 +43,23 @@ const FormTabBar: React.FC<MaterialTopTabBarProps> = ({
         })
         : 0;
 
-    // 3. Animate scaleX instead of width
     const pillScale = allWidthsMeasured
         ? position.interpolate({
             inputRange: state.routes.map((_, i) => i),
             outputRange: tabWidths.current.map(w => w / maxTabWidth),
         })
         : 1;
+
+    const onTabLayout = (index: number, width: number) => {
+        if (tabWidths.current[index] !== width) {
+            tabWidths.current[index] = width;
+            setMeasuredRoutes(prev => {
+                const updated = new Set(prev);
+                updated.add(index);
+                return updated;
+            });
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -91,13 +105,7 @@ const FormTabBar: React.FC<MaterialTopTabBarProps> = ({
                         key={route.key}
                         onPress={onPress}
                         style={styles.tab}
-                        onLayout={event => {
-                            const width = event.nativeEvent.layout.width;
-                            if (tabWidths.current[index] !== width) {
-                                tabWidths.current[index] = width;
-                                setLayoutCount(c => c + 1);
-                            }
-                        }}
+                        onLayout={event => onTabLayout(index, event.nativeEvent.layout.width)}
                         activeOpacity={0.7}
                     >
                         {typeof label === 'function'
@@ -124,8 +132,9 @@ const styles = StyleSheet.create({
         position: 'relative',
         backgroundColor: COLORS.white,
         borderRadius: 20,
-
-        marginHorizontal: 24, // <--- Add this line
+        marginHorizontal: 24,
+        borderWidth: 2,
+        borderColor: COLORS.white,
     },
     pillContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -134,11 +143,11 @@ const styles = StyleSheet.create({
         zIndex: 0,
     },
     pill: {
-        height: '80%',
-        backgroundColor: '#007bff',
+        height: '100%',
+        backgroundColor: COLORS.primary,
         borderRadius: 999,
         position: 'absolute',
-        top: '10%',
+        top: '0%',
         left: 0,
     },
     tab: {
