@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
         zIndex: 0,
     },
     pill: {
-        height: '90%',
+        height: '80%',
         backgroundColor: '#007bff',
         borderRadius: 999,
         position: 'absolute',
-        top: '5%',
+        top: '10%',
         left: 0,
     },
     tab: {
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
     },
     label: {
         color: '#555',
-        fontWeight: 'bold',
+        fontWeight: '700',
     },
     labelFocused: {
         color: '#fff',
-        fontWeight: 'bold',
+
     },
 });
 

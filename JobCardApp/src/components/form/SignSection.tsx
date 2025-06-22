@@ -6,6 +6,7 @@ import SmallTextInput from "./FormInputs/SmallTextInput";
 import Label from "./FormInputs/Label";
 import { SignInputsType } from "../../types/types";
 import SignatureModal from "./SignatureModal";
+import COLORS from "../../constants/colors";
 
 type SignSectionProps = {
     signed: SignInputsType;
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         overflow: "hidden",
         marginBottom: 16,
+        backgroundColor: COLORS.white,
     },
     dateInputGroup: {
         marginTop: 12,

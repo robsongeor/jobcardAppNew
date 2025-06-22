@@ -2,6 +2,7 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../../types/types";
 import { getStoredUserField } from "../../storage/storage";
+import PADDING from "../../constants/padding";
 
 
 type JobInfoBlockProps = {
@@ -51,8 +52,8 @@ export default function JobInfo({ job, onPress, isSelected }: JobInfoBlockProps)
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fefefe",
-        padding: 14,
+
+        padding: PADDING.horizontal,
 
     },
     topRow: {

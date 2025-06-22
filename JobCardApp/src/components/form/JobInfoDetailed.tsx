@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Job } from "../../types/types";
 import { getStoredUserField } from "../../storage/storage";
 import { JobFormData } from "../../hooks/useJobFormData";
+import COLORS from "../../constants/colors";
+import PADDING from "../../constants/padding";
 
 
 type JobInfoDetailedProps = {
@@ -53,8 +55,7 @@ export default function JobInfoDetailed({ job, data }: JobInfoDetailedProps) {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fefefe",
-        padding: 14,
+        padding: PADDING.horizontal,
 
     },
     topRow: {

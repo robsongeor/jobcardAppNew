@@ -3,6 +3,7 @@ import { SmallInputStyles } from "./SmallTextInput";
 import Label from "./Label";
 import { StyleSheet, TextInput, View } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
+import COLORS from "../../../constants/colors";
 
 
 type SmallCheckBoxInputProps = {
@@ -65,5 +66,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ddd",
         borderRadius: 8,
+        backgroundColor: COLORS.white
     }
 });

@@ -105,7 +105,7 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#fff",
+
         flex: 1,
         position: "relative"
     },
