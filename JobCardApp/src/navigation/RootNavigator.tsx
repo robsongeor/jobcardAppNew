@@ -6,7 +6,6 @@ import { useAuth } from '../context/AuthContext';
 // Placeholder screen imports—create these next:
 import LoginScreen from '../screens/auth/LoginScreen';
 import SignUpScreen from '../screens/auth/SignUpScreen';
-import DashboardScreen from '../screens/DashboardScreen';
 import TabNavigator from './TabNavigator';
 
 const Stack = createNativeStackNavigator();
