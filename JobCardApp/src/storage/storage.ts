@@ -113,7 +113,7 @@ export function getJobsByStatus(status: string): Job[] {
 }
 
 export function getOverdueJobs(): Job[] {
-    const assigned = getJobsByStatus('assigned')
+    const assigned = getJobsByStatus('overdue')
 
     const overdue = assigned.filter((job: Job) => {
 

@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
     },
     label: {
         color: '#555',
-        fontWeight: '700',
+        fontWeight: '500',
     },
     labelFocused: {
         color: '#fff',
-
+        fontWeight: '500',
     },
 });
 
