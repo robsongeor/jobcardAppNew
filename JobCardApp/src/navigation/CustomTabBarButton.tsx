@@ -59,7 +59,7 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
                 toValue: state.index === i ? 1 : 0,
                 useNativeDriver: false,
                 speed: 10, // lower for slower, more visible
-                bounciness: 12, // increase for more bounce
+                bounciness: 4, // increase for more bounce
             }).start();
         });
     }, [state.index]);
@@ -70,7 +70,7 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
             Animated.spring(widthAnimations[i], {
                 toValue: targetWidth,
                 speed: 10,
-                bounciness: 9,
+                bounciness: 3,
                 useNativeDriver: false, // width can't use native driver
             }).start();
         });

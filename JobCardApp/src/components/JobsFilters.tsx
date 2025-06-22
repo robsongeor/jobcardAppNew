@@ -35,20 +35,14 @@ export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-
         alignItems: "center",
-
         marginHorizontal: PADDING.horizontal,
         marginVertical: 0,
-        marginBottom: 20,
-
-
+        marginBottom: 20.
     },
     button: {
-
         justifyContent: "center",
         alignItems: "center",
-
         borderRadius: 20,
         borderWidth: 2,
         borderColor: 'transparent',
@@ -65,7 +59,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     buttonTextOn: {
-
         color: "#fff",
         fontWeight: "bold",
     }

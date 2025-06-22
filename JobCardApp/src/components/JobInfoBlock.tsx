@@ -53,8 +53,6 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
             onPress={onPress}
             style={[isSelected && styles.selected]}>
 
-
-
             <View style={styles.card}>
                 <View style={styles.topRow}>
                     <View style={styles.fleetCustomerRow}>

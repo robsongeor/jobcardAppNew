@@ -6,8 +6,7 @@ type StatCardProps = {
     label: string;
     value: string | number;
     unit?: string;
-    // icon?: ReactNode // if you want to add icons later
-    color?: string;     // for customizing highlight color
+    color?: string;
     icon?: string;
     style?: StyleProp<ViewStyle>;
 };
@@ -32,21 +31,17 @@ export function StatCard({ label, value, unit, color = "#FFE066", icon, style }:
 
 const styles = StyleSheet.create({
     container: {
-        width: "50%", // adjust as needed
-
+        width: "50%",
     },
     card: {
-
         marginBottom: 8,
         height: 120,
         borderRadius: 16,
         backgroundColor: "#fff",
         padding: 20,
-
         flexDirection: "column",
         justifyContent: "space-between",
         boxSizing: "border-box"
-
     },
     label: {
         color: "#555",
@@ -55,9 +50,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     value: {
-
         fontSize: 26,
-
         fontWeight: "800",
     },
     unit: {

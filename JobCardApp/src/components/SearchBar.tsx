@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-
-
         marginHorizontal: PADDING.horizontal,
         marginVertical: PADDING.horizontal,
         borderRadius: 48,
@@ -76,8 +74,6 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-
-
     },
 });
 
