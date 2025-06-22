@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import PADDING from '../constants/padding';
 
 interface SearchBarProps extends TextInputProps {
     value: string;
@@ -57,8 +58,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        borderColor: "#ccc"
+
+
+        marginHorizontal: PADDING.horizontal,
+        marginVertical: 12,
+        borderRadius: 48,
     },
     input: {
         height: '100%',
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingLeft: 14,
     },
 });
 

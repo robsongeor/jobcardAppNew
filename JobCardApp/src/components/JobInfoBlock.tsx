@@ -4,6 +4,7 @@ import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
 import Icon from "react-native-vector-icons/Feather";
 import COLORS from "../constants/colors";
+import PADDING from "../constants/padding";
 
 
 type JobInfoBlockProps = {
@@ -98,11 +99,11 @@ export default function JobInfoBlock({ job, onPress, isSelected }: JobInfoBlockP
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fefefe",
+        backgroundColor: COLORS.white,
         padding: 14,
-
-        borderColor: "#ccc",
-        borderBottomWidth: 1,
+        marginHorizontal: PADDING.horizontal,
+        marginBottom: 14,
+        borderRadius: 10,
 
     },
     topRow: {
@@ -168,8 +169,8 @@ const styles = StyleSheet.create({
     },
     checkCircleContainer: {
         position: 'absolute',
-        right: 10,
-        bottom: 10,
+        right: 30,
+        bottom: 24,
         padding: 2,
 
 

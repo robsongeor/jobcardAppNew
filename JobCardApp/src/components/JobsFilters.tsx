@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TabType } from "../types/types";
+import PADDING from "../constants/padding";
 
 type JobsFiltersType = {
     activeTab: string;
@@ -34,15 +35,14 @@ export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         alignItems: "center",
-        paddingHorizontal: 14,
-        paddingVertical: 9,
-        backgroundColor: "#fff",
+        paddingHorizontal: PADDING.horizontal,
+        paddingVertical: 12,
+        paddingBottom: 20,
+
         gap: 14,
 
-        borderColor: "#ccc",
-        borderBottomWidth: 1,
     },
     button: {
         flex: 1,

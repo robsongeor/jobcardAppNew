@@ -9,6 +9,7 @@ import SearchBar from '../components/SearchBar';
 import { Job, TabType } from '../types/types';
 import { getStoredUserField } from '../storage/storage';
 import JobsFilters from '../components/JobsFilters';
+import COLORS from '../constants/colors';
 
 const JobsScreen = () => {
 
@@ -62,7 +63,7 @@ const JobsScreen = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
             <SearchBar
                 value={query}
                 onChangeText={setQuery}
