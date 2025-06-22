@@ -41,7 +41,7 @@ export default function DescriptionSection({ description, setDescription }: Desc
                 label="Order Number"
                 value={description.orderNo}
                 onChangeText={(value) => updateField("orderNo", value)}
-
+                keyboardType="numeric"
             />
             <SmallTextInput
                 label="Hours"

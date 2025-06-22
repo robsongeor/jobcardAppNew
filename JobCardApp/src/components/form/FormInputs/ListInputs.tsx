@@ -3,6 +3,7 @@ import Label from "./Label"
 import SmallTextInput from "./SmallTextInput"
 import DateInput from "./DateInput"
 import { ReactNode } from "react"
+import COLORS from "../../../constants/colors"
 
 type ListInputsProps = {
     isEdit: number | null,
@@ -39,10 +40,7 @@ export default function ListInputs({ label, children, isEdit, addFunction, delet
 const styles = StyleSheet.create({
     bottomInputs: {
         padding: 16,
-        backgroundColor: "#fff",
-        borderTopWidth: 1,
-        borderColor: "#eee",
-
+        backgroundColor: COLORS.background,
     },
     buttonContainer: {
         flexDirection: "row",
@@ -54,12 +52,12 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
 
         borderRadius: 8,
-        backgroundColor: "#007AFF",
+        backgroundColor: COLORS.primary,
         alignItems: "center",
         justifyContent: "center",
     },
     buttonRed: {
-        backgroundColor: "red",
+        backgroundColor: COLORS.error,
     },
     buttonText: {
         color: "#fff",

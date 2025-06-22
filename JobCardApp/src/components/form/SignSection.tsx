@@ -26,7 +26,8 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
 
     return (
         <Field>
-            <Text style={styles.label}>Customer Signature</Text>
+
+            <Label label="Customer Signature" />
 
             <TouchableOpacity onPress={() => setShowSignatureModal(true)}>
                 <View style={styles.signatureBox}>
@@ -43,6 +44,7 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
             <Modal
                 visible={showSignatureModal}
                 animationType="slide"
+                transparent={false}
                 onRequestClose={() => setShowSignatureModal(false)}>
 
                 <SignatureModal
@@ -59,7 +61,7 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
             />
 
             <View style={styles.dateInputGroup}>
-                <Label label="date" />
+                <Label label="Date" />
                 <DateInput date={signed.clientDate} setDate={(value) => updateField("clientDate", value)} />
             </View>
         </Field>
@@ -67,16 +69,11 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
 }
 
 const styles = StyleSheet.create({
-    label: {
-        fontSize: 16,
-        fontWeight: "600",
-        marginBottom: 6,
-        marginLeft: 4,
-    },
+
     signatureBox: {
         height: 250,
         borderWidth: 1,
-        borderColor: "#ccc",
+        borderColor: "transparent",
         borderRadius: 12,
         overflow: "hidden",
         marginBottom: 16,

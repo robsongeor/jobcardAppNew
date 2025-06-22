@@ -12,6 +12,7 @@ type SmallTextInputProps = {
     children?: ReactNode;
     required?: boolean;
     style?: StyleProp<ViewStyle>;
+    keyboardType?: "default" | "email-address" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad"; // etc
 };
 
 export default function SmallTextInput({
@@ -22,6 +23,7 @@ export default function SmallTextInput({
     children,
     required,
     style,
+    keyboardType,
 }: SmallTextInputProps) {
 
     const [isFocused, setIsFocused] = React.useState(false);
@@ -43,6 +45,7 @@ export default function SmallTextInput({
                     multiline={multiline}
                     value={value}
                     onChangeText={onChangeText}
+                    keyboardType={keyboardType}  // <-- pass the prop
                     placeholder={`Enter ${label.toLowerCase()}`}
                     placeholderTextColor="#aaa"
                     style={[
@@ -85,7 +88,8 @@ export const SmallInputStyles = StyleSheet.create({
     },
     flex: {
         flexDirection: "row",
-
+        alignItems: "stretch",
+        gap: 14,
     },
     required: {
         borderColor: "#FFD600", // a nice yellow (Material yellow 700)

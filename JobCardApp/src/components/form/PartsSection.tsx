@@ -70,15 +70,15 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
 
     return (
         <View style={{ flex: 1 }}>
-            <Field scrollView={false}>
-                <EditTable
-                    headers={headers}
-                    rows={rows}
-                    deleteRow={deletePart}
-                    fillFieldsOnEdit={fillFieldsOnEdit}
-                    isEdit={isEdit}
-                />
-            </Field>
+
+            <EditTable
+                headers={headers}
+                rows={rows}
+                deleteRow={deletePart}
+                fillFieldsOnEdit={fillFieldsOnEdit}
+                isEdit={isEdit}
+            />
+
             <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart} deleteFunction={deletePart}>
                 {/* <SmallTextInput
                     value={quantity}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import COLORS from '../../../constants/colors';
 
 type DateInputProps = {
   date: string;
@@ -65,17 +66,20 @@ export default function DateInput({ date, setDate, style }: DateInputProps) {
 const styles = StyleSheet.create({
 
   input: {
-    fontSize: 13,
-    color: "#222",
-    backgroundColor: "#fefefe",
-    borderWidth: 1,
-    borderColor: "#ddd",
+    fontSize: 15,
+    color: COLORS.black,
+    backgroundColor: COLORS.white,
+    borderWidth: 1.5,
+    borderColor: "transparent",
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: 10,
+
+    margin: 0,
   },
   placeHolderColor: {
-    color: "#aaa"
+    color: "#aaa",
+    paddingHorizontal: 12,
   }
 
 });

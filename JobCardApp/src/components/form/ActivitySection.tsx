@@ -20,7 +20,7 @@ type ActivitySectionProps = {
 };
 
 export default function ActivitySection({ activity, setActivity }: ActivitySectionProps) {
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(new Date().toISOString());
     const [hours, setHours] = useState("");
     const [kms, setKms] = useState("");
     const [isEdit, setIsEdit] = useState<number | null>(null);
@@ -57,7 +57,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
 
         setActivity(updated);
         setIsEdit(null);
-        setDate("");
+        setDate(new Date().toISOString());
         setHours("");
         setKms("");
     };
@@ -68,7 +68,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
         setActivity(updated);
 
         setIsEdit(null);
-        setDate("");
+        setDate(new Date().toISOString());
         setHours("");
         setKms("");
     };
@@ -76,14 +76,14 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const fillFieldsOnEdit = (index: number) => {
         if (isEdit === index) {
             setIsEdit(null);
-            setDate("");
+            setDate(new Date().toISOString());
             setHours("");
             setKms("");
             return;
         }
 
         const { date, hours, kms } = activity[index];
-        setDate(date);
+        setDate(new Date(date).toISOString());
         setHours(hours);
         setKms(kms);
         setIsEdit(index);
@@ -117,12 +117,14 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
                         value={hours}
                         onChangeText={setHours}
                         label="Hours"
+                        keyboardType="numeric"
                     />
                     <SmallTextInput
                         style={{ flex: 1, }}
                         value={kms}
                         onChangeText={setKms}
-                        label="KMs"
+                        label="Mileage (km)"
+                        keyboardType="numeric"
                     />
                 </View>
             </ListInputs>

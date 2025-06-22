@@ -1,5 +1,7 @@
 import { View, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
 import SmallTextInput from "./FormInputs/SmallTextInput";
+import COLORS from "../../constants/colors";
+import Icon from "react-native-vector-icons/Feather";
 
 type QuantityInputType = {
     quantity: string;
@@ -29,16 +31,17 @@ export default function QuantityInput({ quantity, setQuantity }: QuantityInputTy
                     value={quantity}
                     onChangeText={setQuantity}
                     label="Quantity"
+                    keyboardType="numeric"
                 >
-                    <TouchableOpacity style={styles.button} onPress={() => incrementValue(1)}>
-                        <Text> Up </Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity style={styles.button} onPress={() => incrementValue(-1)}>
-                        <Text> Down </Text>
+                        <Icon name="minus" size={24} color={COLORS.white} />
                     </TouchableOpacity>
 
+                    <TouchableOpacity style={styles.button} onPress={() => incrementValue(1)}>
+                        <Icon name="plus" size={24} color={COLORS.white} />
+                    </TouchableOpacity>
                 </SmallTextInput>
+
             </View>
         </View>
 
@@ -52,23 +55,21 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        marginRight: 8,
+
     },
     button: {
-        width: 50,            // fixed width
-        height: 36,           // fixed height (makes a square)
-        backgroundColor: "#f0f0f0", // subtle background
-        borderRadius: 6,      // slightly rounded corners
+        paddingVertical: 7,
+        paddingHorizontal: 7,
+        backgroundColor: COLORS.primary,
+        borderRadius: 60,      // slightly rounded corners
         justifyContent: "center",
         alignItems: "center",
-        marginLeft: 4,        // space between buttons/input
-        borderWidth: 1,
-        borderColor: "#d0d0d0",
+        // space between buttons/input
+        borderWidth: 1.5,
+
+        borderColor: "transparent",
+
     },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#333",
-    },
+
 
 });
