@@ -47,11 +47,11 @@ export default function DashboardScreen() {
     return (
 
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
-            <View>
-                <Text style={styles.greeting}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                <Text style={[styles.greeting, { flexDirection: "row", alignItems: "center" }]}>
                     Hello, <Text style={styles.username}>{name}</Text>
                 </Text>
-                <TouchableOpacity onPress={handleSignOut}>
+                <TouchableOpacity style={{ height: "100%", flexDirection: "row", alignItems: "center" }} onPress={handleSignOut}>
                     <Icon name="log-out" size={24} color={COLORS.primary} />
                 </TouchableOpacity>
             </View>
