@@ -8,7 +8,8 @@ const COLORS = {
     background: '#f5f5f5',
     white: '#fff',
     error: '#ff0000',
-    black: '#666'
+    black: '#666',
+    textPrimary: '#007AFF'
     // ... add more as needed
 };
 

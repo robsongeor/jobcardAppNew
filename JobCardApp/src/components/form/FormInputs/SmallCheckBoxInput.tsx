@@ -4,6 +4,7 @@ import Label from "./Label";
 import { StyleSheet, TextInput, View } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import COLORS from "../../../constants/colors";
+import { useState } from "react";
 
 
 type SmallCheckBoxInputProps = {
@@ -27,16 +28,19 @@ export default function SmallCheckBoxInput({
 
 
 }: SmallCheckBoxInputProps) {
+    const [isFocused, setIsFocused] = useState(false);
 
     console.log(label)
 
     return (
         <View style={SmallInputStyles.inputBlock}>
             <Label label={label} />
-            <View style={[{ flexDirection: "row", alignItems: "center" }, styles.checkAndInput]}>
+            <View style={[{ flexDirection: "row", alignItems: "center" }, styles.checkAndInput, isFocused && { borderColor: COLORS.primary, borderWidth: 1.5 }]}>
                 <CheckBox
                     value={checkBoxValue}
                     onValueChange={onCheckBoxChange}
+                    tintColors={{ true: COLORS.primary, false: "#aaa" }} // COLORS.primary = your highlight color
+
                 />
                 <TextInput
                     multiline={multiline}
@@ -46,9 +50,11 @@ export default function SmallCheckBoxInput({
                     placeholderTextColor="#aaa"
                     style={[
                         SmallInputStyles.input, styles.input,
-                        multiline && SmallInputStyles.multiline,
                         { flex: 1, marginLeft: 0 },
                     ]}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+
                 />
 
             </View>
@@ -60,12 +66,15 @@ export default function SmallCheckBoxInput({
 const styles = StyleSheet.create({
 
     input: {
-        borderColor: "transparent",
+
     },
     checkAndInput: {
-        borderWidth: 1,
-        borderColor: "#ddd",
+        paddingLeft: 3,
+        backgroundColor: COLORS.white,
         borderRadius: 8,
-        backgroundColor: COLORS.white
-    }
+        borderWidth: 1.5,
+        borderColor: "transparent"
+    },
+
+
 });
