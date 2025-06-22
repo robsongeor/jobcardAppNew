@@ -10,6 +10,7 @@ import SignSection from '../components/form/SignSection';
 import SubmitSection from '../components/form/SubmitSection';
 import JobInfo from '../components/form/JobInfo';
 import FormTabBar from '../components/FormTabBar';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -26,13 +27,13 @@ const JobFormScreen = () => {
         <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
             <Tab.Screen name="Info">
                 {() => (
-                    <>
+                    <ScrollView>
                         <JobInfo job={job} />
                         <DescriptionSection
                             description={form.description}
                             setDescription={(updated) => updateField('description', updated)}
                         />
-                    </>
+                    </ScrollView>
                 )}
             </Tab.Screen>
 

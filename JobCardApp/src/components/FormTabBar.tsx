@@ -131,10 +131,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'relative',
         backgroundColor: COLORS.white,
-        borderRadius: 20,
+        borderRadius: 30,
         marginHorizontal: 24,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: COLORS.white,
+        marginBottom: 14,
     },
     pillContainer: {
         ...StyleSheet.absoluteFillObject,
