@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import { assignJobToUser, auth, getUserData, searchJobsTrigrams } from '../firebase';
 import { Job } from '../types/types';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
-import { addRecentActivity, convertJobToRecent, getStoredUserField } from '../storage/storage';
+import { getStoredUserField } from '../storage/storage';
 import BottomRightButton from '../components/form/Buttons/BottomRightButton';
-import { EventBus } from '../utils/EventBus';
+
 
 const AssignScreen = () => {
     const [query, setQuery] = useState('');
     const [searchTriggered, setSearchTriggered] = useState(false);
     const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
-
-
 
     const [jobs, setJobs] = useState<Job[]>([])
 
@@ -30,13 +28,10 @@ const AssignScreen = () => {
         setLoading(true);
 
         try {
-            console.log("Searching for:", query);
-
             const { jobs: newJobs, lastDoc: newLastDoc } = await searchJobsTrigrams(query, totalFetched, maxResults, lastDoc || undefined);
             setJobs(prev => [...prev, ...(newJobs || [])]);
             setLastDoc(newLastDoc || null);
             setHasMore(!!newLastDoc); // if there's no lastDoc returned, we've reached the end
-
             setTotalFetched(prev => prev + newJobs.length)
 
         } catch (error) {
@@ -105,9 +100,7 @@ const AssignScreen = () => {
 
         const uid = getStoredUserField('uid');
 
-
         shallowUpdateSelectedJob();
-
 
         if (!uid) {
             console.warn('User info missing from storage')

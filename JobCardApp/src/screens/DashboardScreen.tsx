@@ -1,5 +1,5 @@
-import { Text, View, StyleSheet, ScrollView, Button, TouchableOpacity } from "react-native";
-import { addRecentActivity, getJobsByStatus, getOverdueJobs, getRecentActivity, getStoredUserField } from "../storage/storage";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { getRecentActivity } from "../storage/storage";
 import { StatCard } from "../components/StatCard";
 import COLORS from "../constants/colors";
 import { RecentActivityType } from "../types/types";
@@ -7,9 +7,7 @@ import RecentActivity from "../components/RecentActivity";
 import { useEffect, useState } from "react";
 import { EventBus } from "../utils/EventBus";
 import PADDING from "../constants/padding";
-import { signOut } from "@react-native-firebase/auth";
 import { auth } from "../firebase";
-import { useAuth } from "../context/AuthContext";
 import { useStoredUserDashboardStats } from "../hooks/useStoredUserDashboardStats";
 import Icon from "react-native-vector-icons/Feather";
 
@@ -20,9 +18,7 @@ export default function DashboardScreen() {
     const handleSignOut = async () => {
         try {
             await auth().signOut();
-            // Optionally: navigate to login screen or show a message
         } catch (e) {
-            // Handle errors (show toast, alert, etc)
             console.log('Sign out error:', e);
         }
     };
@@ -55,8 +51,6 @@ export default function DashboardScreen() {
                     <Icon name="log-out" size={24} color={COLORS.primary} />
                 </TouchableOpacity>
             </View>
-
-
 
             <Text style={styles.sectionTitle}>Stats</Text>
             <View style={styles.statsContainer}>
