@@ -2,6 +2,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import { auth } from '../firebase';
 
 const iconMap: { [key: string]: string } = {
     Dashboard: 'home',
@@ -24,6 +25,16 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
         state.routes.map((_, i) => new Animated.Value(state.index === i ? 1 : 0))
     ).current;
 
+    const [labelWidths, setLabelWidths] = React.useState<{ [key: string]: number }>({});
+    const widthAnimations = React.useRef(
+        state.routes.map(() => new Animated.Value(0))
+    ).current;
+
+    const gapAnimations = React.useRef(
+        state.routes.map((_, i) => new Animated.Value(state.index === i ? 8 : 0))
+    ).current;
+
+
     React.useEffect(() => {
         state.routes.forEach((_, i) => {
             Animated.spring(animatedValues[i], {
@@ -35,6 +46,31 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
         });
     }, [state.index]);
 
+    React.useEffect(() => {
+        state.routes.forEach((route, i) => {
+            const targetWidth = state.index === i ? (labelWidths[route.key] || 0) : 0;
+            Animated.spring(widthAnimations[i], {
+                toValue: targetWidth,
+                speed: 10,
+                bounciness: 9,
+                useNativeDriver: false, // width can't use native driver
+            }).start();
+        });
+    }, [state.index, labelWidths]);
+
+
+    React.useEffect(() => {
+        state.routes.forEach((_, i) => {
+            Animated.spring(gapAnimations[i], {
+                toValue: state.index === i ? 8 : 0,
+                useNativeDriver: false,
+                speed: 2,
+                bounciness: 3,
+            }).start();
+        });
+    }, [state.index]);
+
+
 
     return (
         <View style={styles.container}>
@@ -45,47 +81,91 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
                 const focused = state.index === index;
                 const { primary, secondary } = colorMap[route.name] || { primary: '#000', secondary: '#fff' };
 
-                const animatedFlex = animatedValues[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 1.8],
-                });
 
-                const animatedBg = animatedValues[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['white', secondary],
-                });
 
 
                 return (
-                    <Animated.View
-                        key={route.key}
-                        style={[
-                            styles.button,
-                            {
-                                flex: animatedFlex,
-                                backgroundColor: animatedBg,
-                                borderRadius: 50,
-                                padding: focused ? 10 : 0,
-                                minWidth: focused ? "8%" : 0,
-                            }
-                        ]}
-                    >
+                    <React.Fragment key={route.key}>
+                        {/* Always render the hidden label for measurement */}
+
+                        <View
+                            style={{ position: 'absolute', opacity: 0, left: -9999, top: -9999 }}
+                            pointerEvents="none"
+                            onLayout={e => {
+                                const width = e.nativeEvent.layout.width;
+                                if (width && labelWidths[route.key] !== width) {
+                                    setLabelWidths(lws => ({ ...lws, [route.key]: width }));
+                                }
+                            }}
+                        >
+                            {typeof label === 'string' && (
+                                <Text
+                                    style={[
+                                        styles.label,
+                                        { color: primary, }
+                                    ]}
+                                    numberOfLines={1} // ensures text never wraps
+
+                                >
+                                    {label}
+                                </Text>
+                            )}
+                        </View>
+
+                        {/* Actual Tab Button */}
                         <TouchableOpacity
                             accessibilityRole="button"
                             accessibilityState={focused ? { selected: true } : {}}
                             onPress={() => navigation.navigate(route.name)}
-                            style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", flex: 1 }}
                             activeOpacity={0.8}
+                            style={[
+                                styles.button,
+                                {
+                                    backgroundColor: focused ? secondary : "transparent",
+                                    paddingHorizontal: focused ? 24 : 24,
+
+                                },
+                            ]}
                         >
                             <Icon name={icon} size={25} color={focused ? primary : '#222'} />
-                            {focused && typeof label === 'string' && (
-                                <Text numberOfLines={1} style={[styles.label, { color: primary, marginLeft: 8 }]}>{label}</Text>
-                            )}
+                            <Animated.View style={{ width: gapAnimations[index] }} />
+                            <Animated.View
+                                style={{
+                                    width: widthAnimations[index],
+                                    overflow: 'hidden',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+
+                                    height: 26, // must match or slightly exceed your fontSize
+
+                                }}
+                            >
+                                <View style={{ flexShrink: 1, minWidth: 0, }}>
+                                    {focused && typeof label === 'string' && (
+                                        <Text
+                                            style={[
+                                                styles.label,
+                                                {
+                                                    color: primary,
+
+                                                }
+                                            ]}
+                                            numberOfLines={1} // ensures text never wraps
+                                            ellipsizeMode="clip" // do NOT use "tail"
+                                        >
+                                            {label}
+                                        </Text>
+                                    )}
+                                </View>
+                            </Animated.View>
+
+
+
                         </TouchableOpacity>
-                    </Animated.View>
+                    </React.Fragment>
                 );
             })}
-        </View>
+        </View >
     );
 }
 
@@ -94,19 +174,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: 'white',
         paddingVertical: 24,
-        paddingHorizontal: 30,
+        paddingHorizontal: 14,
         justifyContent: 'space-around',
-        gap: 14,
+
     },
     button: {
         flexDirection: "row",
         alignItems: 'center',
-        gap: 7,
-        justifyContent: 'center',
+        paddingVertical: 14,
+        borderRadius: 40,
+
+        justifyContent: 'space-between',
     },
     label: {
         color: '#E1A700',
         fontWeight: 'bold',
         fontSize: 14,
+        marginBottom: 2,
     },
 });
