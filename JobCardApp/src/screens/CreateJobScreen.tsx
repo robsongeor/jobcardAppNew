@@ -5,6 +5,8 @@ import { getStoredUserField } from "../storage/storage";
 import CreateJobForm from "./CreateJobScreen/createJobForm";
 import BottomRightButton from "../components/form/Buttons/BottomRightButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Config from "react-native-config";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function CreateJobScreen() {
     const userID = getStoredUserField("uid");
@@ -60,6 +62,49 @@ export default function CreateJobScreen() {
                 onPress={() => console.log("Assigned")}
                 icon="user-plus"
             />
+
+
+
+            <GooglePlacesAutocomplete
+                placeholder="Search address"
+                fetchDetails={true}
+                onPress={(data, details = null) => {
+                    // 'details' is provided when fetchDetails = true
+                    const address = details?.formatted_address || '';
+                    // Loop through details.address_components to extract suburb and city/region
+                    // For example:
+                    let suburb = '';
+                    let region = '';
+                    details?.address_components?.forEach(component => {
+                        if (component.types.includes('sublocality') || component.types.includes('locality')) {
+                            suburb = component.long_name;
+                        }
+                        if (component.types.includes('administrative_area_level_1')) {
+                            region = component.long_name;
+                        }
+                    });
+
+                    // Update your jobInfo state
+                    setJobInfo({
+                        ...jobInfo,
+                        customerAddress: address,
+                        customerAddressSuburb: suburb,
+                        customerAddressTown: region,
+                    });
+                }}
+                query={{
+                    key: Config.GOOGLE_MAPS_API_KEY,
+                    language: 'en',
+                    components: 'country:nz', // restricts to NZ, change as needed
+                }}
+                styles={{
+                    // Optional: Customize input style here
+                    container: { flex: 0 },
+                    textInput: { height: 38, color: '#5d5d5d', fontSize: 16 },
+                }}
+            />
+
+
         </SafeAreaView>
 
     )
