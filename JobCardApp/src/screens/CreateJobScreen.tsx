@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
@@ -6,6 +6,7 @@ import CreateJobForm from "./CreateJobScreen/createJobForm";
 import BottomRightButton from "../components/form/Buttons/BottomRightButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Config from "react-native-config";
+import GooglePlacesTextInput from "react-native-google-places-textinput";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default function CreateJobScreen() {
@@ -50,9 +51,57 @@ export default function CreateJobScreen() {
     }, [jobInfo]);
 
 
+
+
+
+
+
+
+    const handleBasicPlaceSelect = (place: any, token: any) => {
+        console.log('Selected place:', place);
+
+        // Full formatted address
+        const address = place?.structuredFormat?.mainText?.text || "";
+
+        // Break secondaryText into parts
+        const secondaryParts = place?.structuredFormat?.secondaryText?.text.split(",") || [];
+        const suburb = secondaryParts[0]?.trim() || "";
+        const town = secondaryParts[1]?.trim() || "";
+
+        setJobInfo({
+            ...jobInfo,
+            customerAddress: address,
+            customerAddressSuburb: suburb,
+            customerAddressTown: town,
+        });
+    };
+
+
+
+
+
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <CreateJobForm
+        <SafeAreaView style={styles.container}>
+            <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Basic Example</Text>
+                <GooglePlacesTextInput
+                    apiKey={Config.GOOGLE_MAPS_API_KEY || ""}
+                    placeHolderText="Search for a location"
+                    onPlaceSelect={handleBasicPlaceSelect}
+                    minCharsToFetch={2}
+                    languageCode="en"
+                    includedRegionCodes={['NZ']}  // <<<<<<<<<<<
+                />
+            </View>
+
+
+            <View>
+                <Text>Address: {jobInfo.customerAddress}</Text>
+                <Text>Suburb: {jobInfo.customerAddressSuburb}</Text>
+                <Text>Town: {jobInfo.customerAddressTown}</Text>
+            </View>
+
+            {/* <CreateJobForm
                 jobInfo={jobInfo}
                 setJobInfo={setJobInfo}
             />
@@ -61,51 +110,40 @@ export default function CreateJobScreen() {
                 disabled={submitDisabled}
                 onPress={() => console.log("Assigned")}
                 icon="user-plus"
-            />
-
-
-
-            <GooglePlacesAutocomplete
-                placeholder="Search address"
-                fetchDetails={true}
-                onPress={(data, details = null) => {
-                    // 'details' is provided when fetchDetails = true
-                    const address = details?.formatted_address || '';
-                    // Loop through details.address_components to extract suburb and city/region
-                    // For example:
-                    let suburb = '';
-                    let region = '';
-                    details?.address_components?.forEach(component => {
-                        if (component.types.includes('sublocality') || component.types.includes('locality')) {
-                            suburb = component.long_name;
-                        }
-                        if (component.types.includes('administrative_area_level_1')) {
-                            region = component.long_name;
-                        }
-                    });
-
-                    // Update your jobInfo state
-                    setJobInfo({
-                        ...jobInfo,
-                        customerAddress: address,
-                        customerAddressSuburb: suburb,
-                        customerAddressTown: region,
-                    });
-                }}
-                query={{
-                    key: Config.GOOGLE_MAPS_API_KEY,
-                    language: 'en',
-                    components: 'country:nz', // restricts to NZ, change as needed
-                }}
-                styles={{
-                    // Optional: Customize input style here
-                    container: { flex: 0 },
-                    textInput: { height: 38, color: '#5d5d5d', fontSize: 16 },
-                }}
-            />
-
-
+            /> */}
         </SafeAreaView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    section: {
+        marginVertical: 16,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 12,
+        marginLeft: 16,
+        color: '#333333',
+    },
+});
