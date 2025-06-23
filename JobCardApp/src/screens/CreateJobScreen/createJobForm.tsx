@@ -54,11 +54,7 @@ export default function CreateJobForm({ jobInfo, setJobInfo }: createJobFormProp
                 value={jobInfo.description}
                 onChangeText={(value) => setJobInfo({ ...jobInfo, description: value })}
             />
-            <SmallTextInput
-                label="Site (optional)"
-                value={jobInfo.site}
-                onChangeText={(value) => setJobInfo({ ...jobInfo, site: value })}
-            />
+
         </>
     )
 }

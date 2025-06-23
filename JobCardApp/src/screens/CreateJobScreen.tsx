@@ -88,13 +88,13 @@ export default function CreateJobScreen() {
 
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
 
             <GooglePlacesTextInput
                 apiKey={Config.GOOGLE_MAPS_API_KEY || ""}
                 placeHolderText="Search for a location"
                 onPlaceSelect={handleBasicPlaceSelect}
-                minCharsToFetch={2}
+                minCharsToFetch={4}
                 languageCode="en"
                 includedRegionCodes={['NZ']}
                 resultsVisible={showResults}
@@ -110,33 +110,32 @@ export default function CreateJobScreen() {
             />}
 
 
-
-
-
             {!showResults &&
-                <View>
-                    <View>
-                        <Text>Address: {jobInfo.customerAddress}</Text>
-                        <Text>Suburb: {jobInfo.customerAddressSuburb}</Text>
-                        <Text>Town: {jobInfo.customerAddressTown}</Text>
-                    </View>
+                <>
+                    <ScrollView style={styles.formContainer}>
+                        <View>
+                            <Text>Address: {jobInfo.customerAddress},  {jobInfo.customerAddressSuburb}, {jobInfo.customerAddressTown}</Text>
+                        </View>
 
-                    <CreateJobForm
-                        jobInfo={jobInfo}
-                        setJobInfo={setJobInfo}
-                    />
+                        <CreateJobForm
+                            jobInfo={jobInfo}
+                            setJobInfo={setJobInfo}
+                        />
+
+                    </ScrollView>
+
                     <BottomRightButton
                         label="Assign"
                         disabled={submitDisabled}
                         onPress={() => console.log("Assigned")}
                         icon="user-plus"
                     />
-                </View>
+                </>
+
             }
 
 
-
-        </SafeAreaView>
+        </View>
     )
 }
 
@@ -144,6 +143,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.background,
+
     },
     section: {
 
@@ -155,4 +155,7 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         color: '#333333',
     },
+    formContainer: {
+        marginHorizontal: PADDING.horizontal,
+    }
 });
