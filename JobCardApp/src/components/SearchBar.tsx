@@ -9,6 +9,7 @@ interface SearchBarProps extends TextInputProps {
     handleSearch: () => void;
     placeholder?: string;
     autoSearch?: boolean;
+    onFocus?: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -17,7 +18,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
     placeholder = 'Search...',
     handleSearch,
     autoSearch = false,
+    onFocus,
     ...rest
+
 }) => {
     const handleTextChange = (text: string) => {
         onChangeText(text);
@@ -40,6 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 returnKeyType="search"
                 autoCorrect={false}
                 onSubmitEditing={handleSearch}
+                onFocus={onFocus}
                 {...rest}
             />
 

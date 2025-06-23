@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Job } from "../types/types";
 import { getStoredUserField } from "../storage/storage";
@@ -6,12 +6,17 @@ import CreateJobForm from "./CreateJobScreen/createJobForm";
 import BottomRightButton from "../components/form/Buttons/BottomRightButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Config from "react-native-config";
-import GooglePlacesTextInput from "react-native-google-places-textinput";
+
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import PADDING from "../constants/padding";
+import COLORS from "../constants/colors";
+import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from "../components/GooglePlacesTextInputCustom";
 
 export default function CreateJobScreen() {
     const userID = getStoredUserField("uid");
     const [submitDisabled, setSubmitDisable] = useState(true)
+    const [test, setTest] = useState('')
+    const [showResults, setShowResults] = useState(false);
 
     const [jobInfo, setJobInfo] = useState<Job>({
         id: "",
@@ -74,6 +79,8 @@ export default function CreateJobScreen() {
             customerAddressSuburb: suburb,
             customerAddressTown: town,
         });
+
+        setShowResults(false);
     };
 
 
@@ -82,62 +89,64 @@ export default function CreateJobScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Basic Example</Text>
-                <GooglePlacesTextInput
-                    apiKey={Config.GOOGLE_MAPS_API_KEY || ""}
-                    placeHolderText="Search for a location"
-                    onPlaceSelect={handleBasicPlaceSelect}
-                    minCharsToFetch={2}
-                    languageCode="en"
-                    includedRegionCodes={['NZ']}  // <<<<<<<<<<<
-                />
-            </View>
 
-
-            <View>
-                <Text>Address: {jobInfo.customerAddress}</Text>
-                <Text>Suburb: {jobInfo.customerAddressSuburb}</Text>
-                <Text>Town: {jobInfo.customerAddressTown}</Text>
-            </View>
-
-            {/* <CreateJobForm
-                jobInfo={jobInfo}
-                setJobInfo={setJobInfo}
+            <GooglePlacesTextInput
+                apiKey={Config.GOOGLE_MAPS_API_KEY || ""}
+                placeHolderText="Search for a location"
+                onPlaceSelect={handleBasicPlaceSelect}
+                minCharsToFetch={2}
+                languageCode="en"
+                includedRegionCodes={['NZ']}
+                resultsVisible={showResults}
+                value={test}
+                onTextChange={() => setShowResults(true)}
+                onFocus={() => setShowResults(true)}
             />
-            <BottomRightButton
-                label="Assign"
-                disabled={submitDisabled}
-                onPress={() => console.log("Assigned")}
-                icon="user-plus"
-            /> */}
+            {showResults && <BottomRightButton
+                label="Cancel"
+                disabled={false}
+                onPress={() => setShowResults(false)}
+                icon="x"
+            />}
+
+
+
+
+
+            {!showResults &&
+                <View>
+                    <View>
+                        <Text>Address: {jobInfo.customerAddress}</Text>
+                        <Text>Suburb: {jobInfo.customerAddressSuburb}</Text>
+                        <Text>Town: {jobInfo.customerAddressTown}</Text>
+                    </View>
+
+                    <CreateJobForm
+                        jobInfo={jobInfo}
+                        setJobInfo={setJobInfo}
+                    />
+                    <BottomRightButton
+                        label="Assign"
+                        disabled={submitDisabled}
+                        onPress={() => console.log("Assigned")}
+                        icon="user-plus"
+                    />
+                </View>
+            }
+
+
+
         </SafeAreaView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.background,
     },
     section: {
-        marginVertical: 16,
+
     },
     sectionTitle: {
         fontSize: 18,
