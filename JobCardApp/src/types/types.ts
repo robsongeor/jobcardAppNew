@@ -14,6 +14,11 @@ export type Job = {
     description: string;
     site: string;
     status: string;
+    customerAddress: string;
+    customerAddressSuburb: string;
+    customerAddressTown: string;
+    siteContact: string;
+    siteContactPhone: string;
 };
 
 export type JobActivityType = {

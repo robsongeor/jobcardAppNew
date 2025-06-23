@@ -7,25 +7,29 @@ import { getStoredUserField } from "../storage/storage";
 export default function CreateJobScreen() {
     const userID = getStoredUserField("uid");
 
-    const [jobInfo, setJobInfo] = useState<Job>(
-        {
-            id: "",
-            fleet: "",
-            job: "",
-            customerName: "",
-            machine: {
-                make: "",
-                model: "",
-                serialNumber: "",
-            },
-            assignedTo: [],
-            assignedStatus: { [userID]: "" },
-            assignedDate: { [userID]: "" },
-            description: "",
-            site: "",
-            status: "",
-        }
-    )
+    const [jobInfo, setJobInfo] = useState<Job>({
+        id: "",
+        fleet: "",
+        job: "",
+        customerName: "",
+        machine: {
+            make: "",
+            model: "",
+            serialNumber: "",
+        },
+        assignedTo: [],
+        assignedStatus: {},
+        assignedDate: {},
+        description: "",
+        site: "",
+        status: "",
+        customerAddress: "",
+        customerAddressSuburb: "",
+        customerAddressTown: "",
+        siteContact: "",
+        siteContactPhone: "",
+    });
+
 
     return (
         <View>
