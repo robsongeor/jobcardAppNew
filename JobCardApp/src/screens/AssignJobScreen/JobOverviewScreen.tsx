@@ -12,7 +12,13 @@ import Config from "react-native-config";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
-export default function JobOverviewScreen({ route }: Props) {
+export default function JobOverviewScreen({ route, navigation }: Props) {
+
+    if (!route.params?.job) {
+        navigation.goBack();
+        return null;
+    }
+
     const { job } = route.params;
 
     function getStaticMapUrl(lat: number, lng: number) {
