@@ -36,7 +36,7 @@ export default function AssignJobStack() {
                 options={({ navigation }) => ({
                     header: () => (
                         <AppHeader
-                            title="Job Overview"
+                            title="Overview"
                             onBack={() => navigation.goBack()}
                         />
                     ),

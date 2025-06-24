@@ -5,10 +5,10 @@ const COLORS = {
     greyed: '#CCC',
     greyedText: '#AAA',
     danger: '#D7263D',
-    background: '#f5f5f5',
-    white: '#fff',
+    background: '#f9f9f9',
+    white: '#f2f2f2',
     error: '#ff0000',
-    black: '#666',
+    black: '#111',
     textPrimary: '#007AFF'
     // ... add more as needed
 };

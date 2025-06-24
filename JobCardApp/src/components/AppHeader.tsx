@@ -1,6 +1,6 @@
 // components/AppHeader.js
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import COLORS from '../constants/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,38 +16,66 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
 
     return (
         <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: 64 + insets.top,
-                paddingTop: insets.top,
-                backgroundColor: COLORS.background,
-                paddingBottom: 20,
-                paddingHorizontal: PADDING.horizontal,
-            }}
+            style={[
+                styles.headerContainer,
+                {
+                    height: 64 + insets.top,
+                    paddingTop: insets.top,
+                    backgroundColor: COLORS.background,
+                    paddingHorizontal: PADDING.horizontal,
+                },
+            ]}
         >
             {/* Left: back button or empty view for spacing */}
-            <View style={{ width: 36, alignItems: 'flex-start', justifyContent: 'center' }}>
+            <View style={styles.sideContainer}>
                 {onBack && (
-                    <TouchableOpacity onPress={onBack}>
-                        <Icon name="chevron-left" size={24} color={COLORS.black} />
+                    <TouchableOpacity style={styles.button} onPress={onBack}>
+                        <Icon name="arrow-left" size={20} color={COLORS.black} />
                     </TouchableOpacity>
                 )}
             </View>
 
             {/* Middle: title centered */}
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{
-                    fontSize: 18,
-                    fontWeight: '700',
-                    color: COLORS.black,
-                }}>
-                    {title}
-                </Text>
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>{title}</Text>
             </View>
 
             {/* Right: placeholder for symmetry */}
-            <View style={{ width: 36 }} />
+            <View style={styles.sideContainer} />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingBottom: 20,
+    },
+    sideContainer: {
+        width: 36,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+    },
+    titleContainer: {
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: '500',
+        color: COLORS.black,
+        marginLeft: 18,
+    },
+    button: {
+        height: 40,
+        width: 40,
+        backgroundColor: COLORS.white,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 8,
+
+    }
+});
