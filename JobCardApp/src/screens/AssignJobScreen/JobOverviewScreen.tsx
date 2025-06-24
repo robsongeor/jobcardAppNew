@@ -104,6 +104,7 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
                 disabled={!job.description}
                 label="Assign"
                 onPress={handleAssign}
+                icon="user-plus"
             />
 
         </View>
