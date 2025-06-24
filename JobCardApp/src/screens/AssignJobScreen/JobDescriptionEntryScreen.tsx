@@ -9,9 +9,13 @@ import COLORS from "../../constants/colors";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobDescriptionEntry'>;
 
-type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
-
 export default function JobDescriptionEntryScreen({ route, navigation }: Props) {
+    // Check for route first
+    if (!route.params?.job) {
+        navigation.goBack();
+        return null;
+    }
+
     const { job } = route.params
     const [loading, setLoading] = useState(false);
 
