@@ -4,10 +4,10 @@ import Icon from "react-native-vector-icons/Feather";
 import COLORS from "../../../constants/colors";
 
 type bottomRightButtonProps = {
-    label: string
-    disabled: boolean;
-    onPress: () => void;
-    icon: string;
+    label?: string
+    disabled?: boolean;
+    onPress?: () => void;
+    icon?: string;
 }
 
 export default function BottomRightButton({ label, disabled, onPress, icon }: bottomRightButtonProps) {
@@ -22,13 +22,13 @@ export default function BottomRightButton({ label, disabled, onPress, icon }: bo
                 ]}
                 onPress={onPress}
             >
-                <Text style={styles.assignButtonText}>{label}</Text>
-                <Icon
+                {label && <Text style={styles.assignButtonText}>{label}</Text>}
+                {icon && <Icon
                     name={icon}
                     size={20}
                     color={COLORS.background}
                     style={styles.iconStyle}
-                />
+                />}
 
 
 

@@ -7,7 +7,10 @@ const Stack = createNativeStackNavigator();
 
 export default function AssignJobStack() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}>
             <Stack.Screen name="JobNumberEntry" component={JobNumberEntryScreen} />
             <Stack.Screen name="JobOverview" component={JobOverviewScreen} />
             <Stack.Screen name="FleetNumberEntry" component={FleetNumberEntryScreen} />

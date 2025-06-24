@@ -13,6 +13,7 @@ import MyTabBar from './CustomTabBarButton';
 import COLORS from '../constants/colors';
 import AppHeader from '../components/AppHeader';
 import CreateJobScreen from '../screens/CreateJobScreen';
+import AssignJobStack from './AssignJobStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +45,7 @@ const TabNavigator: React.FC = () => (
         {/* MANUAL JOB CREATION SCREEN - TO BE REMOVED ONCE JOB UPLOAD IS AUTOMATED */}
         <Tab.Screen
             name="Assign"
-            component={CreateJobScreen}
+            component={AssignJobStack}
             options={({ route }) => ({
                 tabBarLabel: 'Assign',
                 headerShown: false,
