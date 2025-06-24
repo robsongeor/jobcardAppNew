@@ -6,6 +6,7 @@ import PADDING from "../../constants/padding";
 import SubTitle from "../../components/text/SubTitle";
 import COLORS from "../../constants/colors";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
+import SubHeading from "./components/SubHeading";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -26,9 +27,10 @@ export default function JobOverviewScreen({ route }: Props) {
                 <View style={styles.card}>
                     <Text style={styles.textHeading}>{job.customerName}</Text>
 
+
                     {/* Address */}
                     <View style={styles.detailsCard}>
-                        <Text style={styles.textSubHeading}>ADDRESS</Text>
+                        <SubHeading>ADDRESS</SubHeading>
                         <View style={styles.details}>
                             <Text style={styles.address}>
                                 {job.customerAddress}
@@ -48,7 +50,7 @@ export default function JobOverviewScreen({ route }: Props) {
 
                     {/* DETAILS */}
                     <View style={styles.detailsCard}>
-                        <Text style={styles.textSubHeading}>MACHINE DETAILS</Text>
+                        <SubHeading>MACHINE DETAILS</SubHeading>
                         <View style={styles.details}>
                             <Text style={styles.leftDetail}>Fleet number</Text>
                             <Text style={styles.rightDetail}>{job.fleet.toUpperCase()}</Text>
@@ -67,7 +69,7 @@ export default function JobOverviewScreen({ route }: Props) {
                         </View>
 
                         <View style={styles.cardSection}>
-                            <Text style={styles.textSubHeading}>JOB DESCRIPTION</Text>
+                            <SubHeading>JOB DESCRIPTION</SubHeading>
                             <Text style={styles.leftDetail}>
                                 {job.description}
                             </Text>
@@ -153,11 +155,5 @@ const styles = StyleSheet.create({
         marginTop: 12,
 
     },
-    textSubHeading: {
-        fontWeight: "900",
-        fontSize: 11,
-        paddingTop: 12,
-        marginBottom: 4,
-        color: "#999",
-    },
+
 });
