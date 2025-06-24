@@ -1,9 +1,8 @@
 import { Text } from "react-native";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import FieldSearch from "./components/FieldSearch";
-import { useNavigation } from "@react-navigation/native";
 import { Job } from "../../types/types";
 import COLORS from "../../constants/colors";
 
@@ -21,10 +20,8 @@ export default function JobDescriptionEntryScreen({ route, navigation }: Props) 
 
     const handleSubmit = (value: string) => {
         setLoading(true);
-
         const newJob = { ...job, description: value } as Job
         navigation.navigate("JobOverview", { job: newJob })
-
     };
 
     return (
@@ -34,7 +31,6 @@ export default function JobDescriptionEntryScreen({ route, navigation }: Props) 
             placeholder="e.g horn not working"
             title={<>Enter the job<Text style={{ fontWeight: 600, color: COLORS.primary }}>{"\n"}description</Text></>}
             subtitle={"Be as descriptive as possible."}
-
         />
     )
 }
