@@ -49,6 +49,7 @@ export default function JobNumberEntryScreen() {
             onSubmit={handleSubmit}
             fieldName="job"
             placeholder="e.g 130560"
+            title={<>Enter the job{"\n"}number</>}
         />
     );
 }

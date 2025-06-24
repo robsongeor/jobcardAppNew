@@ -3,7 +3,7 @@ import Title from "../../../components/text/Title";
 import BottomRightButton from "../../../components/form/Buttons/BottomRightButton";
 import PADDING from "../../../constants/padding";
 import COLORS from "../../../constants/colors";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import SubTitle from "../../../components/text/SubTitle";
 
 type FieldSearchProps = {
@@ -11,9 +11,10 @@ type FieldSearchProps = {
     onSubmit: (value: string) => void;
     fieldName: string;
     placeholder?: string;
+    title?: ReactNode | string;
 }
 
-export default function FieldSearch({ loading, onSubmit, fieldName, placeholder }: FieldSearchProps) {
+export default function FieldSearch({ loading, onSubmit, fieldName, placeholder, title }: FieldSearchProps) {
     const [value, setValue] = useState("");
     const [submitEnabled, setSubmitEnabled] = useState(false)
 
@@ -34,7 +35,8 @@ export default function FieldSearch({ loading, onSubmit, fieldName, placeholder 
                     contentContainerStyle={styles.container}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <Title>Enter the {fieldName} {"\n"}number</Title>
+
+                    <Title>{title}</Title>
 
                     <Text style={styles.subtitle}>
                         We'll check if it exists in our system.
