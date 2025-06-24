@@ -1,11 +1,12 @@
 import {
     forwardRef,
+    ReactNode,
     useEffect,
     useImperativeHandle,
     useRef,
     useState,
 } from 'react';
-import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import type { StyleProp, TextInputProps, TextStyle, ViewStyle } from 'react-native';
 import {
     ActivityIndicator,
     FlatList,
@@ -26,7 +27,7 @@ import {
     generateUUID,
     isRTLText,
 } from './services/googlePlacesApi';
-import SearchBar from './SearchBar';
+import SearchBar, { SearchBarProps } from './SearchBar';
 
 // Type definitions
 interface PlaceStructuredFormat {
@@ -98,6 +99,7 @@ interface GooglePlacesTextInputProps {
     enableDebug?: boolean; // ✅ Add debug prop
     resultsVisible: boolean;
     onFocus?: () => void;
+    searchInput: (inputProps: SearchBarProps) => React.ReactNode;
 }
 
 interface GooglePlacesTextInputRef {
@@ -140,6 +142,7 @@ const GooglePlacesTextInput = forwardRef<
             enableDebug = false,
             resultsVisible,
             onFocus,
+            searchInput,
         },
         ref,
 
@@ -522,12 +525,14 @@ const GooglePlacesTextInput = forwardRef<
 
         return (
             <View>
-                <SearchBar
-                    value={inputText}
-                    onChangeText={handleTextChange}
-                    handleSearch={handleFocus}
-                    onFocus={onFocus}
-                />
+                {searchInput({
+                    value: inputText,
+                    onChangeText: handleTextChange,
+                    handleSearch: handleFocus,
+                    onFocus,
+                    // any other props...
+                })}
+
                 <View>
                     {/* <TextInput
                         ref={inputRef}

@@ -200,4 +200,24 @@ export const updateAssignedStatus = async (jobId: string, uid: string, status: s
     }
 }
 
+export const getJobFromJobNumber = async (jobNumber: string): Promise<Job | null> => {
+    const db = getFirestore();
+
+    const jobsRef = collection(db, "jobs");
+    const q = query(jobsRef, where("job", "==", jobNumber));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+        const jobDoc = querySnapshot.docs[0];
+        const data = jobDoc.data();
+
+        // Basic runtime check (expand as needed)
+        if (data && typeof data.job === "string" && typeof data.status === "string") {
+            return data as Job;
+        }
+    }
+    return null;
+}
+
+
 export { auth, firestore };

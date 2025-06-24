@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet, TextInputProps, TouchableOpacity } from 'r
 import Icon from 'react-native-vector-icons/Feather';
 import PADDING from '../constants/padding';
 
-interface SearchBarProps extends TextInputProps {
+export interface SearchBarProps extends TextInputProps {
     value: string;
     onChangeText: (text: string) => void;
     handleSearch: () => void;

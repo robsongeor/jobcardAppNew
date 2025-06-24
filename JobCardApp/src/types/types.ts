@@ -59,3 +59,23 @@ export type RecentActivityType = {
     jobNumber: string;
     fleet: string
 }
+
+export type Machine = {
+    fleet: string;
+    make: string;
+    model: string;
+    serialNumber: string
+}
+
+export const machines: Machine[] = [
+    { fleet: "FN1242", make: "Bendi", model: "B318", serialNumber: "BEN123456" },
+    { fleet: "FN1270", make: "Still", model: "RX60-50", serialNumber: "STL987654" },
+    { fleet: "FN1301", make: "EP", model: "CPD20L1", serialNumber: "EP204112" },
+    { fleet: "FN1325", make: "Komatsu", model: "FB15", serialNumber: "KMTS154329" },
+    { fleet: "FN1408", make: "Bendi", model: "B420", serialNumber: "BEN420999" },
+    { fleet: "FN1512", make: "Still", model: "RX20-16", serialNumber: "STL456321" },
+    { fleet: "FN1620", make: "EP", model: "CPD30", serialNumber: "EP303030" },
+    { fleet: "FN1700", make: "Komatsu", model: "FB25", serialNumber: "KMTS259876" },
+    { fleet: "FN1815", make: "Bendi", model: "B313", serialNumber: "BEN313001" },
+    { fleet: "FN1934", make: "Still", model: "RX60-25", serialNumber: "STL602500" }
+];

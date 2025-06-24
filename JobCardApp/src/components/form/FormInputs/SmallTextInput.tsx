@@ -13,6 +13,7 @@ type SmallTextInputProps = {
     required?: boolean;
     style?: StyleProp<ViewStyle>;
     keyboardType?: "default" | "email-address" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad"; // etc
+    placeholder?: string
 };
 
 export default function SmallTextInput({
@@ -24,6 +25,7 @@ export default function SmallTextInput({
     required,
     style,
     keyboardType,
+    placeholder
 }: SmallTextInputProps) {
 
     const [isFocused, setIsFocused] = React.useState(false);
@@ -46,7 +48,7 @@ export default function SmallTextInput({
                     value={value}
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}  // <-- pass the prop
-                    placeholder={`Enter ${label.toLowerCase()}`}
+                    placeholder={placeholder ? placeholder : `Enter ${label.toLowerCase()}`}
                     placeholderTextColor="#aaa"
                     style={[
                         SmallInputStyles.input,
@@ -83,7 +85,7 @@ export const SmallInputStyles = StyleSheet.create({
         flex: 1,
     },
     multiline: {
-        minHeight: 300,
+        minHeight: 100,
         textAlignVertical: "top",
     },
     flex: {

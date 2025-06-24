@@ -11,6 +11,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import PADDING from "../constants/padding";
 import COLORS from "../constants/colors";
 import GooglePlacesTextInput, { GooglePlacesTextInputStyles } from "../components/GooglePlacesTextInputCustom";
+import AddressCard from "../components/AddressCard";
 
 export default function CreateJobScreen() {
     const userID = getStoredUserField("uid");
@@ -89,8 +90,8 @@ export default function CreateJobScreen() {
 
     return (
         <View style={styles.container}>
-
-            <GooglePlacesTextInput
+            <Text> Add a Job</Text>
+            {/* <GooglePlacesTextInput
                 apiKey={Config.GOOGLE_MAPS_API_KEY || ""}
                 placeHolderText="Search for a location"
                 onPlaceSelect={handleBasicPlaceSelect}
@@ -107,22 +108,23 @@ export default function CreateJobScreen() {
                 disabled={false}
                 onPress={() => setShowResults(false)}
                 icon="x"
-            />}
+            />} */}
 
 
             {!showResults &&
                 <>
-                    <ScrollView style={styles.formContainer}>
-                        <View>
-                            <Text>Address: {jobInfo.customerAddress},  {jobInfo.customerAddressSuburb}, {jobInfo.customerAddressTown}</Text>
-                        </View>
 
-                        <CreateJobForm
-                            jobInfo={jobInfo}
-                            setJobInfo={setJobInfo}
-                        />
+                    {/* <AddressCard
+                            street={jobInfo.customerAddress}
+                            town={jobInfo.customerAddressSuburb}
+                            city={jobInfo.customerAddressTown}
+                        /> */}
 
-                    </ScrollView>
+                    <CreateJobForm
+                        jobInfo={jobInfo}
+                        setJobInfo={setJobInfo}
+                    />
+
 
                     <BottomRightButton
                         label="Assign"
