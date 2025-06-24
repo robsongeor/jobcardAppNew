@@ -7,15 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Job } from "../../types/types";
 import COLORS from "../../constants/colors";
 
-
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobDescriptionEntry'>;
 
 type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
 
-export default function JobDescriptionEntryScreen({ route }: Props) {
+export default function JobDescriptionEntryScreen({ route, navigation }: Props) {
     const { job } = route.params
     const [loading, setLoading] = useState(false);
-    const navigation = useNavigation<Navigation>();
 
     const handleSubmit = (value: string) => {
         setLoading(true);
