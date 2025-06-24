@@ -51,9 +51,8 @@ export default function FleetNumberEntryScreen({ route, navigation }: Props) {
             placeholder="e.g FN2024"
             title={<>Enter the <Text style={{ fontWeight: '600', color: COLORS.primary }}>fleet</Text>{"\n"}number</>}
             subtitle={"We'll check if it exists in our system."}
-            error={
-                error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
-            }
+            errorMessage={error}
+            resetError={() => setError(null)}
         />
 
     )

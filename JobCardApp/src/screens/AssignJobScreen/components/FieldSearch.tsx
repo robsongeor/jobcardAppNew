@@ -12,7 +12,7 @@ import Title from "../../../components/text/Title";
 import BottomRightButton from "../../../components/form/Buttons/BottomRightButton";
 import PADDING from "../../../constants/padding";
 import COLORS from "../../../constants/colors";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 type FieldSearchProps = {
     loading: boolean;
@@ -21,7 +21,9 @@ type FieldSearchProps = {
     title?: ReactNode;
     subtitle?: ReactNode;
     keyboardType?: KeyboardTypeOptions;
-    error?: ReactNode;
+    errorMessage?: ReactNode;
+    resetError?: React.Dispatch<React.SetStateAction<string | null>>;
+
 };
 
 /**
@@ -34,12 +36,24 @@ export default function FieldSearch({
     title,
     subtitle,
     keyboardType,
-    error
+    errorMessage,
+    resetError,
 }: FieldSearchProps) {
     const [value, setValue] = useState("");
+    const [displayError, setDisplayError] = useState(false)
 
     // Enable submit if value is at least 5 chars (trimmed)
     const submitEnabled = value.trim().length > 4;
+
+    useEffect(() => {
+        setDisplayError(false);
+    }, [value]);
+
+    const onChangeText = (value: string) => {
+        setValue(value)
+        if (resetError) { resetError(null) }
+
+    }
 
     return (
         <KeyboardAvoidingView
@@ -59,12 +73,16 @@ export default function FieldSearch({
                         style={styles.input}
                         placeholder={placeholder}
                         value={value}
-                        onChangeText={setValue}
+                        onChangeText={onChangeText}
                         keyboardType={keyboardType}
                         returnKeyType="done"
                         editable={!loading}
                     />
-                    {error}
+
+                    {errorMessage &&
+                        <Text style={{ color: "red", marginTop: 10 }}>{errorMessage}</Text>
+                    }
+
                 </ScrollView>
                 <BottomRightButton
                     label={loading ? "Loading..." : "Next"}
