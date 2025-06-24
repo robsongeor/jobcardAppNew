@@ -7,32 +7,38 @@ import FieldSearch from "./components/FieldSearch";
 import { useNavigation } from "@react-navigation/native";
 
 import COLORS from "../../constants/colors";
+import { Job } from "../../types/types";
 
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'FleetNumberEntry'>;
 
-type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
 
-export default function FleetNumberEntryScreen({ route }: Props) {
+export default function FleetNumberEntryScreen({ route, navigation }: Props) {
+    // Check for route first
+    if (!route.params?.jobNumber) {
+        // Option 1: Navigate back
+        navigation.goBack();
+        return null;
+
+    }
+
     const { jobNumber } = route.params
 
     const [loading, setLoading] = useState(false);
-    const navigation = useNavigation<Navigation>();
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async (value: string) => {
         setLoading(true);
-        console.log(value)
+        setError(null); // reset old errors
         try {
-            const result = await getNewJobFromFleetNumber(value);
+            const result: Job | null = await getNewJobFromFleetNumber(value);
             if (result !== null) {
-                console.log({ ...result, job: jobNumber })
                 navigation.navigate("JobDescriptionEntry", { job: { ...result, job: jobNumber } });
             } else {
-                //No fleet number found, need to show message
+                setError("No fleet number found.");
             }
-
         } catch (error) {
-            // Handle error (e.g., show a message)
+            setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -43,9 +49,12 @@ export default function FleetNumberEntryScreen({ route }: Props) {
             loading={loading}
             onSubmit={handleSubmit}
             placeholder="e.g FN2024"
-            title={<>Enter the <Text style={{ fontWeight: 600, color: COLORS.primary }}>fleet</Text>{"\n"}number</>}
+            title={<>Enter the <Text style={{ fontWeight: '600', color: COLORS.primary }}>fleet</Text>{"\n"}number</>}
             subtitle={"We'll check if it exists in our system."}
-
+            error={
+                error && <Text style={{ color: "red", marginTop: 10 }}>{error}</Text>
+            }
         />
+
     )
 }

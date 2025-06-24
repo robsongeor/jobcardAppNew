@@ -21,6 +21,7 @@ type FieldSearchProps = {
     title?: ReactNode;
     subtitle?: ReactNode;
     keyboardType?: KeyboardTypeOptions;
+    error?: ReactNode;
 };
 
 /**
@@ -33,6 +34,7 @@ export default function FieldSearch({
     title,
     subtitle,
     keyboardType,
+    error
 }: FieldSearchProps) {
     const [value, setValue] = useState("");
 
@@ -62,6 +64,7 @@ export default function FieldSearch({
                         returnKeyType="done"
                         editable={!loading}
                     />
+                    {error}
                 </ScrollView>
                 <BottomRightButton
                     label={loading ? "Loading..." : "Next"}
