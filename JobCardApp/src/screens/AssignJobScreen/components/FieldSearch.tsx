@@ -1,23 +1,22 @@
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { KeyboardAvoidingView, KeyboardTypeOptions, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import Title from "../../../components/text/Title";
 import BottomRightButton from "../../../components/form/Buttons/BottomRightButton";
 import PADDING from "../../../constants/padding";
 import COLORS from "../../../constants/colors";
 import { ReactNode, useEffect, useState } from "react";
-import SubTitle from "../../../components/text/SubTitle";
 
 type FieldSearchProps = {
     loading: boolean;
     onSubmit: (value: string) => void;
-    fieldName: string;
     placeholder?: string;
     title?: ReactNode | string;
+    subtitle?: ReactNode | string;
+    keyboardType?: KeyboardTypeOptions | undefined
 }
 
-export default function FieldSearch({ loading, onSubmit, fieldName, placeholder, title }: FieldSearchProps) {
+export default function FieldSearch({ loading, onSubmit, placeholder, title, subtitle, keyboardType }: FieldSearchProps) {
     const [value, setValue] = useState("");
     const [submitEnabled, setSubmitEnabled] = useState(false)
-
 
     useEffect(() => {
         setSubmitEnabled(value.trim().length > 4);
@@ -39,14 +38,15 @@ export default function FieldSearch({ loading, onSubmit, fieldName, placeholder,
                     <Title>{title}</Title>
 
                     <Text style={styles.subtitle}>
-                        We'll check if it exists in our system.
+                        {subtitle}
                     </Text>
+
                     <TextInput
                         style={styles.input}
                         placeholder={placeholder}
                         value={value}
                         onChangeText={setValue}
-                        //keyboardType=""
+                        keyboardType={keyboardType}
                         returnKeyType="done"
                     //or maxLength={10}
                     />

@@ -1,11 +1,12 @@
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { getJobFromJobNumber, getNewJobFromFleetNumber } from "../../firebase";
+import { getNewJobFromFleetNumber } from "../../firebase";
 import FieldSearch from "./components/FieldSearch";
 import { useNavigation } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
+
+import COLORS from "../../constants/colors";
 
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'FleetNumberEntry'>;
@@ -18,7 +19,6 @@ export default function FleetNumberEntryScreen({ route }: Props) {
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation<Navigation>();
 
-
     const handleSubmit = async (value: string) => {
         setLoading(true);
         console.log(value)
@@ -28,9 +28,7 @@ export default function FleetNumberEntryScreen({ route }: Props) {
                 console.log({ ...result, job: jobNumber })
                 navigation.navigate("JobDescriptionEntry", { job: { ...result, job: jobNumber } });
             } else {
-                //navigate to fleet
-                console.log(result)
-                // navigation.navigate("FleetNumberEntry", { jobNumber: value });
+                //No fleet number found, need to show message
             }
 
         } catch (error) {
@@ -40,18 +38,14 @@ export default function FleetNumberEntryScreen({ route }: Props) {
         }
     };
 
-
-
     return (
-        <>
-            <FieldSearch
-                loading={loading}
-                onSubmit={handleSubmit}
-                fieldName="fleet"
-                placeholder="e.g FN2024"
-            />
-
-        </>
-
+        <FieldSearch
+            loading={loading}
+            onSubmit={handleSubmit}
+            placeholder="e.g FN2024"
+            title={<>Enter the <Text style={{ fontWeight: 600, color: COLORS.primary }}>fleet</Text>{"\n"}number</>}
+            subtitle={"We'll check if it exists in our system."}
+            keyboardType="numeric"
+        />
     )
 }

@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Text, StyleSheet } from "react-native";
 import COLORS from "../../constants/colors";
 import PADDING from "../../constants/padding";
-import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import { getJobFromJobNumber } from "../../firebase";
-import { Job } from "../../types/types";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
-import Title from "../../components/text/Title";
-import { createEmptyJob } from "./utls/utils";
-import FieldSearch from "./components/FieldSearch";
 
+import FieldSearch from "./components/FieldSearch";
 
 type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
 
 export default function JobNumberEntryScreen() {
-
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation<Navigation>();
-
 
     const handleSubmit = async (value: string) => {
         setLoading(true);
@@ -30,10 +24,8 @@ export default function JobNumberEntryScreen() {
                 navigation.navigate("JobOverview", { job: result });
             } else {
                 //navigate to fleet
-
                 navigation.navigate("FleetNumberEntry", { jobNumber: value });
             }
-
         } catch (error) {
             // Handle error (e.g., show a message)
         } finally {
@@ -41,15 +33,14 @@ export default function JobNumberEntryScreen() {
         }
     };
 
-
-
     return (
         <FieldSearch
             loading={loading}
             onSubmit={handleSubmit}
-            fieldName="job"
             placeholder="e.g 130560"
-            title={<>Enter the job{"\n"}number</>}
+            title={<>Enter the <Text style={{ fontWeight: 600, color: COLORS.primary }}>job</Text>{"\n"}number</>}
+            subtitle={"We'll check if it exists in our system."}
+            keyboardType="numeric"
         />
     );
 }
