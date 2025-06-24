@@ -30,7 +30,7 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
             <View style={{ width: 36, alignItems: 'flex-start', justifyContent: 'center' }}>
                 {onBack && (
                     <TouchableOpacity onPress={onBack}>
-                        <Icon name="arrow-left" size={24} color={COLORS.black} />
+                        <Icon name="chevron-left" size={24} color={COLORS.black} />
                     </TouchableOpacity>
                 )}
             </View>
