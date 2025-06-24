@@ -266,6 +266,7 @@ export function createEmptyJob(): Job {
         customerAddressTown: "",
         siteContact: "",
         siteContactPhone: "",
+        coords: { latitude: 0, longitude: 0 }
     } as Job
 }
 
