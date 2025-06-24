@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView, Text, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,8 @@ import { Job, TabType } from '../types/types';
 import { getStoredUserField } from '../storage/storage';
 import JobsFilters from '../components/JobsFilters';
 import COLORS from '../constants/colors';
+import JobListItem from '../components/JobListItem';
+import PADDING from '../constants/padding';
 
 const JobsScreen = () => {
 
@@ -63,13 +65,13 @@ const JobsScreen = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.background }}>
-            <SearchBar
+        <SafeAreaView style={styles.container}>
+            {/* <SearchBar
                 value={query}
                 onChangeText={setQuery}
                 handleSearch={() => console.log(query)}
                 autoSearch={true}
-            />
+            /> */}
 
 
             <FlatList
@@ -77,7 +79,7 @@ const JobsScreen = () => {
                 data={filteredJobs()}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <JobInfoBlock
+                    <JobListItem
                         job={item}
                         onPress={() => handleOpen(item)}
                     />
@@ -95,3 +97,13 @@ const JobsScreen = () => {
     )
 }
 export default JobsScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.background,
+        padding: PADDING.horizontal,
+    },
+
+
+});

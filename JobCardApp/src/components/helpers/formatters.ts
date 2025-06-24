@@ -4,7 +4,9 @@ export const formatDate = (date: string) => {
 
     const formatted = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-    return formatted
+    const comma = formatted.split(" ")
+
+    return `${comma[1]} ${comma[0]}, ${comma[2]}`
 }
 
 export const formatDateTime = (date: string) => {
@@ -24,3 +26,8 @@ export const formatDateTime = (date: string) => {
 
     return `${formattedDate} ${formattedTime}`;
 };
+
+export function capitalizeFirst(string: string) {
+    if (!string) return '';
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
