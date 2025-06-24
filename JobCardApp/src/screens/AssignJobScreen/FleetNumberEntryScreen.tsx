@@ -35,7 +35,7 @@ export default function FleetNumberEntryScreen({ route, navigation }: Props) {
             if (result !== null) {
                 navigation.navigate("JobDescriptionEntry", { job: { ...result, job: jobNumber } });
             } else {
-                setError("No fleet number found.");
+                setError(`Fleet ${value} does not exist in system`);
             }
         } catch (error) {
             setError("Something went wrong. Please try again.");
