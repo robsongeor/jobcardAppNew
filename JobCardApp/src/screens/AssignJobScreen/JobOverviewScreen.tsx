@@ -21,6 +21,10 @@ export default function JobOverviewScreen({ route }: Props) {
 
     const mapUrl = getStaticMapUrl(job.coords.latitude, job.coords.longitude);
 
+    const handleAssign = () => {
+        console.log(job)
+    }
+
     return (
         <View style={styles.screen}>
 
@@ -92,7 +96,10 @@ export default function JobOverviewScreen({ route }: Props) {
             </View>
             <BottomRightButton
                 disabled={!job.description}
-                label="Assign" />
+                label="Assign"
+                onPress={handleAssign}
+            />
+
         </View>
     );
 }
