@@ -12,7 +12,7 @@ import Title from "../../../components/text/Title";
 import BottomRightButton from "../../../components/form/Buttons/BottomRightButton";
 import PADDING from "../../../constants/padding";
 import COLORS from "../../../constants/colors";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 
 type FieldSearchProps = {
     loading: boolean;
@@ -23,7 +23,6 @@ type FieldSearchProps = {
     keyboardType?: KeyboardTypeOptions;
     errorMessage?: string | null;
     resetError?: React.Dispatch<React.SetStateAction<string | null>>;
-
 };
 
 export default function FieldSearch({
