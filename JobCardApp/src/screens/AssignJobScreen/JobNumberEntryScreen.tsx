@@ -5,6 +5,13 @@ import PADDING from "../../constants/padding";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import { getJobFromJobNumber } from "../../firebase";
 import { Job } from "../../types/types";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
+import Title from "../../components/text/Title";
+
+
+type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
 
 export default function JobNumberEntryScreen() {
     const [jobNumber, setJobNumber] = useState("");
@@ -13,12 +20,16 @@ export default function JobNumberEntryScreen() {
     const [loading, setLoading] = useState(false);
 
 
+    const navigation = useNavigation<Navigation>();
+
+
     const handleSubmit = async () => {
         setLoading(true);
         try {
             const result = await getJobFromJobNumber(jobNumber);
             if (result !== null) {
                 setJob(result);
+                navigation.navigate("JobOverview", { job: result });
                 // Navigation logic here if you want!
             } else {
                 //navigate to fleet
@@ -48,7 +59,7 @@ export default function JobNumberEntryScreen() {
                     contentContainerStyle={styles.container}
                     keyboardShouldPersistTaps="handled"
                 >
-                    <Text style={styles.title}>Enter your job number</Text>
+                    <Title>Enter your job number</Title>
                     <Text style={styles.subtitle}>
                         We'll check if this job exists in our system.
                     </Text>
@@ -82,12 +93,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: PADDING.horizontal,
         backgroundColor: COLORS.background,
     },
-    title: {
-        fontSize: 40,
-        fontWeight: "600",
-        marginBottom: 8,
-        color: "#111",
-    },
+
     subtitle: {
         fontSize: 16,
         color: "#555",

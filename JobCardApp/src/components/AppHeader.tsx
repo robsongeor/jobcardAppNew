@@ -4,9 +4,10 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import COLORS from '../constants/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import PADDING from '../constants/padding';
 
 type AppHeaderType = {
-    title: string;
+    title?: string;
     onBack?: () => void;
 }
 
@@ -22,13 +23,13 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
                 paddingTop: insets.top,
                 backgroundColor: COLORS.background,
                 paddingBottom: 20,
-                paddingHorizontal: 24,
+                paddingHorizontal: PADDING.horizontal,
             }}
         >
             {/* Left: back button or empty view for spacing */}
             <View style={{ width: 36, alignItems: 'flex-start', justifyContent: 'center' }}>
                 {onBack && (
-                    <TouchableOpacity onPress={onBack} style={{ padding: 4 }}>
+                    <TouchableOpacity onPress={onBack} style={{ padding: 0, backgroundColor: "#aaa" }}>
                         <Icon name="arrow-left" size={24} color={COLORS.black} />
                     </TouchableOpacity>
                 )}
