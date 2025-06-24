@@ -45,7 +45,7 @@ export default function FleetNumberEntryScreen({ route }: Props) {
             placeholder="e.g FN2024"
             title={<>Enter the <Text style={{ fontWeight: 600, color: COLORS.primary }}>fleet</Text>{"\n"}number</>}
             subtitle={"We'll check if it exists in our system."}
-            keyboardType="numeric"
+
         />
     )
 }
