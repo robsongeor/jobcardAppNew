@@ -10,7 +10,7 @@ export type AssignJobStackParamList = {
     JobNumberEntry: undefined;
     JobOverview: { job: Job };
     FleetNumberEntry: { jobNumber: string };
-    JobDescriptionEntry: { job: Job }
+    JobDescriptionEntry: { job: Job };
 };
 
 const Stack = createNativeStackNavigator<AssignJobStackParamList>();
@@ -23,9 +23,7 @@ export default function AssignJobStack() {
                 name="JobNumberEntry"
                 component={JobNumberEntryScreen}
                 options={({ route, navigation }) => ({
-
                     header: () => <AppHeader />
-
                 })}
 
             />
@@ -33,21 +31,16 @@ export default function AssignJobStack() {
                 name="JobOverview"
                 component={JobOverviewScreen}
                 options={({ route, navigation }) => ({
-
                     header: () => <AppHeader
-
                         onBack={() => navigation.goBack()}
                     />
-
                 })}
             />
             <Stack.Screen
                 name="FleetNumberEntry"
                 component={FleetNumberEntryScreen}
                 options={({ route, navigation }) => ({
-
                     header: () => <AppHeader
-
                         onBack={() => navigation.goBack()}
                     />
 
@@ -57,9 +50,7 @@ export default function AssignJobStack() {
                 name="JobDescriptionEntry"
                 component={JobDescriptionEntryScreen}
                 options={({ route, navigation }) => ({
-
                     header: () => <AppHeader
-
                         onBack={() => navigation.goBack()}
                     />
 
