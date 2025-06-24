@@ -1,6 +1,6 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc } from '@react-native-firebase/firestore';
 
 
 import { Job, Machine } from './types/types';
@@ -241,6 +241,17 @@ export const getNewJobFromFleetNumber = async (fleetNumber: string): Promise<Job
         }
     }
     return null;
+}
+
+export const createNewJob = async (job: Job): Promise<boolean> => {
+    try {
+        const db = getFirestore();
+        await addDoc(collection(db, 'jobs'), job)
+        return true
+    } catch (error) {
+        console.error("Error submitting to FireStore:", error);
+        return false;
+    }
 }
 
 
