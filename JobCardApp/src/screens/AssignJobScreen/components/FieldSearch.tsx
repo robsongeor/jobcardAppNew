@@ -26,9 +26,6 @@ type FieldSearchProps = {
 
 };
 
-/**
- * A simple, reusable search field with title, subtitle, and a submit button.
- */
 export default function FieldSearch({
     loading,
     onSubmit,
@@ -39,11 +36,9 @@ export default function FieldSearch({
     errorMessage,
     resetError,
 }: FieldSearchProps) {
+
     const [value, setValue] = useState("");
-
-    // Enable submit if value is at least 5 chars (trimmed)
     const submitEnabled = value.trim().length > 4;
-
 
     const onChangeText = (value: string) => {
         setValue(value)
