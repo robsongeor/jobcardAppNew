@@ -246,7 +246,11 @@ export const getNewJobFromFleetNumber = async (fleetNumber: string): Promise<Job
 export const createNewJob = async (job: Job): Promise<boolean> => {
     try {
         const db = getFirestore();
-        await addDoc(collection(db, 'jobs'), job)
+        const docRef = await addDoc(collection(db, 'jobs'), job)
+
+        // Step 2: Update doc with its Firestore-generated ID
+        await updateDoc(docRef, { id: docRef.id });
+
         return true
     } catch (error) {
         console.error("Error submitting to FireStore:", error);

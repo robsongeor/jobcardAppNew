@@ -30,21 +30,25 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
     const mapUrl = getStaticMapUrl(job.coords.latitude, job.coords.longitude);
 
     const handleAssign = async () => {
+
         const uid = getStoredUserField('uid');
         if (!uid) return;
 
         try {
             // If job doesn't exist, create it
-            if (getJobFromJobNumber(job.job) === null) {
+            const jobExists = await getJobFromJobNumber(job.job)
+            if (jobExists === null) {
                 let updatedJob = {
                     ...job,
                     assignedTo: Array.from(new Set([...(job.assignedTo || []), uid])),
                     assignedDate: { ...(job.assignedDate || {}), [uid]: new Date().toISOString() },
                     assignedStatus: { ...(job.assignedStatus || {}), [uid]: "assigned" }
                 };
+
                 await createNewJob(updatedJob);
             } else {
-                await assignJobToUser(job.job, uid);
+
+                await assignJobToUser(jobExists.id, uid);
             }
         } catch (error) {
             // Show error message to user (toast, modal, etc.)
@@ -117,7 +121,6 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
                                 {job.description}
                             </Text>
                         </View>
-
                     </View>
                 </View>
 
