@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import Title from "../../components/text/Title";
@@ -8,11 +8,18 @@ import COLORS from "../../constants/colors";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SubHeading from "./components/SubHeading";
 import Icon from "react-native-vector-icons/Feather";
+import Config from "react-native-config";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
 export default function JobOverviewScreen({ route }: Props) {
     const { job } = route.params;
+
+    function getStaticMapUrl(lat: number, lng: number) {
+        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=600x300&markers=color:red|${lat},${lng}&key=${Config.GOOGLE_MAPS_API_KEY}`;
+    }
+
+    const mapUrl = getStaticMapUrl(job.coords.latitude, job.coords.longitude);
 
     return (
         <View style={styles.screen}>
@@ -45,7 +52,11 @@ export default function JobOverviewScreen({ route }: Props) {
 
                     {/* MAP */}
                     <View style={styles.map}>
-
+                        <Image
+                            style={{ width: "100%", height: 120, borderRadius: 12 }}
+                            source={{ uri: mapUrl }}
+                            resizeMode="cover"
+                        />
                     </View>
 
                     {/* DETAILS */}

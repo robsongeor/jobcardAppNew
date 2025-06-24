@@ -19,6 +19,7 @@ export type Job = {
     customerAddressTown: string;
     siteContact: string;
     siteContactPhone: string;
+    coords: { latitude: number, longitude: number }
 };
 
 export type JobActivityType = {
