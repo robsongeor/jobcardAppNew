@@ -1,17 +1,14 @@
 import { Text } from "react-native";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { getNewJobFromFleetNumber } from "../../firebase";
 import FieldSearch from "./components/FieldSearch";
-import { useNavigation } from "@react-navigation/native";
 
 import COLORS from "../../constants/colors";
 import { Job } from "../../types/types";
 
-
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'FleetNumberEntry'>;
-
 
 export default function FleetNumberEntryScreen({ route, navigation }: Props) {
     // Check for route first
@@ -23,7 +20,6 @@ export default function FleetNumberEntryScreen({ route, navigation }: Props) {
     }
 
     const { jobNumber } = route.params
-
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>("");
 
