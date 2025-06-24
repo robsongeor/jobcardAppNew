@@ -21,7 +21,7 @@ type FieldSearchProps = {
     title?: ReactNode;
     subtitle?: ReactNode;
     keyboardType?: KeyboardTypeOptions;
-    errorMessage?: ReactNode;
+    errorMessage?: string | null;
     resetError?: React.Dispatch<React.SetStateAction<string | null>>;
 
 };
@@ -40,19 +40,14 @@ export default function FieldSearch({
     resetError,
 }: FieldSearchProps) {
     const [value, setValue] = useState("");
-    const [displayError, setDisplayError] = useState(false)
 
     // Enable submit if value is at least 5 chars (trimmed)
     const submitEnabled = value.trim().length > 4;
 
-    useEffect(() => {
-        setDisplayError(false);
-    }, [value]);
 
     const onChangeText = (value: string) => {
         setValue(value)
         if (resetError) { resetError(null) }
-
     }
 
     return (
@@ -77,6 +72,7 @@ export default function FieldSearch({
                         keyboardType={keyboardType}
                         returnKeyType="done"
                         editable={!loading}
+                        onSubmitEditing={() => onSubmit(value.trim())}
                     />
 
                     {errorMessage &&

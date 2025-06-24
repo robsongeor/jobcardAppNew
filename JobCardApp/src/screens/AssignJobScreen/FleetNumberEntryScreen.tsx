@@ -25,7 +25,7 @@ export default function FleetNumberEntryScreen({ route, navigation }: Props) {
     const { jobNumber } = route.params
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>("");
 
     const handleSubmit = async (value: string) => {
         setLoading(true);
