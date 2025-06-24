@@ -9,30 +9,29 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import Title from "../../components/text/Title";
+import { createEmptyJob } from "./utls/utils";
+import FieldSearch from "./components/FieldSearch";
 
 
 type Navigation = NativeStackNavigationProp<AssignJobStackParamList, "JobNumberEntry">;
 
 export default function JobNumberEntryScreen() {
-    const [jobNumber, setJobNumber] = useState("");
-    const [submitEnabled, setSubmitEnabled] = useState(false)
-    const [job, setJob] = useState<Job | null>(null)
+
     const [loading, setLoading] = useState(false);
-
-
     const navigation = useNavigation<Navigation>();
 
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (value: string) => {
         setLoading(true);
         try {
-            const result = await getJobFromJobNumber(jobNumber);
+            const result = await getJobFromJobNumber(value);
             if (result !== null) {
-                setJob(result);
+
                 navigation.navigate("JobOverview", { job: result });
-                // Navigation logic here if you want!
             } else {
                 //navigate to fleet
+
+                navigation.navigate("FleetNumberEntry", { jobNumber: value });
             }
 
         } catch (error) {
@@ -43,45 +42,14 @@ export default function JobNumberEntryScreen() {
     };
 
 
-    useEffect(() => {
-        setSubmitEnabled(jobNumber.trim().length > 4);
-    }, [jobNumber]);
-
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={0}
-        >
-            <View style={{ flex: 1 }}>
-                <ScrollView
-                    contentContainerStyle={styles.container}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    <Title>Enter your job number</Title>
-                    <Text style={styles.subtitle}>
-                        We'll check if this job exists in our system.
-                    </Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="e.g 130560"
-                        value={jobNumber}
-                        onChangeText={setJobNumber}
-                        keyboardType="number-pad"
-                        returnKeyType="done"
-                        maxLength={10}
-                    />
-
-
-                </ScrollView>
-                <BottomRightButton
-                    label="Search"
-                    disabled={!submitEnabled || loading}
-                    onPress={handleSubmit}
-                />
-            </View>
-        </KeyboardAvoidingView>
+        <FieldSearch
+            loading={loading}
+            onSubmit={handleSubmit}
+            fieldName="job"
+            placeholder="e.g 130560"
+        />
     );
 }
 

@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc } from '@react-native-firebase/firestore';
 
 
-import { Job } from './types/types';
+import { Job, Machine } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
 import { addRecentActivity, convertJobToRecent } from './storage/storage';
 
@@ -217,6 +217,56 @@ export const getJobFromJobNumber = async (jobNumber: string): Promise<Job | null
         }
     }
     return null;
+}
+
+export const getNewJobFromFleetNumber = async (fleetNumber: string): Promise<Job | null> => {
+    const db = getFirestore();
+
+
+    const jobsRef = collection(db, "machines");
+    const q = query(jobsRef, where("fleet", "==", fleetNumber.toLowerCase()));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+        const jobDoc = querySnapshot.docs[0];
+        const data = jobDoc.data();
+
+        // Basic runtime check (expand as needed)
+        if (data && typeof data.fleet === "string") {
+
+            let emptyJob = createEmptyJob()
+            let job = { ...emptyJob, ...data } as Job
+
+            return job;
+        }
+    }
+    return null;
+}
+
+
+export function createEmptyJob(): Job {
+    return {
+        id: "",
+        fleet: "",
+        job: "",
+        customerName: "",
+        machine: {
+            make: "",
+            model: "",
+            serialNumber: "",
+        },
+        assignedTo: [],
+        assignedStatus: {},
+        assignedDate: {},
+        description: "",
+        site: "",
+        status: "",
+        customerAddress: "",
+        customerAddressSuburb: "",
+        customerAddressTown: "",
+        siteContact: "",
+        siteContactPhone: "",
+    } as Job
 }
 
 

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import Title from "../../components/text/Title";
@@ -7,6 +7,7 @@ import SubTitle from "../../components/text/SubTitle";
 import COLORS from "../../constants/colors";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SubHeading from "./components/SubHeading";
+import Icon from "react-native-vector-icons/Feather";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -25,8 +26,7 @@ export default function JobOverviewScreen({ route }: Props) {
 
                 {/* CARD */}
                 <View style={styles.card}>
-                    <Text style={styles.textHeading}>{job.customerName}</Text>
-
+                    <SubTitle>{job.customerName}</SubTitle>
 
                     {/* Address */}
                     <View style={styles.detailsCard}>
@@ -70,16 +70,30 @@ export default function JobOverviewScreen({ route }: Props) {
 
                         <View style={styles.cardSection}>
                             <SubHeading>JOB DESCRIPTION</SubHeading>
-                            <Text style={styles.leftDetail}>
-                                {job.description}
-                            </Text>
+                            {job.description ?
+                                <Text style={styles.leftDetail}>
+                                    {job.description}
+                                </Text>
+                                :
+                                <View style={styles.buttonContainer}>
+                                    <Text style={styles.leftDetail}>Please add a job description</Text>
+                                    <TouchableOpacity style={styles.enterJobButton}>
+                                        <Icon name="plus" size={24} color={COLORS.white} />
+                                    </TouchableOpacity>
+                                </View>
+
+
+                            }
+
                         </View>
 
                     </View>
                 </View>
 
             </View>
-            <BottomRightButton label="Assign" />
+            <BottomRightButton
+                disabled={!job.description}
+                label="Assign" />
         </View>
     );
 }
@@ -94,6 +108,23 @@ const styles = StyleSheet.create({
         marginHorizontal: PADDING.horizontal,
         marginTop: 24,
 
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    enterJobButton: {
+        backgroundColor: COLORS.primary,
+
+        padding: 10,
+
+
+
+    },
+    enterJobText: {
+
+        fontSize: 14,
+        fontWeight: "600",
     },
 
     card: {

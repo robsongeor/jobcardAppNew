@@ -5,18 +5,19 @@ import COLORS from "../../../constants/colors";
 type textSubHeading = {
     children?: ReactNode;
     onPress?: () => void;
+    visible?: boolean
 }
 
-export default function SubHeading({ children, onPress }: textSubHeading) {
+export default function SubHeading({ children, onPress, visible }: textSubHeading) {
 
     return (
         <View style={styles.container}>
 
             <Text style={styles.textSubHeading}>{children}</Text>
 
-            <TouchableOpacity onPress={onPress}>
+            {visible && <TouchableOpacity onPress={onPress}>
                 <Text style={styles.editText}>EDIT</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
         </View>
 
     )

@@ -1,26 +1,32 @@
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity } from "react-native";
 import PADDING from "../../constants/padding";
 import COLORS from "../../constants/colors";
 import { Text } from "react-native-gesture-handler";
 import { ReactNode } from "react";
 
 type SubTitleProps = {
-    children: ReactNode;
+    children?: ReactNode;
     style?: StyleProp<TextStyle>;
+    onPress?: () => void
 };
 
-export default function SubTitle({ children, style }: SubTitleProps) {
-    return <Text style={[styles.title, style]}>{children}</Text>;
+export default function SubTitle({ children, style, onPress }: SubTitleProps) {
+    return (
+        <TouchableOpacity onPress={onPress}>
+            <Text style={[styles.text, style]}>{children}</Text>
+        </TouchableOpacity>
+    )
+
 }
 
 const styles = StyleSheet.create({
 
-    title: {
-        fontSize: 22,
-        fontWeight: "500",
-        marginBottom: 8,
-        color: "#111",
-        //backgroundColor: "#aaa"
+    text: {
+        fontWeight: "600",
+        fontSize: 23,
+        color: "#222",
+        marginBottom: 4,
+        marginTop: 12,
     },
 
 });
