@@ -9,6 +9,8 @@ import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SubHeading from "./components/SubHeading";
 import Icon from "react-native-vector-icons/Feather";
 import Config from "react-native-config";
+import { getStoredUserField } from "../../storage/storage";
+import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../firebase";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -27,9 +29,29 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
     const mapUrl = getStaticMapUrl(job.coords.latitude, job.coords.longitude);
 
-    const handleAssign = () => {
-        console.log(job)
-    }
+    const handleAssign = async () => {
+        const uid = getStoredUserField('uid');
+        if (!uid) return;
+
+        try {
+            // If job doesn't exist, create it
+            if (getJobFromJobNumber(job.job) === null) {
+                let updatedJob = {
+                    ...job,
+                    assignedTo: Array.from(new Set([...(job.assignedTo || []), uid])),
+                    assignedDate: { ...(job.assignedDate || {}), [uid]: new Date().toISOString() },
+                    assignedStatus: { ...(job.assignedStatus || {}), [uid]: "assigned" }
+                };
+                await createNewJob(updatedJob);
+            } else {
+                await assignJobToUser(job.job, uid);
+            }
+        } catch (error) {
+            // Show error message to user (toast, modal, etc.)
+            console.error("Assignment failed:", error);
+        }
+    };
+
 
     return (
         <View style={styles.screen}>
