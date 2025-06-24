@@ -24,25 +24,35 @@ export default function AssignJobStack() {
                 component={JobNumberEntryScreen}
                 options={({ route, navigation }) => ({
                     header: () => <AppHeader />
-                })}
+
+                })
+                }
+
 
             />
             <Stack.Screen
                 name="JobOverview"
                 component={JobOverviewScreen}
-                options={({ route, navigation }) => ({
-                    header: () => <AppHeader
-                        onBack={() => navigation.goBack()}
-                    />
+                options={({ navigation }) => ({
+                    header: () => (
+                        <AppHeader
+                            title="Job Overview"
+                            onBack={() => navigation.goBack()}
+                        />
+                    ),
+                    gestureEnabled: true, // ensure swipe-back is on
                 })}
             />
+
             <Stack.Screen
                 name="FleetNumberEntry"
                 component={FleetNumberEntryScreen}
                 options={({ route, navigation }) => ({
-                    header: () => <AppHeader
+                    header: () => (<AppHeader
                         onBack={() => navigation.goBack()}
                     />
+                    ),
+                    gestureEnabled: true,
 
                 })}
             />
@@ -50,9 +60,11 @@ export default function AssignJobStack() {
                 name="JobDescriptionEntry"
                 component={JobDescriptionEntryScreen}
                 options={({ route, navigation }) => ({
-                    header: () => <AppHeader
+                    header: () => (<AppHeader
                         onBack={() => navigation.goBack()}
                     />
+                    ),
+                    gestureEnabled: true,
 
                 })}
             />

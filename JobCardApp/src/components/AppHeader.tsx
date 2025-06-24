@@ -29,7 +29,7 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
             {/* Left: back button or empty view for spacing */}
             <View style={{ width: 36, alignItems: 'flex-start', justifyContent: 'center' }}>
                 {onBack && (
-                    <TouchableOpacity onPress={onBack} style={{ padding: 0, backgroundColor: "#aaa" }}>
+                    <TouchableOpacity onPress={onBack}>
                         <Icon name="arrow-left" size={24} color={COLORS.black} />
                     </TouchableOpacity>
                 )}
