@@ -70,21 +70,9 @@ export default function JobOverviewScreen({ route }: Props) {
 
                         <View style={styles.cardSection}>
                             <SubHeading>JOB DESCRIPTION</SubHeading>
-                            {job.description ?
-                                <Text style={styles.leftDetail}>
-                                    {job.description}
-                                </Text>
-                                :
-                                <View style={styles.buttonContainer}>
-                                    <Text style={styles.leftDetail}>Please add a job description</Text>
-                                    <TouchableOpacity style={styles.enterJobButton}>
-                                        <Icon name="plus" size={24} color={COLORS.white} />
-                                    </TouchableOpacity>
-                                </View>
-
-
-                            }
-
+                            <Text style={styles.leftDetail}>
+                                {job.description}
+                            </Text>
                         </View>
 
                     </View>
