@@ -7,7 +7,6 @@ import SubTitle from "../../components/text/SubTitle";
 import COLORS from "../../constants/colors";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SubHeading from "./components/SubHeading";
-import Icon from "react-native-vector-icons/Feather";
 import Config from "react-native-config";
 import { getStoredUserField } from "../../storage/storage";
 import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../firebase";
