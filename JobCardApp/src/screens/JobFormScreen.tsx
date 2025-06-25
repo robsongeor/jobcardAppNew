@@ -11,6 +11,9 @@ import SubmitSection from '../components/form/SubmitSection';
 import JobInfo from '../components/form/JobInfo';
 import FormTabBar from '../components/FormTabBar';
 import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
+import COLORS from '../constants/colors';
+import PADDING from '../constants/padding';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -24,47 +27,59 @@ const JobFormScreen = () => {
 
     if (!form) return null; // or a loading state
     return (
-        <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
-            <Tab.Screen name="Info">
-                {() => (
-                    <ScrollView>
-                        <JobInfo job={job} />
-                        <DescriptionSection
-                            description={form.description}
-                            setDescription={(updated) => updateField('description', updated)}
+        <View style={styles.container}>
+
+
+            <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
+                <Tab.Screen name="Info">
+                    {() => (
+                        <ScrollView>
+                            <JobInfo job={job} />
+                            <DescriptionSection
+                                description={form.description}
+                                setDescription={(updated) => updateField('description', updated)}
+                            />
+                        </ScrollView>
+                    )}
+                </Tab.Screen>
+
+                <Tab.Screen name="Activity">
+                    {() => (
+                        <ActivitySection
+                            activity={form.activity ?? []}
+                            setActivity={(updated) => updateField('activity', updated)}
                         />
-                    </ScrollView>
-                )}
-            </Tab.Screen>
+                    )}
+                </Tab.Screen>
 
-            <Tab.Screen name="Activity">
-                {() => (
-                    <ActivitySection
-                        activity={form.activity ?? []}
-                        setActivity={(updated) => updateField('activity', updated)}
-                    />
-                )}
-            </Tab.Screen>
+                <Tab.Screen name="Parts">
+                    {() => (
+                        <PartsSection
+                            parts={form.parts ?? []}
+                            setParts={(updated) => updateField('parts', updated)}
+                        />
+                    )}
+                </Tab.Screen>
 
-            <Tab.Screen name="Parts">
-                {() => (
-                    <PartsSection
-                        parts={form.parts ?? []}
-                        setParts={(updated) => updateField('parts', updated)}
-                    />
-                )}
-            </Tab.Screen>
+                <Tab.Screen name="Sign">
+                    {() => <SignSection signed={form.signed} setSignatures={(updated) => updateField('signed', updated)} />}
+                </Tab.Screen>
 
-            <Tab.Screen name="Sign">
-                {() => <SignSection signed={form.signed} setSignatures={(updated) => updateField('signed', updated)} />}
-            </Tab.Screen>
+                <Tab.Screen name="Submit">
+                    {() => <SubmitSection data={form} jobId={job.id} job={job} />}
+                </Tab.Screen>
 
-            <Tab.Screen name="Submit">
-                {() => <SubmitSection data={form} jobId={job.id} job={job} />}
-            </Tab.Screen>
-
-        </Tab.Navigator>
+            </Tab.Navigator>
+        </View>
     );
 };
 
 export default JobFormScreen;
+
+const styles = StyleSheet.create({
+    container: {
+
+        backgroundColor: COLORS.background,
+        flex: 1,
+    }
+})

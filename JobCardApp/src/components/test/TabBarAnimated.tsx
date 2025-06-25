@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { SafeAreaView, View, Text } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { useSharedValue, runOnJS, withTiming } from "react-native-reanimated";
-import AnimatedTabs from "../components/test/animatedTabs";
+import AnimatedTabs from "./animatedTabs";
+import { TabType } from "../../types/types";
 
 
-const TAB_LABELS = ["Assigned", "Open", "Submitted", "Overdue"];
 
-export default function SettingsScreen() {
-    const [activeTab, setActiveTab] = useState(0);
+//const TAB_LABELS = ["Assigned", "Open", "Submitted", "Overdue"];
+
+type TabBarAnimatedProps = {
+    children?: ReactNode
+    TAB_LABELS: TabType[]
+    activeTab: number;
+    setActiveTab: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function TabBarAnimated({ children, TAB_LABELS, activeTab, setActiveTab }: TabBarAnimatedProps) {
+    //const [blah, setActiveTab] = useState(0);
     const animatedTabIndex = useSharedValue(0);
 
     // Only allow one animation at a time
@@ -16,7 +25,7 @@ export default function SettingsScreen() {
         if (animatedTabIndex.value === newTab) return;
         animatedTabIndex.value = withTiming(
             newTab,
-            { duration: 300 },
+            { duration: 90 },
             (isFinished) => {
                 if (isFinished) runOnJS(setActiveTab)(newTab);
             }
@@ -43,11 +52,12 @@ export default function SettingsScreen() {
                         animatedTabIndex={animatedTabIndex}
                         onTabPress={handleTabChange}
                     />
-                    <View style={{ alignItems: "center", marginTop: 32 }}>
+                    {children}
+                    {/* <View style={{ alignItems: "center", marginTop: 32 }}>
                         <Text style={{ fontSize: 22 }}>
                             Current tab: {TAB_LABELS[activeTab]}
                         </Text>
-                    </View>
+                    </View> */}
                 </SafeAreaView>
             </GestureDetector>
         </GestureHandlerRootView>

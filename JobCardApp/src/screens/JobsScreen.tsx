@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
@@ -12,11 +12,14 @@ import JobsFilters from '../components/JobsFilters';
 import COLORS from '../constants/colors';
 import JobListItem from '../components/JobListItem';
 import PADDING from '../constants/padding';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 const JobsScreen = () => {
 
     const [query, setQuery] = useState("");
-    const [activeTab, setActiveTab] = useState<TabType>('assigned');
+    const [activeTab, setActiveTab] = useState<TabType>('all');
+    const TAB_ORDER: TabType[] = ["all", "assigned", "submitted", "overdue"];
 
     type NavigationProp = NativeStackNavigationProp<JobsStackParamList, 'JobForm'>;
     const navigation = useNavigation<NavigationProp>();
@@ -64,14 +67,18 @@ const JobsScreen = () => {
         return filtered.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10))
     };
 
+
+
+
     return (
+
         <SafeAreaView style={styles.container}>
-            {/* <SearchBar
+            <SearchBar
                 value={query}
                 onChangeText={setQuery}
                 handleSearch={() => console.log(query)}
                 autoSearch={true}
-            /> */}
+            />
 
 
             <FlatList
@@ -90,10 +97,12 @@ const JobsScreen = () => {
                     <JobsFilters
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
+
                     />
                 }
             />
         </SafeAreaView>
+
     )
 }
 export default JobsScreen;

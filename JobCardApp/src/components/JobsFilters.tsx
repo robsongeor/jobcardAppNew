@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TabType } from "../types/types";
 import PADDING from "../constants/padding";
+import COLORS from "../constants/colors";
 
 type JobsFiltersType = {
     activeTab: string;
     setActiveTab: React.Dispatch<React.SetStateAction<TabType>>;
+
 }
 
 export default function JobsFilters({ activeTab, setActiveTab }: JobsFiltersType) {
+
     return (
         <View style={styles.container}>
-
-
             <TouchableOpacity style={[styles.button, activeTab === 'all' && styles.buttonOn]} onPress={() => setActiveTab('all')}>
                 <Text style={[styles.buttonText, activeTab === 'all' && styles.buttonTextOn]}>All</Text>
             </TouchableOpacity>
@@ -36,30 +36,31 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        marginHorizontal: PADDING.horizontal,
-        marginVertical: 0,
-        marginBottom: 20.
+        justifyContent: "flex-start",
+        backgroundColor: COLORS.white,
+        borderColor: COLORS.white,
+        borderWidth: 3,
+        borderRadius: 8,
+        marginBottom: 20,
+        alignSelf: 'flex-start'
     },
     button: {
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 20,
-        borderWidth: 2,
-        borderColor: 'transparent',
+        borderRadius: 5,
         paddingHorizontal: 14,
         paddingVertical: 6,
     },
     buttonOn: {
-        backgroundColor: '#007AFF',
-        borderColor: '#007AFF',
+        backgroundColor: COLORS.background,
     },
     buttonText: {
         fontSize: 13,
-        color: "#007AFF",
+        color: "#999",
         fontWeight: "bold",
     },
     buttonTextOn: {
-        color: "#fff",
+        color: COLORS.offBlack,
         fontWeight: "bold",
     }
 });

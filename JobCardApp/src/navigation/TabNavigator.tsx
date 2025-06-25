@@ -38,7 +38,6 @@ const TabNavigator: React.FC = () => (
             name="Jobs"
             component={JobsStackNavigator}
             options={({ route }) => ({
-                tabBarLabel: 'Jobs',
                 headerShown: false,
             })}
         />

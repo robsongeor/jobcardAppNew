@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import COLORS from '../constants/colors';
+import PADDING from '../constants/padding';
 
 function getTabOffsets(widths: number[]) {
     const offsets: number[] = [];
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'relative',
         backgroundColor: COLORS.white,
-        borderRadius: 30,
-        marginHorizontal: 24,
+        borderRadius: 8,
+        marginHorizontal: PADDING.horizontal,
         borderWidth: 3,
         borderColor: COLORS.white,
         marginBottom: 14,
@@ -145,8 +146,8 @@ const styles = StyleSheet.create({
     },
     pill: {
         height: '100%',
-        backgroundColor: COLORS.primary,
-        borderRadius: 999,
+        backgroundColor: COLORS.background,
+        borderRadius: 5,
         position: 'absolute',
         top: '0%',
         left: 0,
@@ -154,16 +155,18 @@ const styles = StyleSheet.create({
     tab: {
         flex: 1,
         alignItems: 'center',
-        padding: 8,
+        padding: 6,
         zIndex: 1,
     },
     label: {
-        color: '#555',
-        fontWeight: '500',
+        fontSize: 13,
+        color: '#999',
+        fontWeight: 'bold',
     },
     labelFocused: {
-        color: '#fff',
-        fontWeight: '500',
+        fontSize: 13,
+        color: COLORS.offBlack,
+        fontWeight: 'bold',
     },
 });
 

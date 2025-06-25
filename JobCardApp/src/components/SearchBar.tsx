@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import PADDING from '../constants/padding';
+import COLORS from '../constants/colors';
 
 export interface SearchBarProps extends TextInputProps {
     value: string;
@@ -42,6 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 placeholder={placeholder}
                 returnKeyType="search"
                 autoCorrect={false}
+                placeholderTextColor="#999"
                 onSubmitEditing={handleSearch}
                 onFocus={onFocus}
                 {...rest}
@@ -59,16 +61,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
 const styles = StyleSheet.create({
     container: {
         height: 48,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.white,
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: PADDING.horizontal,
+        // marginHorizontal: PADDING.horizontal,
         marginVertical: PADDING.horizontal,
         borderRadius: 48,
     },
     input: {
         height: '100%',
-        fontSize: 16,
+        fontSize: 13,
+        fontWeight: "600",
+        color: "#777",
         flex: 1,
         backgroundColor: 'transparent', // or remove if not needed
         paddingHorizontal: 8, // for better spacing
