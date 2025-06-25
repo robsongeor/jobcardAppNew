@@ -14,6 +14,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
 import COLORS from '../constants/colors';
 import PADDING from '../constants/padding';
+import InfoSection from '../components/form/InfoSection';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
@@ -33,13 +34,23 @@ const JobFormScreen = () => {
             <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
                 <Tab.Screen name="Info">
                     {() => (
-                        <ScrollView>
-                            <JobInfo job={job} />
-                            <DescriptionSection
-                                description={form.description}
-                                setDescription={(updated) => updateField('description', updated)}
-                            />
-                        </ScrollView>
+                        <InfoSection
+                            data={form}
+                            jobId={job.id}
+                            job={job}
+                        />
+
+                    )}
+                </Tab.Screen>
+
+                <Tab.Screen name="Report">
+                    {() => (
+                        <DescriptionSection
+                            job={job}
+                            description={form.description}
+                            setDescription={(updated) => updateField('description', updated)}
+                        />
+
                     )}
                 </Tab.Screen>
 
@@ -65,9 +76,9 @@ const JobFormScreen = () => {
                     {() => <SignSection signed={form.signed} setSignatures={(updated) => updateField('signed', updated)} />}
                 </Tab.Screen>
 
-                <Tab.Screen name="Submit">
+                {/* <Tab.Screen name="Submit">
                     {() => <SubmitSection data={form} jobId={job.id} job={job} />}
-                </Tab.Screen>
+                </Tab.Screen> */}
 
             </Tab.Navigator>
         </View>

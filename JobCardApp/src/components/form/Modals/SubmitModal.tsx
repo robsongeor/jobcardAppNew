@@ -48,7 +48,7 @@ export default function SubmitModal({ loading, showSuccess, showError, closeModa
 const styles = StyleSheet.create({
     loadingOverlay: {
         flex: 1,
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        backgroundColor: 'rgba(0, 255, 255, 0.0)',
         alignItems: 'center',
         justifyContent: 'center',
     },

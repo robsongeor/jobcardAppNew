@@ -1,10 +1,13 @@
 
 
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Field from "./FormInputs/Field";
 import SmallTextInput from "./FormInputs/SmallTextInput";
-import { JobDescriptionType } from "../../types/types";
+import { Job, JobDescriptionType } from "../../types/types";
 import SmallCheckBoxInput from "./FormInputs/SmallCheckBoxInput";
+import JobOverviewCard from "../JobOverviewCard";
+import PADDING from "../../constants/padding";
+import COLORS from "../../constants/colors";
 
 
 
@@ -12,9 +15,10 @@ import SmallCheckBoxInput from "./FormInputs/SmallCheckBoxInput";
 type DescriptionSectionProps = {
     description: JobDescriptionType;
     setDescription: React.Dispatch<React.SetStateAction<JobDescriptionType>>;
+    job: Job
 }
 
-export default function DescriptionSection({ description, setDescription }: DescriptionSectionProps) {
+export default function DescriptionSection({ description, setDescription, job }: DescriptionSectionProps) {
 
     const updateField = (name: string, value: string | boolean) => {
         const updated = {
@@ -26,39 +30,48 @@ export default function DescriptionSection({ description, setDescription }: Desc
     }
 
     return (
+        <ScrollView style={styles.container}>
 
-        <Field>
+            <Field>
+                <SmallCheckBoxInput
+                    label="Chargeable"
+                    inputPlaceholder="reason (damage, customer unit, etc)"
+                    checkBoxValue={description.chargeable}
+                    onCheckBoxChange={(value) => updateField("chargeable", value)}
+                    value={description.chargeableComment}
+                    onChangeText={(value) => updateField("chargeableComment", value)}
+                />
+                <SmallTextInput
+                    label="Order Number"
+                    value={description.orderNo}
+                    onChangeText={(value) => updateField("orderNo", value)}
+                    keyboardType="numeric"
+                />
+                <SmallTextInput
+                    label="Hours"
+                    value={description.hours}
+                    onChangeText={(value) => updateField("hours", value)}
+                    required
+                />
+                <SmallTextInput
+                    multiline
+                    label="Report"
+                    value={description.report}
+                    onChangeText={(value) => updateField("report", value)}
+                    required
+                />
+            </Field>
 
-            <SmallCheckBoxInput
-                label="Chargeable"
-                inputPlaceholder="reason (damage, customer unit, etc)"
-                checkBoxValue={description.chargeable}
-                onCheckBoxChange={(value) => updateField("chargeable", value)}
-                value={description.chargeableComment}
-                onChangeText={(value) => updateField("chargeableComment", value)}
-            />
-            <SmallTextInput
-                label="Order Number"
-                value={description.orderNo}
-                onChangeText={(value) => updateField("orderNo", value)}
-                keyboardType="numeric"
-            />
-            <SmallTextInput
-                label="Hours"
-                value={description.hours}
-                onChangeText={(value) => updateField("hours", value)}
-                required
-            />
-            <SmallTextInput
-                multiline
-                label="Report"
-                value={description.report}
-                onChangeText={(value) => updateField("report", value)}
-                required
-            />
-        </Field>
-
-
+        </ScrollView>
     )
 }
 
+
+const styles = StyleSheet.create({
+
+    container: {
+        flex: 1,
+
+        backgroundColor: COLORS.background
+    },
+})

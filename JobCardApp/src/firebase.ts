@@ -250,7 +250,7 @@ export const createNewJob = async (job: Job): Promise<boolean> => {
 
         // Step 2: Update doc with its Firestore-generated ID
         await updateDoc(docRef, { id: docRef.id });
-
+        addRecentActivity(convertJobToRecent(job as Job, "assigned"))
         return true
     } catch (error) {
         console.error("Error submitting to FireStore:", error);

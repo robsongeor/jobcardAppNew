@@ -85,7 +85,7 @@ export const SmallInputStyles = StyleSheet.create({
         flex: 1,
     },
     multiline: {
-        minHeight: 100,
+        minHeight: 300,
         textAlignVertical: "top",
     },
     flex: {

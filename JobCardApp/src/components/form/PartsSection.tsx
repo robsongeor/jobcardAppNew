@@ -1,5 +1,5 @@
 
-import { View } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { QuantityInputType } from "../../types/types";
 import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
@@ -8,6 +8,7 @@ import EditTable, { Row, TableHeader } from "./FormInputs/EditTable";
 import ListInputs from "./FormInputs/ListInputs";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import QuantityInput from "./QuantityInput";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type PartsSectionProps = {
     parts: QuantityInputType[];
@@ -18,6 +19,8 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
     const [quantity, setQuantity] = useState("");
     const [description, setDescription] = useState("");
     const [isEdit, setIsEdit] = useState<number | null>(null);
+    const insets = useSafeAreaInsets ? useSafeAreaInsets() : { top: 0 };
+
 
 
     const headers: TableHeader[] = [
@@ -69,7 +72,11 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={64 + insets.top + 50}
+        >
 
             <EditTable
                 headers={headers}
@@ -95,6 +102,6 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
                     label="Part Description"
                 />
             </ListInputs>
-        </View>
+        </KeyboardAvoidingView>
     )
 }

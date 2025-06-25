@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: COLORS.white,
         marginBottom: 14,
+        height: 36,
     },
     pillContainer: {
         ...StyleSheet.absoluteFillObject,
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 13,
         color: '#999',
-        fontWeight: 'bold',
+        fontWeight: '500',
     },
     labelFocused: {
         fontSize: 13,

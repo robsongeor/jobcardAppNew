@@ -12,9 +12,9 @@ type SubTitleProps = {
 
 export default function SubTitle({ children, style, onPress }: SubTitleProps) {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Text style={[styles.text, style]}>{children}</Text>
-        </TouchableOpacity>
+        //<TouchableOpacity onPress={onPress}>
+        <Text style={[styles.text, style]}>{children}</Text>
+        //</TouchableOpacity>
     )
 
 }

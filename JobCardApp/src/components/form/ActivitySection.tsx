@@ -4,6 +4,7 @@ import {
     View,
     KeyboardAvoidingView,
     StyleSheet,
+    ScrollView,
 } from "react-native";
 import uuid from "react-native-uuid";
 import { JobActivityType } from "../../types/types";
@@ -13,6 +14,7 @@ import ListInputs from "./FormInputs/ListInputs";
 import EditTable, { Row, TableHeader } from "./FormInputs/EditTable";
 import { formatDate } from "../helpers/formatters";
 import Field from "./FormInputs/Field";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ActivitySectionProps = {
     activity: JobActivityType[];
@@ -24,6 +26,7 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     const [hours, setHours] = useState("");
     const [kms, setKms] = useState("");
     const [isEdit, setIsEdit] = useState<number | null>(null);
+    const insets = useSafeAreaInsets ? useSafeAreaInsets() : { top: 0 };
 
     const headers: TableHeader[] = [
         { label: "Date", flex: 1, textAlign: "left" },
@@ -90,45 +93,48 @@ export default function ActivitySection({ activity, setActivity }: ActivitySecti
     };
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            keyboardVerticalOffset={100}
-        >
-
-            <EditTable
-                headers={headers}
-                rows={rows}
-                deleteRow={deleteActivity}
-                fillFieldsOnEdit={fillFieldsOnEdit}
-                isEdit={isEdit}
-            />
-
-
-            <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity} deleteFunction={deleteActivity}>
-                <SmallDateInput
-                    label="Date"
-                    date={date}
-                    setDate={setDate}
-                />
-                <View style={styles.twoColumn}>
-                    <SmallTextInput
-                        style={{ flex: 1, }}
-                        value={hours}
-                        onChangeText={setHours}
-                        label="Hours"
-                        keyboardType="numeric"
-                    />
-                    <SmallTextInput
-                        style={{ flex: 1, }}
-                        value={kms}
-                        onChangeText={setKms}
-                        label="Mileage (km)"
-                        keyboardType="numeric"
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={64 + insets.top + 50}
+            >
+                <View style={{ flex: 1 }}>
+                    <EditTable
+                        headers={headers}
+                        rows={rows}
+                        deleteRow={deleteActivity}
+                        fillFieldsOnEdit={fillFieldsOnEdit}
+                        isEdit={isEdit}
                     />
                 </View>
-            </ListInputs>
-        </KeyboardAvoidingView>
+
+
+                <ListInputs isEdit={isEdit} label={"Activity"} addFunction={addActivity} deleteFunction={deleteActivity}>
+                    <SmallDateInput
+                        label="Date"
+                        date={date}
+                        setDate={setDate}
+                    />
+                    <View style={styles.twoColumn}>
+                        <SmallTextInput
+                            style={{ flex: 1, }}
+                            value={hours}
+                            onChangeText={setHours}
+                            label="Hours"
+                            keyboardType="numeric"
+                        />
+                        <SmallTextInput
+                            style={{ flex: 1, }}
+                            value={kms}
+                            onChangeText={setKms}
+                            label="Mileage (km)"
+                            keyboardType="numeric"
+                        />
+                    </View>
+                </ListInputs>
+            </KeyboardAvoidingView>
+        </ScrollView>
     );
 }
 
@@ -137,5 +143,6 @@ const styles = StyleSheet.create({
     twoColumn: {
         flexDirection: "row",
         gap: 16,
-    }
+    },
+
 })

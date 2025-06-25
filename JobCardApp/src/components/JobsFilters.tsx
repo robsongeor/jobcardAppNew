@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 13,
         color: "#999",
-        fontWeight: "bold",
+        fontWeight: "500",
     },
     buttonTextOn: {
         color: COLORS.offBlack,

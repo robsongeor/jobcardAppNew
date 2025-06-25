@@ -29,7 +29,7 @@ const JobsStackNavigator = () => {
                 options={({ route, navigation }) => ({
 
                     header: () => <AppHeader
-                        title={`${route.params.job.fleet.toUpperCase()} - ${route.params.job.job}`}
+                        title={`${route.params.job.fleet.toUpperCase()}`}
                         onBack={() => navigation.goBack()}
                     />
 
