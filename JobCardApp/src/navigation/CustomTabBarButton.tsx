@@ -15,9 +15,9 @@ const iconMap: { [key: string]: string } = {
 const colorMap: {
     [key: string]: { primary: string; secondary: string }
 } = {
-    Dashboard: { primary: '#E1A700', secondary: '#FFF8E1' },
-    Jobs: { primary: '#1E90FF', secondary: '#E3F0FF' },
-    Assign: { primary: '#4CAF50', secondary: '#E8F5E9' },
+    Dashboard: { primary: '#666', secondary: '#eee' },
+    Jobs: { primary: '#666', secondary: '#eee' },
+    Assign: { primary: '#666', secondary: '#eee' },
     Settings: { primary: '#666', secondary: '#EEE' },
 };
 

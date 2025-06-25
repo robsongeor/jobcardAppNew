@@ -34,6 +34,8 @@ export default function SettingsScreen() {
             }
         });
 
+    return
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <GestureDetector gesture={swipeGesture}>
