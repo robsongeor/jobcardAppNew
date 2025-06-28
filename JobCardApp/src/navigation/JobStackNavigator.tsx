@@ -5,6 +5,9 @@ import JobFormScreen from '../screens/JobFormScreen';
 import { Job } from '../types/types';
 import AppHeader from '../components/AppHeader';
 import JobsScreen from '../screens/JobsScreen';
+import CustomButton from '../components/form/Buttons/CustomButton';
+import HeaderButton from '../components/form/Buttons/HeaderButton';
+import { View } from 'react-native';
 
 
 export type JobsStackParamList = {
@@ -31,6 +34,23 @@ const JobsStackNavigator = () => {
                     header: () => <AppHeader
                         title={`${route.params.job.fleet.toUpperCase()}`}
                         onBack={() => navigation.goBack()}
+                        right={
+                            <View style={{ flexDirection: "row" }}>
+                                <HeaderButton
+
+                                    icon="camera"
+                                    //onPress={handleAssign}
+                                    disabled={false}
+                                />
+                                <HeaderButton
+
+                                    icon="send"
+                                    //onPress={handleAssign}
+                                    disabled={false}
+                                />
+                            </View>
+
+                        }
                     />
 
                 })}

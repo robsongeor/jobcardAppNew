@@ -100,12 +100,12 @@ export default function InfoSection({ data, jobId, job }: InfoSectionProps) {
                 <JobOverviewCard
                     job={job}
                 />
-                <BottomRightButton
+                {/* <BottomRightButton
                     label="Submit"
                     disabled={loading}
                     onPress={() => handleSubmit(data)}
                     icon={"send"}
-                />
+                /> */}
             </View>
         </>
     )

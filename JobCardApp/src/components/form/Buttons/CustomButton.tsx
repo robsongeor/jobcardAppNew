@@ -17,6 +17,7 @@ export default function CustomButton({ text, icon, onPress, style, disabled }: C
                 style,
                 styles.button,
                 disabled && styles.disabledButton, // apply disabled style if needed
+                text && { paddingHorizontal: 20 },
             ]}
             onPress={onPress}
             disabled={disabled}
@@ -30,8 +31,8 @@ export default function CustomButton({ text, icon, onPress, style, disabled }: C
             {icon && (
                 <Icon
                     name={icon}
-                    size={15}
-                    color={COLORS.background}
+                    size={17}
+
                 />
             )}
         </TouchableOpacity>
@@ -45,8 +46,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         height: 40,
+        minWidth: 40,
         borderRadius: 8,
-        paddingHorizontal: 15,
+
         gap: 8,
     },
     text: {
