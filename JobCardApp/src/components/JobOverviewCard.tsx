@@ -36,7 +36,7 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
 
 
                 <View style={[{ flexDirection: "row", alignItems: "center" }, styles.header]}>
-                    <View style={[{ flex: 1, flexDirection: "row", alignItems: "center" }, styles.title]}>
+                    <View style={[{ flexDirection: "row", alignItems: "center" }, styles.title]}>
                         <Title style={{ fontWeight: "200" }}>Job </Title>
                         <Title style={{ fontWeight: "600" }}>{job.job}</Title>
                     </View>
@@ -50,7 +50,7 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
 
                 {/* CARD */}
                 <View style={styles.card}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <SubTitle>{job.customerName}</SubTitle>
                         <Status
                             status={job.assignedStatus[uid]}

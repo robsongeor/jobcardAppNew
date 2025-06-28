@@ -1,18 +1,25 @@
 {
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ]
+  "functions": {
+    "source": "functions",
+    "codebase": "default",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "*.local"
+    ],
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+<<<<<<< HEAD
+    ],
+    "environment": {
+      "GMAIL_CLIENT_ID": "430743004571-5hdr0vqspdrbsielopgu15jco6na80a2.apps.googleusercontent.com",
+      "GMAIL_REDIRECT_URI": "urn:ietf:wg:oauth:2.0:oob",
+      "GMAIL_SENDER_EMAIL": "liftrucksservice@gmail.com"
     }
-  ]
+=======
+    ]
+>>>>>>> 31f2234 (fix: overview status alignment and title wrapping)
+  }
 }

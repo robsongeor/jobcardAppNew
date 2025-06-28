@@ -5,14 +5,13 @@ const {PDFDocument} = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
-const {userInfo} = require("./pass");
+// const {userInfo} = require("./pass");
 const {formatDate} = require("./formatter");
 
 
-admin.initializeApp();
-
 // Setup email transport using a Gmail account
-const transporter = nodemailer.createTransport(userInfo);
+// const transporter = nodemailer.createTransport(userInfo);
+admin.initializeApp();
 
 
 exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
@@ -146,16 +145,49 @@ exports.generateJobCardPDF = functions.https.onRequest(async (req, res) => {
         }
       }
 
-
       // Generate the PDF buffer
       form.flatten();
-
       const pdfBytes = await pdfDoc.save();
+
+
+      const {google} = require("googleapis");
+
+      const CLIENT_ID = process.env.GMAIL_CLIENT_ID;
+      const CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET;
+      const REDIRECT_URI = process.env.GMAIL_REDIRECT_URI;
+      const REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN;
+      const SENDER_EMAIL = process.env.GMAIL_SENDER_EMAIL;
+
+      console.log("ALL ENV VARS:", JSON.stringify(process.env, null, 2));
+
+      const oAuth2Client = new google.auth.OAuth2(
+          CLIENT_ID,
+          CLIENT_SECRET,
+          REDIRECT_URI,
+      );
+
+      oAuth2Client.setCredentials({
+        refresh_token: REFRESH_TOKEN,
+      });
+
+      const accessToken = (await oAuth2Client.getAccessToken()).token;
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          type: "OAuth2",
+          user: SENDER_EMAIL,
+          clientId: CLIENT_ID,
+          clientSecret: CLIENT_SECRET,
+          refreshToken: REFRESH_TOKEN,
+          accessToken: accessToken, // shortcut for accessToken: accessToken
+        },
+      });
 
       // Email the PDF as an attachment
       await transporter.sendMail({
-        from: "jobcard@liftrucksservice@gmail.com", // sender address
-        to: "liftrucksservice@gmail.com", // recipient (could be a list!)
+        from: SENDER_EMAIL, // sender address
+        to: SENDER_EMAIL, // recipient (could be a list!)
         subject: `Job Card Submitted: ${data.jobId || "No ID"}`,
         text: `A new job card has been submitted by ${data.technician ||
           "a technician"}.`,

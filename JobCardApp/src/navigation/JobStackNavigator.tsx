@@ -12,7 +12,7 @@ import { View } from 'react-native';
 
 export type JobsStackParamList = {
     JobsList: undefined;
-    JobForm: { jobId: string, job: Job };
+    JobForm: { jobId: string; job: Job; handleSubmitFromHeader?: () => void }; // add it as optional
     SignatureModal: { jobId: string };
 };
 
@@ -29,31 +29,32 @@ const JobsStackNavigator = () => {
             <Stack.Screen
                 name="JobForm"
                 component={JobFormScreen}
-                options={({ route, navigation }) => ({
+                options={({ route, navigation }) => {
+                    // The handler is set as a param
+                    const handleSubmit = route.params?.handleSubmitFromHeader;
 
-                    header: () => <AppHeader
-                        title={`${route.params.job.fleet.toUpperCase()}`}
-                        onBack={() => navigation.goBack()}
-                        right={
-                            <View style={{ flexDirection: "row" }}>
-                                <HeaderButton
-
-                                    icon="camera"
-                                    //onPress={handleAssign}
-                                    disabled={false}
-                                />
-                                <HeaderButton
-
-                                    icon="send"
-                                    //onPress={handleAssign}
-                                    disabled={false}
-                                />
-                            </View>
-
-                        }
-                    />
-
-                })}
+                    return {
+                        header: () => (
+                            <AppHeader
+                                title={route.params.job.fleet.toUpperCase()}
+                                onBack={() => navigation.goBack()}
+                                right={
+                                    <View style={{ flexDirection: "row" }}>
+                                        <HeaderButton
+                                            icon="camera"
+                                            disabled={false}
+                                        />
+                                        <HeaderButton
+                                            icon="send"
+                                            onPress={handleSubmit} // <-- uses handler from params!
+                                            disabled={!handleSubmit}
+                                        />
+                                    </View>
+                                }
+                            />
+                        )
+                    }
+                }}
             />
 
         </Stack.Navigator>

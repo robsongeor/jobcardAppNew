@@ -10,7 +10,7 @@ export default function Status({ status }: StatusProps) {
     // Optionally, you can map status to a color:
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
-            case "complete":
+            case "submitted":
                 return "green";
             case "assigned":
                 return "orange";
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.background,
         borderWidth: 1,
         borderColor: "#bbb",
-        height: "100%",
+        height: 30,
         gap: 10,
         paddingHorizontal: 12,
         borderRadius: 8,

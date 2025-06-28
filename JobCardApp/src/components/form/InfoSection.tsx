@@ -21,9 +21,10 @@ type InfoSectionProps = {
     job: Job
     data: JobFormData;
     jobId: string;
+    setHandleSubmitForHeader: (fn: () => void) => void;
 }
 
-export default function InfoSection({ data, jobId, job }: InfoSectionProps) {
+export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader }: InfoSectionProps) {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -43,8 +44,15 @@ export default function InfoSection({ data, jobId, job }: InfoSectionProps) {
         };
     }, [showSuccess]);
 
+    useEffect(() => {
+
+        setHandleSubmitForHeader(() => handleSubmit(data));
+    }, [data]);
+
 
     const handleSubmit = async (data: JobFormData) => {
+
+        console.log({ ...job, ...data })
         setShowModal(true);
         setLoading(true);
         try {

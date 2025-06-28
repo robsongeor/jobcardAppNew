@@ -15,26 +15,30 @@ import { StyleSheet, View } from 'react-native';
 import COLORS from '../constants/colors';
 import PADDING from '../constants/padding';
 import InfoSection from '../components/form/InfoSection';
+import { useEffect } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, 'JobForm'>;
 
-const JobFormScreen = () => {
+type JobFormScreenProps = NativeStackScreenProps<JobsStackParamList, 'JobForm'>;
+
+const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
     const Tab = createMaterialTopTabNavigator();
 
     const { jobId, job } = useRoute<JobFormRouteProp>().params;
     const { form, updateField } = useJobFormData(jobId);
 
-
     if (!form) return null; // or a loading state
     return (
         <View style={styles.container}>
-
-
             <Tab.Navigator tabBar={props => <FormTabBar {...props} />}>
                 <Tab.Screen name="Info">
                     {() => (
                         <InfoSection
+                            setHandleSubmitForHeader={(fn) => {
+                                navigation.setParams({ handleSubmitFromHeader: fn })
+                            }}
                             data={form}
                             jobId={job.id}
                             job={job}

@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity } from "react-native";
+import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, View } from "react-native";
 import PADDING from "../../constants/padding";
 import COLORS from "../../constants/colors";
 import { Text } from "react-native-gesture-handler";
@@ -12,9 +12,10 @@ type SubTitleProps = {
 
 export default function SubTitle({ children, style, onPress }: SubTitleProps) {
     return (
-        //<TouchableOpacity onPress={onPress}>
-        <Text style={[styles.text, style]}>{children}</Text>
-        //</TouchableOpacity>
+        <View style={{ maxWidth: "60%" }}>
+            <Text style={[styles.text, style]}>{children}</Text>
+        </View>
+
     )
 
 }

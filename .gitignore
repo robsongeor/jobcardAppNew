@@ -5,6 +5,7 @@
 # Environment variables
 *.env
 
+PDFFiller/firebase.json
 
 # Xcode
 #
