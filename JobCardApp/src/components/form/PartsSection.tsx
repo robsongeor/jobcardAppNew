@@ -1,5 +1,5 @@
 
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { QuantityInputType } from "../../types/types";
 import uuid from 'react-native-uuid';
 import Field from "./FormInputs/Field";
@@ -9,6 +9,8 @@ import ListInputs from "./FormInputs/ListInputs";
 import SmallTextInput from "./FormInputs/SmallTextInput";
 import QuantityInput from "./QuantityInput";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import COLORS from "../../constants/colors";
+import PADDING from "../../constants/padding";
 
 type PartsSectionProps = {
     parts: QuantityInputType[];
@@ -25,13 +27,13 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
 
     const headers: TableHeader[] = [
         { label: "Part Description", flex: 7, textAlign: "left" },
-        { label: "Qty", flex: 1, textAlign: "right" },
+        { label: "Qty", flex: 1, textAlign: "left" },
 
     ]
 
     const rows: Row[] = parts.map(part => [
         { value: part.descValue, flex: 7, textAlign: "left" },
-        { value: part.quantityValue, flex: 1, textAlign: "right" },
+        { value: part.quantityValue, flex: 1, textAlign: "left" },
 
     ]);
 
@@ -73,9 +75,9 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
 
     return (
         <KeyboardAvoidingView
-            style={{ flex: 1 }}
+            style={[styles.container, { flex: 1 }]}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={64 + insets.top + 50}
+            keyboardVerticalOffset={64 + insets.top + 59}
         >
 
             <EditTable
@@ -84,14 +86,10 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
                 deleteRow={deletePart}
                 fillFieldsOnEdit={fillFieldsOnEdit}
                 isEdit={isEdit}
+                containerStyle={styles.table}
             />
 
             <ListInputs isEdit={isEdit} label={"Part"} addFunction={addPart} deleteFunction={deletePart}>
-                {/* <SmallTextInput
-                    value={quantity}
-                    onChangeText={setQuantity}
-                    label="Quantity"
-                /> */}
                 <QuantityInput
                     quantity={quantity}
                     setQuantity={setQuantity}
@@ -105,3 +103,15 @@ export default function PartsSection({ parts, setParts }: PartsSectionProps) {
         </KeyboardAvoidingView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLORS.background,
+    },
+
+    table: {
+        marginHorizontal: PADDING.horizontal,
+        backgroundColor: COLORS.background,
+    }
+
+})

@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         flexDirection: 'row',
         alignItems: 'center',
-        // marginHorizontal: PADDING.horizontal,
+        marginHorizontal: PADDING.horizontal,
         marginVertical: PADDING.horizontal,
         borderRadius: 48,
     },

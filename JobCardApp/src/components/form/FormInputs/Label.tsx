@@ -1,5 +1,6 @@
 import { StyleSheet, Text } from "react-native";
 import COLORS from "../../../constants/colors";
+import PADDING from "../../../constants/padding";
 
 type LabelProps = {
     label: string;
@@ -14,11 +15,13 @@ export default function Label({ label }: LabelProps) {
 
 const styles = StyleSheet.create({
     label: {
-        fontSize: 15,
+        fontSize: 13,
         color: COLORS.black,
-        marginLeft: 5,
-        marginBottom: 6,
+
+        borderTopEndRadius: 8,
         letterSpacing: 0.5,
-        fontWeight: "600"
+        fontWeight: "600",
+        padding: 8,
+        backgroundColor: COLORS.white
     },
 });

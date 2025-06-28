@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 12,
         borderBottomWidth: 1,
-        borderBottomColor: "#ccc"
+        borderBottomColor: "#ccc",
+        marginHorizontal: PADDING.horizontal
     },
     row: {
         flexDirection: "row"

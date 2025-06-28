@@ -7,6 +7,7 @@ import Label from "./FormInputs/Label";
 import { SignInputsType } from "../../types/types";
 import SignatureModal from "./SignatureModal";
 import COLORS from "../../constants/colors";
+import SmallDateInput from "./FormInputs/SmallDateInput";
 
 type SignSectionProps = {
     signed: SignInputsType;
@@ -27,11 +28,11 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
     return (
         <Field>
 
-            <Label label="Customer Signature" />
+
 
             <TouchableOpacity onPress={() => setShowSignatureModal(true)}>
                 <View style={styles.signatureBox}>
-
+                    <Label label="Customer Signature" />
                     {signed.signature ? (
                         <Image
                             source={{ uri: signed.signature }}
@@ -60,10 +61,16 @@ export default function SignSection({ signed, setSignatures }: SignSectionProps)
                 onChangeText={(value) => updateField("clientName", value)}
             />
 
-            <View style={styles.dateInputGroup}>
+            <SmallDateInput
+                label="Date"
+                date={signed.clientDate}
+                setDate={(value) => updateField("clientDate", value)}
+            />
+
+            {/* <View style={styles.dateInputGroup}>
                 <Label label="Date" />
                 <DateInput date={signed.clientDate} setDate={(value) => updateField("clientDate", value)} />
-            </View>
+            </View> */}
         </Field>
     );
 }
@@ -72,12 +79,12 @@ const styles = StyleSheet.create({
 
     signatureBox: {
         height: 250,
-        borderWidth: 1,
-        borderColor: "transparent",
-        borderRadius: 12,
+        borderWidth: 3,
+        borderColor: COLORS.white,
+        borderRadius: 8,
         overflow: "hidden",
         marginBottom: 16,
-        backgroundColor: COLORS.white,
+
     },
     dateInputGroup: {
         marginTop: 12,

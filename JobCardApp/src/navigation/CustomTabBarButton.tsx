@@ -58,8 +58,8 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
             Animated.spring(animatedValues[i], {
                 toValue: state.index === i ? 1 : 0,
                 useNativeDriver: false,
-                speed: 10, // lower for slower, more visible
-                bounciness: 4, // increase for more bounce
+                speed: 25, // lower for slower, more visible
+                bounciness: 0, // increase for more bounce
             }).start();
         });
     }, [state.index]);
@@ -69,8 +69,8 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
             const targetWidth = state.index === i ? (labelWidths[route.key] || 0) : 0;
             Animated.spring(widthAnimations[i], {
                 toValue: targetWidth,
-                speed: 10,
-                bounciness: 3,
+                speed: 25,
+                bounciness: 0,
                 useNativeDriver: false, // width can't use native driver
             }).start();
         });
@@ -82,8 +82,8 @@ export default function MyTabBar({ state, descriptors, navigation }: BottomTabBa
             Animated.spring(gapAnimations[i], {
                 toValue: state.index === i ? 8 : 0,
                 useNativeDriver: false,
-                speed: 10,
-                bounciness: 3,
+                speed: 50,
+                bounciness: 0,
             }).start();
         });
     }, [state.index]);

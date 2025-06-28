@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         marginHorizontal: PADDING.horizontal,
         borderWidth: 3,
         borderColor: COLORS.white,
-        marginBottom: 14,
+        marginBottom: 24,
         height: 36,
     },
     pillContainer: {

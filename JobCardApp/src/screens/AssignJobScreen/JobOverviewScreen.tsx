@@ -10,6 +10,7 @@ import SubHeading from "./components/SubHeading";
 import Config from "react-native-config";
 import { getStoredUserField } from "../../storage/storage";
 import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../firebase";
+import JobOverviewCard from "../../components/JobOverviewCard";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -58,72 +59,9 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
     return (
         <View style={styles.screen}>
-
-            <View style={styles.container}>
-                {/* TITLE */}
-                <View style={{ flexDirection: "row" }}>
-                    <Title style={{ fontWeight: "300" }}>Job </Title>
-                    <Title>{job.job}</Title>
-                </View>
-
-                {/* CARD */}
-                <View style={styles.card}>
-                    <SubTitle>{job.customerName}</SubTitle>
-
-                    {/* Address */}
-                    <View style={styles.detailsCard}>
-                        <SubHeading>ADDRESS</SubHeading>
-                        <View style={styles.details}>
-                            <Text style={styles.address}>
-                                {job.customerAddress}
-                            </Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.leftDetail}>
-                                {`${job.customerAddressSuburb}, ${job.customerAddressTown}`}
-                            </Text>
-                        </View>
-                    </View>
-
-                    {/* MAP */}
-                    <View style={styles.map}>
-                        <Image
-                            style={{ width: "100%", height: 120, borderRadius: 12 }}
-                            source={{ uri: mapUrl }}
-                            resizeMode="cover"
-                        />
-                    </View>
-
-                    {/* DETAILS */}
-                    <View style={styles.detailsCard}>
-                        <SubHeading>MACHINE DETAILS</SubHeading>
-                        <View style={styles.details}>
-                            <Text style={styles.leftDetail}>Fleet number</Text>
-                            <Text style={styles.rightDetail}>{job.fleet.toUpperCase()}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.leftDetail}>Make</Text>
-                            <Text style={styles.rightDetail}>{job.machine.make}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.leftDetail}>Model</Text>
-                            <Text style={styles.rightDetail}>{job.machine.model}</Text>
-                        </View>
-                        <View style={styles.details}>
-                            <Text style={styles.leftDetail}>Serial</Text>
-                            <Text style={styles.rightDetail}>{job.machine.serialNumber}</Text>
-                        </View>
-
-                        <View style={styles.cardSection}>
-                            <SubHeading>JOB DESCRIPTION</SubHeading>
-                            <Text style={styles.leftDetail}>
-                                {job.description}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-
-            </View>
+            <JobOverviewCard
+                job={job}
+            />
             <BottomRightButton
                 disabled={!job.description}
                 label="Assign"
@@ -137,13 +75,13 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1, backgroundColor:
-            COLORS.background
+        flex: 1,
+        backgroundColor: COLORS.background
     },
     container: {
         flex: 1,
         marginHorizontal: PADDING.horizontal,
-        marginTop: 24,
+
 
     },
     buttonContainer: {

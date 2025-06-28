@@ -42,7 +42,7 @@ export default function SmallTextInput({
             <Label
                 label={label}
             />
-            <View style={SmallInputStyles.flex}>
+            <View style={[SmallInputStyles.flex, isFocused && { borderColor: COLORS.primary, borderWidth: 1.5, borderRadius: 8 }]}>
                 <TextInput
                     multiline={multiline}
                     value={value}
@@ -54,7 +54,7 @@ export default function SmallTextInput({
                         SmallInputStyles.input,
                         multiline && SmallInputStyles.multiline,
                         // getRequired(value),
-                        isFocused && { borderColor: COLORS.primary, borderWidth: 1.5 }, // Material blue 700 or your choice
+                        // isFocused && { borderColor: COLORS.primary, borderWidth: 1.5 }, // Material blue 700 or your choice
                     ]}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
@@ -72,14 +72,13 @@ export default function SmallTextInput({
 export const SmallInputStyles = StyleSheet.create({
     inputBlock: {
         marginBottom: 20,
+        borderWidth: 3,
+        borderRadius: 8,
+        borderColor: COLORS.white
     },
     input: {
-        fontSize: 15,
+        fontSize: 13,
         color: COLORS.black,
-        backgroundColor: COLORS.white,
-        borderWidth: 1.5,
-        borderColor: "transparent",
-        borderRadius: 8,
         paddingHorizontal: 12,
         paddingVertical: 10,
         flex: 1,
@@ -92,6 +91,7 @@ export const SmallInputStyles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "stretch",
         gap: 14,
+
     },
     required: {
         borderColor: "#FFD600", // a nice yellow (Material yellow 700)

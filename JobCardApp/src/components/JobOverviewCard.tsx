@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: PADDING.horizontal,
-        marginTop: 24,
+        marginTop: 0,
 
     },
     buttonContainer: {

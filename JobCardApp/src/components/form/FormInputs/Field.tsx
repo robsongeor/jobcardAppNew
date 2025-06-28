@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.background,
         flex: 1,
-        padding: PADDING.horizontal,
+        paddingHorizontal: PADDING.horizontal,
     },
 })

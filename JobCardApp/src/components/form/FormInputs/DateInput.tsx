@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 15,
     color: COLORS.black,
-    backgroundColor: COLORS.white,
+
     borderWidth: 1.5,
     borderColor: "transparent",
     borderRadius: 8,

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import JobInfoBlock from '../components/JobInfoBlock';
 import { useNavigation } from '@react-navigation/native';
@@ -73,34 +73,41 @@ const JobsScreen = () => {
     return (
 
         <SafeAreaView style={styles.container}>
-            <SearchBar
-                value={query}
-                onChangeText={setQuery}
-                handleSearch={() => console.log(query)}
-                autoSearch={true}
-            />
 
 
-            <FlatList
-                style={{ flex: 1 }}
-                data={filteredJobs()}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <JobListItem
-                        job={item}
-                        onPress={() => handleOpen(item)}
-                    />
-                )
-                }
 
-                ListHeaderComponent={
-                    <JobsFilters
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
 
-                    />
-                }
-            />
+
+
+            <View style={styles.scrollView}>
+                <SearchBar
+                    value={query}
+                    onChangeText={setQuery}
+                    handleSearch={() => console.log(query)}
+                    autoSearch={true}
+                />
+
+                <FlatList
+                    style={{ flex: 1 }}
+                    data={filteredJobs()}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <JobListItem
+                            job={item}
+                            onPress={() => handleOpen(item)}
+                        />
+                    )
+                    }
+
+                    ListHeaderComponent={
+                        <JobsFilters
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
+
+                        />
+                    }
+                />
+            </View>
         </SafeAreaView>
 
     )
@@ -111,8 +118,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.background,
-        padding: PADDING.horizontal,
+
     },
+    scrollView: {
+        flex: 1,
+
+    }
 
 
 });

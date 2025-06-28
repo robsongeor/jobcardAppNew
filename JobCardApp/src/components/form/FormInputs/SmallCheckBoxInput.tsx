@@ -30,7 +30,6 @@ export default function SmallCheckBoxInput({
 }: SmallCheckBoxInputProps) {
     const [isFocused, setIsFocused] = useState(false);
 
-    console.log(label)
 
     return (
         <View style={SmallInputStyles.inputBlock}>
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
     },
     checkAndInput: {
         paddingLeft: 3,
-        backgroundColor: COLORS.white,
+        //backgroundColor: COLORS.white,
         borderRadius: 8,
         borderWidth: 1.5,
         borderColor: "transparent"
