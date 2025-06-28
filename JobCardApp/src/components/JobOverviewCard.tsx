@@ -9,6 +9,8 @@ import { Job } from "../types/types";
 import Config from "react-native-config";
 import { ReactNode } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { getStoredUserField } from "../storage/storage";
+import Status from "./Status";
 
 type JobOverviewCardProps = {
     job: Job,
@@ -17,6 +19,7 @@ type JobOverviewCardProps = {
 }
 
 export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
+    const uid = getStoredUserField("uid")
 
     function getStaticMapUrl(lat: number, lng: number) {
         return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=600x300&markers=color:red|${lat},${lng}&key=${Config.GOOGLE_MAPS_API_KEY}`;
@@ -27,74 +30,85 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
     return (
 
 
-        <ScrollView style={styles.container}>
+        <ScrollView >
             {/* TITLE */}
-            <View style={[{ flexDirection: "row", alignItems: "center" }, styles.header]}>
-                <View style={[{ flex: 1, flexDirection: "row", alignItems: "center" }, styles.title]}>
-                    <Title style={{ fontWeight: "200" }}>Job </Title>
-                    <Title style={{ fontWeight: "600" }}>{job.job}</Title>
-                </View>
-                {button && (
-                    <View>
-                        {button}
-                    </View>
-                )}
-            </View>
+            <View style={styles.container}>
 
 
-            {/* CARD */}
-            <View style={styles.card}>
-                <SubTitle>{job.customerName}</SubTitle>
-
-                {/* Address */}
-                <View style={styles.detailsCard}>
-                    <SubHeading>ADDRESS</SubHeading>
-                    <View style={styles.details}>
-                        <Text style={styles.address}>
-                            {job.customerAddress}
-                        </Text>
+                <View style={[{ flexDirection: "row", alignItems: "center" }, styles.header]}>
+                    <View style={[{ flex: 1, flexDirection: "row", alignItems: "center" }, styles.title]}>
+                        <Title style={{ fontWeight: "200" }}>Job </Title>
+                        <Title style={{ fontWeight: "600" }}>{job.job}</Title>
                     </View>
-                    <View style={styles.details}>
-                        <Text style={styles.leftDetail}>
-                            {`${job.customerAddressSuburb}, ${job.customerAddressTown}`}
-                        </Text>
-                    </View>
+                    {button && (
+                        <View>
+                            {button}
+                        </View>
+                    )}
                 </View>
 
-                {/* MAP */}
-                <View style={styles.map}>
-                    <Image
-                        style={{ width: "100%", height: 120, borderRadius: 12 }}
-                        source={{ uri: mapUrl }}
-                        resizeMode="cover"
-                    />
-                </View>
 
-                {/* DETAILS */}
-                <View style={styles.detailsCard}>
-                    <SubHeading>MACHINE DETAILS</SubHeading>
-                    <View style={styles.details}>
-                        <Text style={styles.leftDetail}>Fleet number</Text>
-                        <Text style={styles.rightDetail}>{job.fleet.toUpperCase()}</Text>
-                    </View>
-                    <View style={styles.details}>
-                        <Text style={styles.leftDetail}>Make</Text>
-                        <Text style={styles.rightDetail}>{job.machine.make}</Text>
-                    </View>
-                    <View style={styles.details}>
-                        <Text style={styles.leftDetail}>Model</Text>
-                        <Text style={styles.rightDetail}>{job.machine.model}</Text>
-                    </View>
-                    <View style={styles.details}>
-                        <Text style={styles.leftDetail}>Serial</Text>
-                        <Text style={styles.rightDetail}>{job.machine.serialNumber}</Text>
+                {/* CARD */}
+                <View style={styles.card}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                        <SubTitle>{job.customerName}</SubTitle>
+                        <Status
+                            status={job.assignedStatus[uid]}
+                        />
+
                     </View>
 
-                    <View style={styles.cardSection}>
-                        <SubHeading>JOB DESCRIPTION</SubHeading>
-                        <Text style={styles.leftDetail}>
-                            {job.description}
-                        </Text>
+
+                    {/* Address */}
+                    <View style={styles.detailsCard}>
+                        <SubHeading>ADDRESS</SubHeading>
+                        <View style={styles.details}>
+                            <Text style={styles.address}>
+                                {job.customerAddress}
+                            </Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.leftDetail}>
+                                {`${job.customerAddressSuburb}, ${job.customerAddressTown}`}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/* MAP */}
+                    <View style={styles.map}>
+                        <Image
+                            style={{ width: "100%", height: 120, borderRadius: 12 }}
+                            source={{ uri: mapUrl }}
+                            resizeMode="cover"
+                        />
+                    </View>
+
+                    {/* DETAILS */}
+                    <View style={styles.detailsCard}>
+                        <SubHeading>MACHINE DETAILS</SubHeading>
+                        <View style={styles.details}>
+                            <Text style={styles.leftDetail}>Fleet number</Text>
+                            <Text style={styles.rightDetail}>{job.fleet.toUpperCase()}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.leftDetail}>Make</Text>
+                            <Text style={styles.rightDetail}>{job.machine.make}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.leftDetail}>Model</Text>
+                            <Text style={styles.rightDetail}>{job.machine.model}</Text>
+                        </View>
+                        <View style={styles.details}>
+                            <Text style={styles.leftDetail}>Serial</Text>
+                            <Text style={styles.rightDetail}>{job.machine.serialNumber}</Text>
+                        </View>
+
+                        <View style={styles.cardSection}>
+                            <SubHeading>JOB DESCRIPTION</SubHeading>
+                            <Text style={styles.leftDetail}>
+                                {job.description}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </View>
