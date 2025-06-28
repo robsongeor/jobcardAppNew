@@ -4,7 +4,6 @@ import PADDING from "../constants/padding";
 import Title from "./text/Title";
 import SubTitle from "./text/SubTitle";
 import SubHeading from "../screens/AssignJobScreen/components/SubHeading";
-import BottomRightButton from "./form/Buttons/BottomRightButton";
 import { Job } from "../types/types";
 import Config from "react-native-config";
 import { ReactNode } from "react";
@@ -15,7 +14,6 @@ import Status from "./Status";
 type JobOverviewCardProps = {
     job: Job,
     button?: ReactNode
-
 }
 
 export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
@@ -33,8 +31,6 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
         <ScrollView >
             {/* TITLE */}
             <View style={styles.container}>
-
-
                 <View style={[{ flexDirection: "row", alignItems: "center" }, styles.header]}>
                     <View style={[{ flexDirection: "row", alignItems: "center" }, styles.title]}>
                         <Title style={{ fontWeight: "200" }}>Job </Title>
@@ -47,7 +43,6 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
                     )}
                 </View>
 
-
                 {/* CARD */}
                 <View style={styles.card}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -57,7 +52,6 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
                         />
 
                     </View>
-
 
                     {/* Address */}
                     <View style={styles.detailsCard}>
@@ -114,14 +108,6 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
             </View>
 
         </ScrollView>
-        // {/* <BottomRightButton
-        //     disabled={!job.description}
-        //     label="Assign"
-        //     onPress={handleAssign}
-        //     icon="user-plus"
-        // /> */}
-
-
     );
 }
 

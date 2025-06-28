@@ -7,6 +7,8 @@ import AppHeader from "../components/AppHeader";
 import JobDescriptionEntryScreen from "../screens/AssignJobScreen/JobDescriptionEntryScreen";
 import { Text } from "react-native";
 import CustomButton from "../components/form/Buttons/CustomButton";
+import HeaderButton from "../components/form/Buttons/HeaderButton";
+import { handleAssign } from "../utils/helpers";
 
 export type AssignJobStackParamList = {
     JobNumberEntry: undefined;
@@ -33,12 +35,18 @@ export default function AssignJobStack() {
             <Stack.Screen
                 name="JobOverview"
                 component={JobOverviewScreen}
-                options={({ navigation }) => ({
+                options={({ route, navigation }) => ({
                     header: () => (
                         <AppHeader
                             title="Overview"
                             onBack={() => navigation.goBack()}
-                        //right={}
+                            right={
+                                <HeaderButton
+                                    icon="user-plus"
+                                    disabled={false}
+                                    onPress={() => handleAssign(route.params?.job)}
+                                />
+                            }
                         />
                     ),
                     gestureEnabled: true, // ensure swipe-back is on

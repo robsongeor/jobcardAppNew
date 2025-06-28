@@ -19,11 +19,7 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
     const { job } = route.params;
 
-    function getStaticMapUrl(lat: number, lng: number) {
-        return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=600x300&markers=color:red|${lat},${lng}&key=${Config.GOOGLE_MAPS_API_KEY}`;
-    }
 
-    const mapUrl = getStaticMapUrl(job.coords.latitude, job.coords.longitude);
 
     const handleAssign = async () => {
         const uid = getStoredUserField('uid');
