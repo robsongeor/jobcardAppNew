@@ -22,9 +22,9 @@ export default function Title({ children, style }: TitleProps) {
 const styles = StyleSheet.create({
 
     title: {
-        fontSize: 40,
+        fontSize: 28,
         fontWeight: "400",
-        marginBottom: 8,
+
         color: "#111",
         //backgroundColor: "#aaa"
     },

@@ -11,6 +11,7 @@ import Config from "react-native-config";
 import { getStoredUserField } from "../../storage/storage";
 import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../firebase";
 import JobOverviewCard from "../../components/JobOverviewCard";
+import CustomButton from "../../components/form/Buttons/CustomButton";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -61,13 +62,18 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
         <View style={styles.screen}>
             <JobOverviewCard
                 job={job}
+                button={<CustomButton
+                    text="Assign"
+                    icon="user-plus"
+                    onPress={handleAssign}
+                />}
             />
-            <BottomRightButton
+            {/* <BottomRightButton
                 disabled={!job.description}
                 label="Assign"
                 onPress={handleAssign}
                 icon="user-plus"
-            />
+            /> */}
 
         </View>
     );

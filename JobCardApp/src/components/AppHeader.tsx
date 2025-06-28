@@ -1,5 +1,5 @@
 // components/AppHeader.js
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import COLORS from '../constants/colors';
 import Icon from 'react-native-vector-icons/Feather';
@@ -9,9 +9,10 @@ import PADDING from '../constants/padding';
 type AppHeaderType = {
     title?: string;
     onBack?: () => void;
+    right?: ReactNode;
 }
 
-export default function AppHeader({ title, onBack }: AppHeaderType) {
+export default function AppHeader({ title, onBack, right }: AppHeaderType) {
     const insets = useSafeAreaInsets ? useSafeAreaInsets() : { top: 0 };
 
     return (
@@ -41,7 +42,9 @@ export default function AppHeader({ title, onBack }: AppHeaderType) {
             </View>
 
             {/* Right: placeholder for symmetry */}
-            <View style={styles.sideContainer} />
+            <View style={styles.sideContainer} >
+                {right}
+            </View>
         </View>
     );
 }
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
     },
     sideContainer: {
-        width: 36,
+        minWidth: 36,
         alignItems: 'flex-start',
         justifyContent: 'center',
     },

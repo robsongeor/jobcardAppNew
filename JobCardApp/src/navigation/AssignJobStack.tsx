@@ -5,6 +5,8 @@ import FleetNumberEntryScreen from "../screens/AssignJobScreen/FleetNumberEntryS
 import { Job } from "../types/types";
 import AppHeader from "../components/AppHeader";
 import JobDescriptionEntryScreen from "../screens/AssignJobScreen/JobDescriptionEntryScreen";
+import { Text } from "react-native";
+import CustomButton from "../components/form/Buttons/CustomButton";
 
 export type AssignJobStackParamList = {
     JobNumberEntry: undefined;
@@ -27,8 +29,6 @@ export default function AssignJobStack() {
 
                 })
                 }
-
-
             />
             <Stack.Screen
                 name="JobOverview"
@@ -38,6 +38,7 @@ export default function AssignJobStack() {
                         <AppHeader
                             title="Overview"
                             onBack={() => navigation.goBack()}
+                        //right={}
                         />
                     ),
                     gestureEnabled: true, // ensure swipe-back is on

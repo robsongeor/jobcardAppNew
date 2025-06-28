@@ -7,14 +7,16 @@ import SubHeading from "../screens/AssignJobScreen/components/SubHeading";
 import BottomRightButton from "./form/Buttons/BottomRightButton";
 import { Job } from "../types/types";
 import Config from "react-native-config";
+import { ReactNode } from "react";
+import { ScrollView } from "react-native-gesture-handler";
 
 type JobOverviewCardProps = {
     job: Job,
-
+    button?: ReactNode
 
 }
 
-export default function JobOverviewCard({ job }: JobOverviewCardProps) {
+export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
 
     function getStaticMapUrl(lat: number, lng: number) {
         return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=15&size=600x300&markers=color:red|${lat},${lng}&key=${Config.GOOGLE_MAPS_API_KEY}`;
@@ -25,12 +27,20 @@ export default function JobOverviewCard({ job }: JobOverviewCardProps) {
     return (
 
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             {/* TITLE */}
-            <View style={{ flexDirection: "row" }}>
-                <Title style={{ fontWeight: "300" }}>Job </Title>
-                <Title>{job.job}</Title>
+            <View style={[{ flexDirection: "row", alignItems: "center" }, styles.header]}>
+                <View style={[{ flex: 1, flexDirection: "row", alignItems: "center" }, styles.title]}>
+                    <Title style={{ fontWeight: "200" }}>Job </Title>
+                    <Title style={{ fontWeight: "600" }}>{job.job}</Title>
+                </View>
+                {button && (
+                    <View>
+                        {button}
+                    </View>
+                )}
             </View>
+
 
             {/* CARD */}
             <View style={styles.card}>
@@ -89,7 +99,7 @@ export default function JobOverviewCard({ job }: JobOverviewCardProps) {
                 </View>
             </View>
 
-        </View>
+        </ScrollView>
         // {/* <BottomRightButton
         //     disabled={!job.description}
         //     label="Assign"
@@ -102,6 +112,16 @@ export default function JobOverviewCard({ job }: JobOverviewCardProps) {
 }
 
 const styles = StyleSheet.create({
+    title: {
+        backgroundColor: COLORS.white,
+        height: 40,
+        paddingHorizontal: 8,
+        borderRadius: 8,
+    },
+
+    header: {
+        gap: PADDING.horizontal
+    },
 
     container: {
         flex: 1,
@@ -128,14 +148,14 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        margin: 12,
+        marginVertical: PADDING.horizontal,
         paddingHorizontal: 12,
         paddingTop: 12,
         backgroundColor: COLORS.white,
         borderRadius: 12,
         marginBottom: 24,
         paddingBottom: 48,
-        //  marginHorizontal: PADDING.horizontal
+
     },
 
     cardSection: {
