@@ -14,9 +14,10 @@ import Status from "./Status";
 type JobOverviewCardProps = {
     job: Job,
     button?: ReactNode
+    status?: string
 }
 
-export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
+export default function JobOverviewCard({ job, button, status }: JobOverviewCardProps) {
     const uid = getStoredUserField("uid")
 
     function getStaticMapUrl(lat: number, lng: number) {
@@ -36,11 +37,11 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
                         <Title style={{ fontWeight: "200" }}>Job </Title>
                         <Title style={{ fontWeight: "600" }}>{job.job}</Title>
                     </View>
-                    {button && (
+                    {/* {button && (
                         <View>
                             {button}
                         </View>
-                    )}
+                    )} */}
                 </View>
 
                 {/* CARD */}
@@ -48,7 +49,7 @@ export default function JobOverviewCard({ job, button }: JobOverviewCardProps) {
                     <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <SubTitle>{job.customerName}</SubTitle>
                         <Status
-                            status={job.assignedStatus[uid]}
+                            status={status ? status : job.assignedStatus[uid]}
                         />
 
                     </View>

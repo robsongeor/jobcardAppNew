@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import COLORS from "../constants/colors";
 import { capitalizeFirst } from "./helpers/formatters";
+import { useEffect } from "react";
 
 type StatusProps = {
     status: string;
 }
 
 export default function Status({ status }: StatusProps) {
+    if (!status) {
+        status = "unassigned"
+    }
+
     // Optionally, you can map status to a color:
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {

@@ -9,10 +9,11 @@ import { Text } from "react-native";
 import CustomButton from "../components/form/Buttons/CustomButton";
 import HeaderButton from "../components/form/Buttons/HeaderButton";
 import { handleAssign } from "../utils/helpers";
+import { getStoredUserField } from "../storage/storage";
 
 export type AssignJobStackParamList = {
     JobNumberEntry: undefined;
-    JobOverview: { job: Job };
+    JobOverview: { job: Job; handleAssign?: () => Promise<void> };
     FleetNumberEntry: { jobNumber: string };
     JobDescriptionEntry: { job: Job };
 };
@@ -20,6 +21,8 @@ export type AssignJobStackParamList = {
 const Stack = createNativeStackNavigator<AssignJobStackParamList>();
 
 export default function AssignJobStack() {
+    const uid = getStoredUserField("uid")
+
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -43,8 +46,9 @@ export default function AssignJobStack() {
                             right={
                                 <HeaderButton
                                     icon="user-plus"
-                                    disabled={false}
-                                    onPress={() => handleAssign(route.params?.job)}
+                                    disabled={!route.params.job.assignedStatus[uid]}
+                                    onPress={route.params?.handleAssign}
+
                                 />
                             }
                         />

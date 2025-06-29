@@ -7,6 +7,7 @@ import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../fireba
 import JobOverviewCard from "../../components/JobOverviewCard";
 import CustomButton from "../../components/form/Buttons/CustomButton";
 import Config from "react-native-config";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
@@ -19,10 +20,11 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
     const { job } = route.params;
 
+    const uid = getStoredUserField('uid');
+    const [status, setStatus] = useState(job.assignedStatus[uid]);
 
+    const handleAssign = useCallback(async () => {
 
-    const handleAssign = async () => {
-        const uid = getStoredUserField('uid');
         if (!uid) return;
 
         try {
@@ -37,19 +39,29 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
                 };
 
                 await createNewJob(updatedJob);
+                setStatus("assigned")
             } else {
                 await assignJobToUser(jobExists.id, uid);
+                setStatus("assigned")
             }
+
+
         } catch (error) {
             // Show error message to user (toast, modal, etc.)
             console.error("Assignment failed:", error);
         }
-    };
+    }, [job, uid]);
+
+    useEffect(() => {
+        navigation.setParams({ handleAssign });
+    }, [handleAssign]);
+
 
     return (
         <View style={styles.screen}>
             <JobOverviewCard
                 job={job}
+                status={status}
                 button={
                     <CustomButton
                         text="Assign"
