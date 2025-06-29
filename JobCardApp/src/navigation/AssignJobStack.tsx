@@ -8,7 +8,6 @@ import JobDescriptionEntryScreen from "../screens/AssignJobScreen/JobDescription
 import { Text } from "react-native";
 import CustomButton from "../components/form/Buttons/CustomButton";
 import HeaderButton from "../components/form/Buttons/HeaderButton";
-import { handleAssign } from "../utils/helpers";
 import { getStoredUserField } from "../storage/storage";
 
 export type AssignJobStackParamList = {
