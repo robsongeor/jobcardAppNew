@@ -8,22 +8,45 @@ import JobOverviewCard from "../../components/JobOverviewCard";
 import CustomButton from "../../components/form/Buttons/CustomButton";
 import Config from "react-native-config";
 import { useCallback, useEffect, useState } from "react";
+import AppHeader from "../../components/AppHeader";
+import HeaderButton from "../../components/form/Buttons/HeaderButton";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, 'JobOverview'>;
 
 export default function JobOverviewScreen({ route, navigation }: Props) {
+    const { job } = route.params;
+    const uid = getStoredUserField("uid");
+    const [status, setStatus] = useState(job.assignedStatus[uid] || "unassigned");
+
+    useEffect(() => {
+        const showCloseIcon = status === "assigned";
+
+        navigation.setOptions({
+            header: () => (
+                <AppHeader
+                    title="Overview"
+                    onBack={() => {
+                        showCloseIcon ? navigation.popToTop() : navigation.goBack();
+                    }}
+                    right={
+                        <HeaderButton
+                            icon="user-plus"
+                            disabled={(route.params.job.assignedStatus[uid] === "assigned")}
+                            onPress={handleAssign}
+                        />
+                    }
+                    onBackOptionEnabled={showCloseIcon}
+                    onBackOptionIcon="x"
+                />
+            ),
+        });
+    }, [status]); // will re-run when assigned changes
 
     if (!route.params?.job) {
         navigation.goBack();
         return null;
     }
 
-    const { job } = route.params;
-
-    const uid = getStoredUserField('uid');
-    const [status, setStatus] = useState(job.assignedStatus[uid]) || "unassigned";
-
-    console.log(status)
 
     const handleAssign = useCallback(async () => {
 
@@ -42,9 +65,11 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
 
                 await createNewJob(updatedJob);
                 setStatus("assigned")
+
             } else {
                 await assignJobToUser(jobExists.id, uid);
                 setStatus("assigned")
+
             }
 
 

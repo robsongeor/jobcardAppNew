@@ -10,9 +10,11 @@ type AppHeaderType = {
     title?: string;
     onBack?: () => void;
     right?: ReactNode;
+    onBackOptionEnabled?: boolean
+    onBackOptionIcon?: string
 }
 
-export default function AppHeader({ title, onBack, right }: AppHeaderType) {
+export default function AppHeader({ title, onBack, right, onBackOptionEnabled, onBackOptionIcon }: AppHeaderType) {
     const insets = useSafeAreaInsets ? useSafeAreaInsets() : { top: 0 };
 
     return (
@@ -31,7 +33,11 @@ export default function AppHeader({ title, onBack, right }: AppHeaderType) {
             <View style={styles.sideContainer}>
                 {onBack && (
                     <TouchableOpacity style={styles.button} onPress={onBack}>
-                        <Icon name="arrow-left" size={20} color={COLORS.black} />
+                        <Icon
+                            name={onBackOptionEnabled ? onBackOptionIcon : "arrow-left"}
+                            size={20}
+                            color={COLORS.black}
+                        />
                     </TouchableOpacity>
                 )}
             </View>

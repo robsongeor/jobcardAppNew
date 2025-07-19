@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
 import JobNumberEntryScreen from "../screens/AssignJobScreen/JobNumberEntryScreen";
 import JobOverviewScreen from "../screens/AssignJobScreen/JobOverviewScreen";
 import FleetNumberEntryScreen from "../screens/AssignJobScreen/FleetNumberEntryScreen";
@@ -9,6 +9,7 @@ import { Text } from "react-native";
 import CustomButton from "../components/form/Buttons/CustomButton";
 import HeaderButton from "../components/form/Buttons/HeaderButton";
 import { getStoredUserField } from "../storage/storage";
+import { useState } from "react";
 
 export type AssignJobStackParamList = {
     JobNumberEntry: undefined;
@@ -21,6 +22,8 @@ const Stack = createNativeStackNavigator<AssignJobStackParamList>();
 
 export default function AssignJobStack() {
     const uid = getStoredUserField("uid")
+
+
 
     return (
         <Stack.Navigator>
@@ -37,22 +40,7 @@ export default function AssignJobStack() {
             <Stack.Screen
                 name="JobOverview"
                 component={JobOverviewScreen}
-                options={({ route, navigation }) => ({
-                    header: () => (
-                        <AppHeader
-                            title="Overview"
-                            onBack={() => navigation.goBack()}
-                            right={
-                                <HeaderButton
-                                    icon="user-plus"
-                                    disabled={!(route.params.job.assignedStatus[uid] === undefined)}
-                                    onPress={route.params?.handleAssign}
-                                />
-                            }
-                        />
-                    ),
-                    gestureEnabled: true, // ensure swipe-back is on
-                })}
+                options={{ gestureEnabled: true }} // no custom header here!
             />
 
             <Stack.Screen
