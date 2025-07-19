@@ -43,20 +43,34 @@ const JobsScreen = () => {
     }
 
     const filteredJobs = () => {
+        const uid = getStoredUserField('uid');
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - 7);
+
         let tabFilter = assignedJobs;
 
         if (activeTab !== 'all') {
             tabFilter = assignedJobs.filter(
-                job => job.assignedStatus[getStoredUserField('uid')] === activeTab
+                job => job.assignedStatus[uid] === activeTab
             );
+
+            console.log(tabFilter)
         }
+
+        const cleaned = tabFilter.filter(job => {
+            const status = job.assignedStatus[uid];
+            const assignedDate = new Date(job.assignedDate[uid]);
+            const isOld = assignedDate < cutoffDate;
+
+            return !(status === 'submitted' && isOld);
+        });
 
         const sorted = (list: Job[]) =>
             list.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10));
 
         return query.length === 0
-            ? sorted(tabFilter)
-            : sorted(tabFilter.filter(job => jobMatchesQuery(job, query)));
+            ? sorted(cleaned)
+            : sorted(cleaned.filter(job => jobMatchesQuery(job, query)));
     };
 
     return (
