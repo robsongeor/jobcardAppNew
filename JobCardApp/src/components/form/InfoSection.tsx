@@ -51,13 +51,11 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
 
 
     const handleSubmit = async (data: JobFormData) => {
-
-        console.log({ ...job, ...data })
         setShowModal(true);
         setLoading(true);
         try {
             await submitJobCardToFireStore(data);
-            await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
+
             const user = firebase.auth().currentUser;
             if (!user) return;
             const idToken = await user.getIdToken();
@@ -70,8 +68,10 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
                 body: JSON.stringify({ ...job, ...data }),
             });
             if (response.ok) {
+                await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
                 setShowSuccess(true);
                 addRecentActivity(convertJobToRecent(job, "submitted"))
+
             } else {
                 const err = await response.text();
                 setErrorMsg("Error sending job card: " + err);

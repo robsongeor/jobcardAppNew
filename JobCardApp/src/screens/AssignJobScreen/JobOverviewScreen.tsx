@@ -21,7 +21,9 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
     const { job } = route.params;
 
     const uid = getStoredUserField('uid');
-    const [status, setStatus] = useState(job.assignedStatus[uid]);
+    const [status, setStatus] = useState(job.assignedStatus[uid]) || "unassigned";
+
+    console.log(status)
 
     const handleAssign = useCallback(async () => {
 

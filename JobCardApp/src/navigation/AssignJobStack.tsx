@@ -45,9 +45,8 @@ export default function AssignJobStack() {
                             right={
                                 <HeaderButton
                                     icon="user-plus"
-                                    disabled={!route.params.job.assignedStatus[uid]}
+                                    disabled={!(route.params.job.assignedStatus[uid] === undefined)}
                                     onPress={route.params?.handleAssign}
-
                                 />
                             }
                         />

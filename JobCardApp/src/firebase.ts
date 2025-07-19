@@ -224,8 +224,12 @@ export const getNewJobFromFleetNumber = async (fleetNumber: string): Promise<Job
 
 
     const jobsRef = collection(db, "machines");
-    const q = query(jobsRef, where("fleet", "==", fleetNumber.toLowerCase()));
+    const q = query(jobsRef, where("fleet", "==", fleetNumber.toUpperCase()));
     const querySnapshot = await getDocs(q);
+
+    console.log("QUERY SNAPSHOT SIZE:", querySnapshot.size);
+    console.log("DOCS:", querySnapshot.docs.map(d => d.data()));
+
 
     if (!querySnapshot.empty) {
         const jobDoc = querySnapshot.docs[0];
@@ -240,6 +244,9 @@ export const getNewJobFromFleetNumber = async (fleetNumber: string): Promise<Job
             return job;
         }
     }
+
+    console.log(fleetNumber)
+
     return null;
 }
 
