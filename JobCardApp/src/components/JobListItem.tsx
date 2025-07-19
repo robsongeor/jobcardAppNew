@@ -85,7 +85,7 @@ export default function JobListItem({ job, onPress }: JobListItemProps) {
                     </Text>
                 </View>
                 <View style={styles.right}>
-                    <Text numberOfLines={1} style={styles.customerName}>
+                    <Text ellipsizeMode="tail" numberOfLines={1} style={styles.customerName}>
                         {capitalizeFirst(job.customerName)}
                     </Text>
                     <Text style={styles.dateText}>{formatDate(job.assignedDate[uid])}</Text>
