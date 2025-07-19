@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAssignedJobs } from '../context/AssignedJobContext';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,10 +10,13 @@ import { getStoredUserField } from '../storage/storage';
 import JobsFilters from '../components/JobsFilters';
 import COLORS from '../constants/colors';
 import JobListItem from '../components/JobListItem';
+import Icon from 'react-native-vector-icons/Feather';
+import PADDING from '../constants/padding';
 
 const JobsScreen = () => {
     const [query, setQuery] = useState("");
     const [activeTab, setActiveTab] = useState<TabType>('all');
+
 
     type NavigationProp = NativeStackNavigationProp<JobsStackParamList, 'JobForm'>;
     const navigation = useNavigation<NavigationProp>();
@@ -47,16 +50,24 @@ const JobsScreen = () => {
         const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - 7);
 
+        const showArchived = activeTab === "archive"
+
+
+
         let tabFilter = assignedJobs;
 
         if (activeTab !== 'all') {
+            const notArchived = activeTab === 'archive' ? 'submitted' : activeTab
+
+            console.log(notArchived)
+
             tabFilter = assignedJobs.filter(
-                job => job.assignedStatus[uid] === activeTab
+                job => job.assignedStatus[uid] === notArchived
             );
 
             console.log(tabFilter)
         }
-
+        // if not archive
         const cleaned = tabFilter.filter(job => {
             const status = job.assignedStatus[uid];
             const assignedDate = new Date(job.assignedDate[uid]);
@@ -65,12 +76,24 @@ const JobsScreen = () => {
             return !(status === 'submitted' && isOld);
         });
 
+        const archived = tabFilter.filter(job => {
+
+            const assignedDate = new Date(job.assignedDate[uid]);
+            const isOld = assignedDate < cutoffDate;
+
+            return (isOld);
+        });
+
         const sorted = (list: Job[]) =>
             list.sort((a, b) => parseInt(b.job, 10) - parseInt(a.job, 10));
 
+
+        const jobs = showArchived ? archived : cleaned
+
+
         return query.length === 0
-            ? sorted(cleaned)
-            : sorted(cleaned.filter(job => jobMatchesQuery(job, query)));
+            ? sorted(jobs)
+            : sorted(jobs.filter(job => jobMatchesQuery(job, query)));
     };
 
     return (
@@ -90,10 +113,17 @@ const JobsScreen = () => {
                         <JobListItem job={item} onPress={() => handleOpen(item)} />
                     )}
                     ListHeaderComponent={
-                        <JobsFilters
-                            activeTab={activeTab}
-                            setActiveTab={setActiveTab}
-                        />
+                        <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', marginBottom: 20, paddingRight: PADDING.horizontal }}>
+
+                            <JobsFilters
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                            />
+                            <TouchableOpacity onPress={() => setActiveTab("archive")}>
+                                <Icon name="archive" size={20} color={COLORS.primary} />
+                            </TouchableOpacity>
+
+                        </View>
                     }
                 />
             </View>

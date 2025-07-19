@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
         borderColor: COLORS.white,
         borderWidth: 3,
         borderRadius: 8,
-        marginBottom: 20,
+
         alignSelf: 'flex-start',
-        marginHorizontal: PADDING.horizontal
+        marginLeft: PADDING.horizontal
     },
     button: {
         justifyContent: "center",
