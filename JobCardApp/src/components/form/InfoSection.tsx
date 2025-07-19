@@ -54,11 +54,12 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
         setShowModal(true);
         setLoading(true);
         try {
-            await submitJobCardToFireStore(data);
-
             const user = firebase.auth().currentUser;
-            if (!user) return;
+            if (!user) return; // ensure we have a user
+
             const idToken = await user.getIdToken();
+
+            // 1. Try to generate the PDF
             const response = await fetch('https://generatejobcardpdf-hjkqebqdtq-uc.a.run.app', {
                 method: 'POST',
                 headers: {
@@ -67,22 +68,26 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
                 },
                 body: JSON.stringify({ ...job, ...data }),
             });
-            if (response.ok) {
-                await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
-                setShowSuccess(true);
-                addRecentActivity(convertJobToRecent(job, "submitted"))
 
-            } else {
+            // 2. Handle errors
+            if (!response.ok) {
                 const err = await response.text();
                 setErrorMsg("Error sending job card: " + err);
                 setShowError(true);
+                return;
             }
+
+            // 3. PDF was generated successfully – now save and update
+            await submitJobCardToFireStore(data);
+            await updateAssignedStatus(jobId, getStoredUserField('uid'), "submitted");
+            setShowSuccess(true);
+            addRecentActivity(convertJobToRecent(job, "submitted"));
+
         } catch (error: any) {
             setErrorMsg(error.message || 'An unexpected error occurred.');
             setShowError(true);
         } finally {
             setLoading(false);
-
         }
     };
 
