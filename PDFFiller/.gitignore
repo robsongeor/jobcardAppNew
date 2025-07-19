@@ -10,10 +10,7 @@ firebase-debug.*.log*
 # Firebase cache
 .firebase/
 
-firebase.json
-get-gmail-refresh-token.js
-
-
+update.txt
 
 # Firebase config
 
