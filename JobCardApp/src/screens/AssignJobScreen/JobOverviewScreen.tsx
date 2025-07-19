@@ -6,7 +6,6 @@ import { getStoredUserField } from "../../storage/storage";
 import { assignJobToUser, createNewJob, getJobFromJobNumber } from "../../firebase";
 import JobOverviewCard from "../../components/JobOverviewCard";
 import CustomButton from "../../components/form/Buttons/CustomButton";
-import Config from "react-native-config";
 import { useCallback, useEffect, useState } from "react";
 import AppHeader from "../../components/AppHeader";
 import HeaderButton from "../../components/form/Buttons/HeaderButton";
@@ -78,11 +77,6 @@ export default function JobOverviewScreen({ route, navigation }: Props) {
             console.error("Assignment failed:", error);
         }
     }, [job, uid]);
-
-    useEffect(() => {
-        navigation.setParams({ handleAssign });
-    }, [handleAssign]);
-
 
     return (
         <View style={styles.screen}>
