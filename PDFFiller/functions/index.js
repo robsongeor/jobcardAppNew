@@ -23,6 +23,7 @@ const gmailRefreshToken = defineSecret("GMAIL_REFRESH_TOKEN");
 
 admin.initializeApp();
 
+
 export const generateJobCardPDF = onRequest(
     {
       region: "us-central1",
@@ -58,44 +59,63 @@ export const generateJobCardPDF = onRequest(
 
           // Load your template PDF
           const templatePath =
-          path.join(__dirname, "assets", "JobsheetTemplateUpdate.pdf");
+          path.join(__dirname, "assets", "Final.pdf");
 
           const formPdfBytes = fs.readFileSync(templatePath);
           const pdfDoc = await PDFDocument.load(formPdfBytes);
           const form = pdfDoc.getForm();
 
+          form.getTextField("technician").setText(data.techName || "");
+          form.getTextField("technicianEmail").setText(
+              data.techPhone || "");
+          form.getTextField("technicianPhone").setText(
+              data.techEmail || "");
+
           // Customer Details
           form.getTextField("customer").setText(data.customerName || "");
-          form.getTextField("address").setText(data.customerAddress || "");
-          form.getTextField("suburb").setText(data.customerAddressSuburb || "");
-          form.getTextField("town").setText(data.customerAddressTown || "");
+
+          const ca = data.customerAddress;
+          const cas = data.customerAddressSuburb;
+          const cat = data.customerAddressTown;
+
+          const add = `${ca}, ${cas}, ${cat}`;
+
+          form.getTextField("address").setText(add || "");
+
           form.getTextField("contact").setText(data.siteContact || "");
-          form.getTextField("phone").setText(data.siteContactPhone || "");
+          form.getTextField("contactEmail").setText(
+              data.siteContactEmail || "");
+          form.getTextField("contactPhone").setText(
+              data.siteContactPhone || "");
 
           // Job Details
-          form.getTextField("job").setText(data.job || "");
+          form.getTextField("jobnumber").setText(data.job || "");
           form.getTextField("fleet").setText(data.fleet || "");
           form.getTextField("order").setText(data.description.orderNo || "");
 
 
           const mach = data.machine;
 
-          const makemodel = `${mach.make} ${mach.model} ${mach.serialNumber}`;
+          const makemodel = `${mach.make} ${mach.model} `;
           form.getTextField("make").setText(makemodel || "");
+          form.getTextField("serial").setText(
+              String(mach.serialNumber) || "");
           form.getTextField("hours").setText(data.description.hours || "");
 
           // Report
-          const chargeable = data.description.chargeable ? "Yes" : "No";
-          form.getTextField("chargeable").setText(chargeable || "");
-          form.getTextField("reason").setText(
-              data.description.chargeableComment ||
-          "");
+          // const chargeable = data.description.chargeable ? "Yes" : "No";
+          // form.getTextField("chargeable").setText(chargeable || "");
+          // form.getTextField("reason").setText(
+          //   data.description.chargeableComment ||
+          //   "");
           form.getTextField("report").setText(data.description.report || "");
 
           // Client Signature
-          const clientDateF = formatDate(data.signed.clientDate);
-          form.getTextField("clientName").setText(data.signed.clientName || "");
-          form.getTextField("clientDate").setText(clientDateF || "");
+          const clientDateF =
+          data.signed.clientDate ? formatDate(data.signed.clientDate) : "";
+          form.getTextField("customerSignName").setText(
+              data.signed.clientName || "");
+          form.getTextField("customerSignDate").setText(clientDateF || "");
 
 
           // Hours & Mileage
@@ -128,10 +148,10 @@ export const generateJobCardPDF = onRequest(
                 const signatureBytes = Buffer.from(signatureBase64, "base64");
 
                 // Box dimensions (same as before)
-                const boxX = 5.5064 * 72;
-                const boxY = (11.6929 - 10.8718) * 72;
-                const targetWidth = 2.2627 * 72;
-                const targetHeight = 0.8449 * 72;
+                const boxX = 3.1208 * 72;
+                const boxY = (11.6929 - 10.8391) * 72;
+                const targetWidth = 4.763 * 72;
+                const targetHeight = 0.861 * 72;
 
                 // Embed signature and get dimensions
                 const signatureImage = await pdfDoc.embedPng(signatureBytes);

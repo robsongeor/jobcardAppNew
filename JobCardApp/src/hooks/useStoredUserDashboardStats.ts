@@ -4,6 +4,9 @@ import { EventBus } from "../utils/EventBus";
 
 export function useStoredUserDashboardStats() {
     const [name, setName] = useState("NO_NAME");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+
     const [assigned, setAssigned] = useState(0);
     const [overdue, setOverdue] = useState(0);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -11,8 +14,13 @@ export function useStoredUserDashboardStats() {
     useEffect(() => {
         // Try to get user info immediately
         const storedName = getStoredUserField('name');
+        const storedEmail = getStoredUserField('email');
+        const storedPhone = getStoredUserField('phone');
+
         if (storedName && storedName !== "NO_NAME") {
             setName(storedName.split(" ")[0]);
+            setEmail(storedEmail);
+            setPhone(storedPhone);
             setAssigned(getJobsByStatus("assigned").length);
             setOverdue(getOverdueJobs().length);
             setIsUserLoaded(true);

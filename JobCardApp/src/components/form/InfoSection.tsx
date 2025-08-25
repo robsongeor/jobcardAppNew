@@ -49,6 +49,13 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
         setHandleSubmitForHeader(() => handleSubmit(data));
     }, [data]);
 
+    const userData = {
+        techName: getStoredUserField("name"),
+        techPhone: getStoredUserField("phone"),
+        techEmail: getStoredUserField("email")
+    }
+
+
 
     const handleSubmit = async (data: JobFormData) => {
         setShowModal(true);
@@ -59,6 +66,8 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
 
             const idToken = await user.getIdToken();
 
+            console.log(data)
+
             // 1. Try to generate the PDF
             const response = await fetch('https://generatejobcardpdf-hjkqebqdtq-uc.a.run.app', {
                 method: 'POST',
@@ -66,7 +75,7 @@ export default function InfoSection({ data, jobId, job, setHandleSubmitForHeader
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + idToken,
                 },
-                body: JSON.stringify({ ...job, ...data }),
+                body: JSON.stringify({ ...job, ...data, ...userData }),
             });
 
             // 2. Handle errors

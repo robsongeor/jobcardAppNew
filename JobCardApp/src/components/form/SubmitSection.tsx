@@ -36,9 +36,14 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
         };
     }, [showSuccess]);
 
-
+    const userData = {
+        techName: getStoredUserField("name"),
+        techPhone: getStoredUserField("phone"),
+        techEmail: getStoredUserField("email")
+    }
 
     const handleSubmit = async (data: JobFormData) => {
+        console.log(userData)
         setShowModal(true);
         setLoading(true);
         try {
@@ -53,7 +58,7 @@ export default function SubmitSection({ data, jobId, job }: SubmitSectionProps) 
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + idToken,
                 },
-                body: JSON.stringify({ ...job, ...data }),
+                body: JSON.stringify({ ...job, ...data, ...userData }),
             });
             if (response.ok) {
                 setShowSuccess(true);

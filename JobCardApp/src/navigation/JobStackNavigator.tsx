@@ -5,7 +5,6 @@ import JobFormScreen from '../screens/JobFormScreen';
 import { Job } from '../types/types';
 import AppHeader from '../components/AppHeader';
 import JobsScreen from '../screens/JobsScreen';
-import CustomButton from '../components/form/Buttons/CustomButton';
 import HeaderButton from '../components/form/Buttons/HeaderButton';
 import { View } from 'react-native';
 
