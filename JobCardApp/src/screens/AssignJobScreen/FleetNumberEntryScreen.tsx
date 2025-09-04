@@ -29,8 +29,10 @@ export default function FleetNumberEntryScreen({ route, navigation }: Props) {
         try {
             const result: Job | null = await getNewJobFromFleetNumber(value);
             if (result !== null) {
+                // Machine exists
                 navigation.navigate("JobDescriptionEntry", { job: { ...result, job: jobNumber } });
             } else {
+                // Machine does not exist
                 setError(`Fleet ${value} does not exist in system`);
                 navigation.navigate("NewMachineEntry", { jobNumber: jobNumber, fleetNumber: value });
             }
