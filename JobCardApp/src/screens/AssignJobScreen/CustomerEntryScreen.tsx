@@ -52,7 +52,7 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
         navigation.navigate("JobDescriptionEntry", { job: newJob });
 
         console.log(newJob)
-        // navigation.navigate("CustomerEntry", { jobNumber: jobNumber, fleet: fleetNumber, machine });
+
     };
 
     return (

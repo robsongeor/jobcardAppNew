@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Text, StyleSheet } from "react-native";
+import { Text } from "react-native";
 import COLORS from "../../constants/colors";
-import PADDING from "../../constants/padding";
+
 import { getJobFromJobNumber } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -20,7 +20,7 @@ export default function JobNumberEntryScreen() {
         try {
             const result = await getJobFromJobNumber(value);
             if (result !== null) {
-
+                //Job already exists
                 navigation.navigate("JobOverview", { job: result });
             } else {
                 //navigate to fleet
@@ -45,41 +45,3 @@ export default function JobNumberEntryScreen() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        justifyContent: "center",
-        alignItems: "stretch",
-        paddingHorizontal: PADDING.horizontal,
-        backgroundColor: COLORS.background,
-    },
-
-    subtitle: {
-        fontSize: 16,
-        color: "#555",
-        marginBottom: 24,
-    },
-    input: {
-        backgroundColor: COLORS.white,
-        borderRadius: 40,
-        paddingHorizontal: 20,
-        paddingVertical: 16,
-        fontSize: 16,
-        marginBottom: 12,
-    },
-
-    button: {
-
-        backgroundColor: "#111",
-        paddingVertical: 16,
-        borderRadius: 30,
-        alignItems: "center",
-        justifyContent: "center",
-
-    },
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
-        fontWeight: "400",
-    },
-});
