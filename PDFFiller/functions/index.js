@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 import corsMiddleware from "cors";
-import {PDFDocument} from "pdf-lib";
+import {PDFDocument, StandardFonts} from "pdf-lib";
 import fs from "fs";
 import path from "path";
 import nodemailer from "nodemailer";
@@ -65,14 +65,24 @@ export const generateJobCardPDF = onRequest(
           const pdfDoc = await PDFDocument.load(formPdfBytes);
           const form = pdfDoc.getForm();
 
-          form.getTextField("technician").setText(data.techName || "");
+          const helveticaBold =
+          await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+
+          const technicianField = form.getTextField("technician");
+          technicianField.setText(data.techName || "");
+          technicianField.updateAppearances(helveticaBold);
+
           form.getTextField("technicianEmail").setText(
               data.techPhone || "");
           form.getTextField("technicianPhone").setText(
               data.techEmail || "");
 
           // Customer Details
-          form.getTextField("customer").setText(data.customerName || "");
+          const customerField = form.getTextField("customer");
+          customerField.setText(data.customerName || "");
+          customerField.updateAppearances(helveticaBold);
+
 
           const ca = data.customerAddress;
           const cas = data.customerAddressSuburb;
@@ -82,25 +92,47 @@ export const generateJobCardPDF = onRequest(
 
           form.getTextField("address").setText(add || "");
 
-          form.getTextField("contact").setText(data.siteContact || "");
+          const contactField = form.getTextField("contact");
+          contactField.setText(data.siteContact || "");
+          contactField.updateAppearances(helveticaBold);
+
+
           form.getTextField("contactEmail").setText(
               data.siteContactEmail || "");
           form.getTextField("contactPhone").setText(
               data.siteContactPhone || "");
 
           // Job Details
-          form.getTextField("jobnumber").setText(data.job || "");
-          form.getTextField("fleet").setText(data.fleet || "");
-          form.getTextField("order").setText(data.description.orderNo || "");
+          // Job number field
+          const jobField = form.getTextField("jobnumber");
+          jobField.setText(data.job || "");
+          jobField.updateAppearances(helveticaBold);
+
+          // Fleet field
+          const fleetField = form.getTextField("fleet");
+          fleetField.setText(data.fleet || "");
+          fleetField.updateAppearances(helveticaBold);
+
+          // Order field
+          const orderField = form.getTextField("order");
+          orderField.setText(data.description?.orderNo || "");
+          orderField.updateAppearances(helveticaBold);
 
 
           const mach = data.machine;
 
           const makemodel = `${mach.make} ${mach.model} `;
-          form.getTextField("make").setText(makemodel || "");
+          const makeField = form.getTextField("make");
+          makeField.setText(makemodel || "");
+          makeField.updateAppearances(helveticaBold);
+
           form.getTextField("serial").setText(
               String(mach.serialNumber) || "");
-          form.getTextField("hours").setText(data.description.hours || "");
+
+          const hoursField = form.getTextField("hours");
+          hoursField.setText(data.description?.hours || "");
+          hoursField.updateAppearances(helveticaBold);
+
 
           // Report
           // const chargeable = data.description.chargeable ? "Yes" : "No";
@@ -113,9 +145,14 @@ export const generateJobCardPDF = onRequest(
           // Client Signature
           const clientDateF =
           data.signed.clientDate ? formatDate(data.signed.clientDate) : "";
-          form.getTextField("customerSignName").setText(
-              data.signed.clientName || "");
-          form.getTextField("customerSignDate").setText(clientDateF || "");
+
+          const customerSignNameField = form.getTextField("customerSignName");
+          customerSignNameField.setText(data.signed?.clientName || "");
+          customerSignNameField.updateAppearances(helveticaBold);
+
+          const customerSignDateField = form.getTextField("customerSignDate");
+          customerSignDateField.setText(clientDateF || "");
+          customerSignDateField.updateAppearances(helveticaBold);
 
 
           // Hours & Mileage
