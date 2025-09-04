@@ -15,8 +15,12 @@ export default function JobDescriptionEntryScreen({ route, navigation }: Props) 
         return null;
     }
 
+
+
     const { job } = route.params
     const [loading, setLoading] = useState(false);
+
+    console.log(job)
 
     const handleSubmit = (value: string) => {
         setLoading(true);

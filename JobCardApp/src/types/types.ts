@@ -68,6 +68,16 @@ export type Machine = {
     serialNumber: string
 }
 
+export type Customer = {
+    coords: { latitude: number, longitude: number }
+    customerAddress: string;
+    customerAddressSuburb: string;
+    customerAddressTown: string;
+    customerName: string;
+}
+
+
+
 export const machines: Machine[] = [
     { fleet: "FN1242", make: "Bendi", model: "B318", serialNumber: "BEN123456" },
     { fleet: "FN1270", make: "Still", model: "RX60-50", serialNumber: "STL987654" },
