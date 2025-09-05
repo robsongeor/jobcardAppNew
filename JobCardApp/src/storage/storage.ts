@@ -2,6 +2,8 @@ import { MMKV } from 'react-native-mmkv';
 import { Job, RecentActivityType } from '../types/types';
 import { formatDate, formatDateTime } from '../components/helpers/formatters';
 import { EventBus } from '../utils/EventBus';
+import { getAllCustomers } from '../firebase'; // wherever your firebase.ts is
+import { Customer } from '../types/types';
 
 
 export const storage = new MMKV();
@@ -76,8 +78,6 @@ export function getRecentActivity(): RecentActivityType[] {
 export function convertJobToRecent(job: Job, status: string): RecentActivityType {
     let title = "";
 
-
-
     if (status === "submitted") {
         title = "Submitted Job Card"
     }
@@ -85,7 +85,6 @@ export function convertJobToRecent(job: Job, status: string): RecentActivityType
     if (status === "assigned") {
         title = "Assigned to Job"
     }
-
 
     return {
         id: job.id,
@@ -103,9 +102,6 @@ export function getJobsByStatus(status: string): Job[] {
     try {
         const allJobs = JSON.parse(jobsStr);
         const assigned = allJobs.filter((job: Job) => job.assignedStatus[getStoredUserField('uid')] === status)
-
-
-
         return assigned;
     } catch {
         return [];
@@ -114,20 +110,38 @@ export function getJobsByStatus(status: string): Job[] {
 
 export function getOverdueJobs(): Job[] {
     const assigned = getJobsByStatus('overdue')
-
     const overdue = assigned.filter((job: Job) => {
-
-
         const dateAssigned = new Date(job.assignedDate[getStoredUserField('uid')]).getTime()
         const dateNow = new Date().getTime()
         const twoWeeks = 2 * 7 * 24 * 60 * 60 * 1000
-
-
-
         return twoWeeks + dateAssigned < dateNow
     })
 
 
 
     return overdue;
+}
+
+export async function syncCustomersToMMKV(): Promise<Customer[]> {
+    const customers = await getAllCustomers();
+
+    if (customers.length > 0) {
+        storage.set('customers', JSON.stringify(customers));
+        console.log(`✅ Synced ${customers.length} customers to MMKV`);
+    } else {
+        console.warn('⚠ No customers fetched from Firestore');
+    }
+
+    return customers;
+}
+
+export function getCachedCustomers(): Customer[] {
+    const raw = storage.getString('customers');
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw);
+    } catch (err) {
+        console.error('Failed to parse cached customers:', err);
+        return [];
+    }
 }

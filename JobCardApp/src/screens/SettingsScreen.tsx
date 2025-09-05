@@ -1,57 +1,87 @@
-import React, { useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
-import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, { useSharedValue, runOnJS, withTiming } from "react-native-reanimated";
-import AnimatedTabs from "../components/test/animatedTabs";
-
-
-const TAB_LABELS = ["Assigned", "Open", "Submitted", "Overdue"];
+import React, { useEffect, useState } from "react";
+import {
+    View,
+    Text,
+    FlatList,
+    StyleSheet,
+    TextInput,
+} from "react-native";
+import {
+    syncCustomersToMMKV,
+    getCachedCustomers,
+    storage,
+} from "../storage/storage";
+import { Customer } from "../types/types";
 
 export default function SettingsScreen() {
-    const [activeTab, setActiveTab] = useState(0);
-    const animatedTabIndex = useSharedValue(0);
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [search, setSearch] = useState("");
+    const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
 
-    // Only allow one animation at a time
-    const handleTabChange = (newTab: number) => {
-        if (animatedTabIndex.value === newTab) return;
-        animatedTabIndex.value = withTiming(
-            newTab,
-            { duration: 300 },
-            (isFinished) => {
-                if (isFinished) runOnJS(setActiveTab)(newTab);
-            }
+    useEffect(() => {
+        const cached = getCachedCustomers();
+
+        if (cached.length === 0) {
+            syncCustomersToMMKV().then((fresh) => {
+                setCustomers(fresh);
+                setFilteredCustomers(fresh); // set initial filtered list
+                console.log("Fetched from Firestore:", fresh.length);
+            });
+        } else {
+            setCustomers(cached);
+            setFilteredCustomers(cached); // set initial filtered list
+            console.log("Loaded cached customers:", cached.length);
+        }
+    }, []);
+
+    useEffect(() => {
+        const results = customers.filter((c) =>
+            c.customerName.toLowerCase().includes(search.toLowerCase())
         );
-    };
-
-    // Swipe gesture: swipe left/right to change tab
-    const swipeGesture = Gesture.Pan()
-        .onEnd((event) => {
-            const threshold = 50;
-            if (event.translationX < -threshold && activeTab < TAB_LABELS.length - 1) {
-                runOnJS(handleTabChange)(activeTab + 1);
-            } else if (event.translationX > threshold && activeTab > 0) {
-                runOnJS(handleTabChange)(activeTab - 1);
-            }
-        });
-
-    return
+        setFilteredCustomers(results);
+    }, [search, customers]);
 
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <GestureDetector gesture={swipeGesture}>
-                <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
-                    <AnimatedTabs
-                        tabs={TAB_LABELS}
-                        animatedTabIndex={animatedTabIndex}
-                        onTabPress={handleTabChange}
-                    />
-                    <View style={{ alignItems: "center", marginTop: 32 }}>
-                        <Text style={{ fontSize: 22 }}>
-                            Current tab: {TAB_LABELS[activeTab]}
-                        </Text>
+        <View style={styles.container}>
+            <Text style={styles.header}>Customer List</Text>
+
+            <TextInput
+                placeholder="Search by customer name..."
+                value={search}
+                onChangeText={setSearch}
+                style={styles.searchInput}
+            />
+
+            <FlatList
+                data={filteredCustomers}
+                keyExtractor={(item, index) => item.id || `${index}`}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={styles.name}>{item.customerName}</Text>
+                        <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
                     </View>
-                </SafeAreaView>
-            </GestureDetector>
-        </GestureHandlerRootView>
+                )}
+                ListEmptyComponent={<Text>No customers found.</Text>}
+            />
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: { flex: 1, padding: 16 },
+    header: { fontSize: 22, fontWeight: "bold", marginBottom: 12 },
+    searchInput: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 12,
+    },
+    item: {
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
+    },
+    name: { fontSize: 16, fontWeight: "600" },
+    id: { fontSize: 12, color: "#555" },
+});

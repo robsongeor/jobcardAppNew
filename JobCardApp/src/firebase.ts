@@ -2,8 +2,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc } from '@react-native-firebase/firestore';
 
-
-import { Job, Machine } from './types/types';
+import { Job, Machine, Customer } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
 import { addRecentActivity, convertJobToRecent } from './storage/storage';
 
@@ -11,6 +10,17 @@ import { addRecentActivity, convertJobToRecent } from './storage/storage';
     used to reduce retrieving to many docs from firestore (worst case ~1500)
     use pagination to reduce the chance of large queries 
 */
+export const getAllCustomers = async (): Promise<Customer[]> => {
+    const db = getFirestore();
+    const snapshot = await getDocs(collection(db, "customers"));
+
+    const customers: Customer[] = snapshot.docs.map((doc) => ({
+        id: doc.id, // ← this is the Firestore doc ID
+        ...(doc.data() as Omit<Customer, "id">),
+    }));
+
+    return customers;
+};
 export const searchJobsTrigrams = async (
     searchTerm: string,
     totalFetched: number = 0,
@@ -265,7 +275,6 @@ export const createNewJob = async (job: Job): Promise<boolean> => {
     }
 }
 
-
 export function createEmptyJob(): Job {
     return {
         id: "",
@@ -291,6 +300,5 @@ export function createEmptyJob(): Job {
         coords: { latitude: 0, longitude: 0 }
     } as Job
 }
-
 
 export { auth, firestore };

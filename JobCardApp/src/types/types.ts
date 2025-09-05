@@ -74,6 +74,7 @@ export type Customer = {
     customerAddressSuburb: string;
     customerAddressTown: string;
     customerName: string;
+    id?: string;
 }
 
 
