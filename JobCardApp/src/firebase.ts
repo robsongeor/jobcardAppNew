@@ -4,17 +4,13 @@ import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFir
 
 import { Job, Machine, Customer, FirestoreMachines, machines } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
-import { addRecentActivity, convertJobToRecent, getCachedCustomers, storage } from './storage/storage';
+import { addRecentActivity, convertJobToRecent, getCachedCustomers, getCachedMachines, storage } from './storage/storage';
 
 
 export function listenToCustomers(onUpdate: (customers: Customer[]) => void) {
 
-
-
     const db = getFirestore();
     const colRef = collection(db, "customers");
-
-
 
     let firstLoad = true;
 
@@ -57,17 +53,52 @@ export function listenToCustomers(onUpdate: (customers: Customer[]) => void) {
     return unsubscribe;
 }
 
-export const getAllMachines = async (): Promise<FirestoreMachines[]> => {
+
+export function listenToMachines(onUpdate: (machines: FirestoreMachines[]) => void) {
+
     const db = getFirestore();
-    const snapshot = await getDocs(collection(db, "machines"));
+    const colRef = collection(db, "machines");
 
-    const machines: FirestoreMachines[] = snapshot.docs.map((doc) => ({
-        id: doc.id, // ← this is the Firestore doc ID
-        ...(doc.data() as Omit<FirestoreMachines, "id">),
-    }));
+    let firstLoad = true;
 
-    return machines;
-};
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+        if (firstLoad) {
+            // ✅ Initial full load
+            const machines: FirestoreMachines[] = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...(doc.data() as Omit<FirestoreMachines, "id">),
+            }));
+            storage.set("machines", JSON.stringify(machines));
+            onUpdate(machines);
+            firstLoad = false;
+        } else {
+            // 🔄 Incremental updates
+            let cached = getCachedMachines();
+
+            snapshot.docChanges().forEach((change) => {
+                const docData: FirestoreMachines = {
+                    id: change.doc.id,
+                    ...(change.doc.data() as Omit<FirestoreMachines, "id">),
+                };
+
+                if (change.type === "added") {
+                    cached.push(docData);
+                }
+                if (change.type === "modified") {
+                    cached = cached.map((c) => (c.id === docData.id ? docData : c));
+                }
+                if (change.type === "removed") {
+                    cached = cached.filter((c) => c.id !== docData.id);
+                }
+            });
+
+            storage.set("machines", JSON.stringify(cached));
+            onUpdate(cached);
+        }
+    });
+
+    return unsubscribe;
+}
 
 export const searchJobsTrigrams = async (
     searchTerm: string,

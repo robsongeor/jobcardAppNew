@@ -2,7 +2,6 @@ import { MMKV } from 'react-native-mmkv';
 import { FirestoreMachines, Job, Machine, RecentActivityType } from '../types/types';
 import { formatDate, formatDateTime } from '../components/helpers/formatters';
 import { EventBus } from '../utils/EventBus';
-import { getAllMachines } from '../firebase'; // wherever your firebase.ts is
 import { Customer } from '../types/types';
 
 
@@ -122,43 +121,16 @@ export function getOverdueJobs(): Job[] {
     return overdue;
 }
 
-export async function syncMachinesToMMKV(): Promise<FirestoreMachines[]> {
-    const machines = await getAllMachines();
-
-    if (machines.length > 0) {
-        storage.set('machines', JSON.stringify(machines));
-        console.log(`✅ Synced ${machines.length} machines to MMKV`);
-    } else {
-        console.warn('⚠ No machines fetched from Firestore');
-    }
-
-    return machines;
-}
-
 export function getCachedMachines(): FirestoreMachines[] {
     const raw = storage.getString('machines');
     if (!raw) return [];
     try {
         return JSON.parse(raw);
     } catch (err) {
-        console.error('Failed to parse cached customers:', err);
+        console.error('Failed to parse cached machines:', err);
         return [];
     }
 }
-
-
-// export async function syncCustomersToMMKV(): Promise<Customer[]> {
-//     const customers = await getAllCustomers();
-
-//     if (customers.length > 0) {
-//         storage.set('customers', JSON.stringify(customers));
-//         console.log(`✅ Synced ${customers.length} customers to MMKV`);
-//     } else {
-//         console.warn('⚠ No customers fetched from Firestore');
-//     }
-
-//     return customers;
-// }
 
 export function getCachedCustomers(): Customer[] {
     const raw = storage.getString('customers');

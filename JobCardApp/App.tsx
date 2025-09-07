@@ -8,6 +8,7 @@ import { AssignedJobsProvider } from './src/context/AssignedJobContext';
 import { StatusBar } from 'react-native';
 import COLORS from './src/constants/colors';
 import { CustomerProvider } from './src/context/CustomerContext';
+import { MachineProvider } from './src/context/MachinesContext';
 
 
 export default function App() {
@@ -15,10 +16,12 @@ export default function App() {
     <AuthProvider>
       <AssignedJobsProvider>
         <CustomerProvider>
-          <NavigationContainer>
-            <RootNavigator />
-            <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-          </NavigationContainer>
+          <MachineProvider>
+            <NavigationContainer>
+              <RootNavigator />
+              <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+            </NavigationContainer>
+          </MachineProvider>
         </CustomerProvider>
       </AssignedJobsProvider>
     </AuthProvider>

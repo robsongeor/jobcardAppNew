@@ -7,14 +7,20 @@ import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SearchBar from "../../components/SearchBar";
 import COLORS from "../../constants/colors";
 import PADDING from "../../constants/padding";
-import { getCachedCustomers, getCachedMachines, syncMachinesToMMKV } from "../../storage/storage";
+import { useMachines } from "../../context/MachinesContext";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "NewMachineEntry">;
 
 export default function NewMachineEntryScreen({ route, navigation }: Props) {
+
+    const { machines, loading } = useMachines();
+
+    if (loading) return <Text>Loading customers...</Text>;
+
+
     const { jobNumber } = route.params;
 
-    const [loading, setLoading] = useState(false);
+
     const [error, setError] = useState<string | null>("");
 
 
@@ -39,7 +45,6 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
 
 
 
-    const [machines, setMachines] = useState<FirestoreMachines[]>([]);
     const [filteredMachines, setFilteredMachines] = useState<FirestoreMachines[]>([]);
 
     const [inputsValid, setInputsValid] = useState(true)
@@ -57,21 +62,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         navigation.navigate("CustomerEntry", { jobNumber: jobNumber, fleet: machine.fleet, machine, customer });
     };
 
-    useEffect(() => {
-        const cached = getCachedMachines();
 
-        if (cached.length === 0) {
-            syncMachinesToMMKV().then((fresh) => {
-                setMachines(fresh);
-                setFilteredMachines(fresh); // set initial filtered list
-                console.log("Fetched from Firestore:", fresh.length);
-            });
-        } else {
-            setMachines(cached);
-            setFilteredMachines(cached); // set initial filtered list
-            console.log("Loaded machines:", cached.length);
-        }
-    }, []);
 
     useEffect(() => {
         const results = machines.filter((c) =>
