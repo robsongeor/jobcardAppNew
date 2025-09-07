@@ -11,6 +11,9 @@ export interface SearchBarProps extends TextInputProps {
     placeholder?: string;
     autoSearch?: boolean;
     onFocus?: () => void;
+    showCancel?: number;
+    cancelSearch?: () => void;
+    ref?: React.Ref<TextInput>
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -20,6 +23,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
     handleSearch,
     autoSearch = false,
     onFocus,
+    showCancel = 0,
+    cancelSearch,
+    ref,
     ...rest
 
 }) => {
@@ -30,6 +36,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }
     };
 
+    const handleCancel = () => {
+        onChangeText("");
+
+        if (cancelSearch)
+            cancelSearch();
+    }
+
     return (
         <View style={styles.container}>
             <View style={[styles.icon, { paddingLeft: 14 }]}>
@@ -37,6 +50,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </View>
 
             <TextInput
+                ref={ref}
                 style={styles.input}
                 value={value}
                 onChangeText={handleTextChange}
@@ -49,7 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 {...rest}
             />
 
-            {value.length > 0 && (
+            {value.length > showCancel && (
                 <TouchableOpacity style={[styles.icon, { paddingRight: 14 }]} onPress={() => onChangeText("")}>
                     <Icon name="x" size={20} color="#444" />
                 </TouchableOpacity>

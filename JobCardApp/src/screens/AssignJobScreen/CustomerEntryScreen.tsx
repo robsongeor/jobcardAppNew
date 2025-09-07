@@ -1,15 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput } from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createEmptyJob } from "../../firebase";
 import { Customer, Job } from "../../types/types";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
+import SearchBar from "../../components/SearchBar";
+import COLORS from "../../constants/colors";
+import CustomButton from "../../components/form/Buttons/CustomButton";
+import { getCachedCustomers, syncCustomersToMMKV } from "../../storage/storage";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import PADDING from "../../constants/padding";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "CustomerEntry">;
 
 export default function CustomerEntryScreen({ route, navigation }: Props) {
     const { jobNumber, fleet, machine } = route.params
+    const [searchTerm, setSearchTerm] = useState("")
 
     const [customer, setCustomer] = useState<Customer>({
         coords: { latitude: 0, longitude: 0 },
@@ -24,6 +31,36 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
 
     //Create an empty job
     const [job, setJob] = useState<Job>(createEmptyJob())
+
+    const [customers, setCustomers] = useState<Customer[]>([]);
+    const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
+
+    const [isSearching, setIsSearching] = useState(false);
+
+
+    useEffect(() => {
+        const cached = getCachedCustomers();
+
+        if (cached.length === 0) {
+            syncCustomersToMMKV().then((fresh) => {
+                setCustomers(fresh);
+                setFilteredCustomers(fresh); // set initial filtered list
+                console.log("Fetched from Firestore:", fresh.length);
+            });
+        } else {
+            setCustomers(cached);
+            setFilteredCustomers(cached); // set initial filtered list
+            console.log("Loaded cached customers:", cached.length);
+        }
+    }, []);
+
+    useEffect(() => {
+        const results = customers.filter((c) =>
+            c.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCustomers(results);
+    }, [searchTerm, customers]);
+
 
     const handleChange = (field: keyof Customer, value: string) => {
         setCustomer((prev) => ({
@@ -55,59 +92,108 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
 
     };
 
+    const setCustomerSelection = (customer: Customer) => {
+        setIsSearching(false)
+        setCustomer(customer)
+    }
+
+    const inputRef = useRef<TextInput>(null);
+
     return (
         <KeyboardAvoidingView
-            style={{ flex: 1, padding: 16 }}
+            style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={0}
         >
-            <Text style={styles.label}>Job Number: {jobNumber}</Text>
-            <Text style={styles.label}>Fleet Number: {fleet}</Text>
-            <Text style={styles.label}>Make: {machine.make}</Text>
-            <Text style={styles.label}>Model: {machine.model}</Text>
-            <Text style={styles.label}>Serial Number: {machine.serialNumber}</Text>
 
-            <Text style={styles.label}>Customer Name</Text>
-            <TextInput
-                style={styles.input}
-                value={customer.customerName}
-                onChangeText={(text) => handleChange("customerName", text)}
-                placeholder="Enter cabc rentalsustomer name"
+            <SearchBar
+                value={searchTerm}
+                onChangeText={setSearchTerm}
+                handleSearch={() => console.log("search")}
+                placeholder="Search Customer..."
+                onFocus={() => setIsSearching(true)}
+                ref={inputRef}
             />
 
-            <Text style={styles.label}>Address</Text>
-            <TextInput
-                style={styles.input}
-                value={customer.customerAddress}
-                onChangeText={(text) => handleChange("customerAddress", text)}
-                placeholder="Enter street address"
-            />
+            {isSearching && <FlatList
+                data={filteredCustomers}
+                keyExtractor={(item, index) => item.id || `${index}`}
+                renderItem={({ item }) => (
+                    <TouchableOpacity
+                        style={styles.item}
+                        onPress={() => setCustomerSelection(item)}
+                    >
 
-            <Text style={styles.label}>Suburb</Text>
-            <TextInput
-                style={styles.input}
-                value={customer.customerAddressSuburb}
-                onChangeText={(text) => handleChange("customerAddressSuburb", text)}
-                placeholder="Enter suburb"
-            />
+                        <Text style={styles.name}>{item.customerName}</Text>
+                        <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
+                    </TouchableOpacity>
+                )}
+                ListEmptyComponent={<Text>No customers found.</Text>}
+            />}
 
-            <Text style={styles.label}>Town / City</Text>
-            <TextInput
-                style={styles.input}
-                value={customer.customerAddressTown}
-                onChangeText={(text) => handleChange("customerAddressTown", text)}
-                placeholder="Enter town/city"
-            />
-            <BottomRightButton
+            {isSearching && <BottomRightButton
+                label={"Close"}
+                onPress={() => {
+                    setIsSearching(false);
+                    inputRef.current?.blur(); // remove focus
+                }}
+                color="red"
+            />}
+
+
+            {!isSearching &&
+                <View style={styles.details}>
+                    <Text style={styles.label}>Customer Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={customer.customerName}
+                        onChangeText={(text) => handleChange("customerName", text)}
+                        placeholder="Enter customer name"
+                    />
+
+                    <Text style={styles.label}>Address</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={customer.customerAddress}
+                        onChangeText={(text) => handleChange("customerAddress", text)}
+                        placeholder="Enter street address"
+                    />
+
+                    <Text style={styles.label}>Suburb</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={customer.customerAddressSuburb}
+                        onChangeText={(text) => handleChange("customerAddressSuburb", text)}
+                        placeholder="Enter suburb"
+                    />
+
+                    <Text style={styles.label}>Town / City</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={customer.customerAddressTown}
+                        onChangeText={(text) => handleChange("customerAddressTown", text)}
+                        placeholder="Enter town/city"
+                    />
+                </View>}
+
+
+            {!isSearching && <BottomRightButton
                 label={loading ? "Loading..." : "Next"}
-                disabled={loading}
+                disabled={loading || customer.customerName.length == 0}
                 onPress={() => handleSubmit(customer)}
-            />
+            />}
         </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.background
+    },
+    details: {
+        marginHorizontal: PADDING.horizontal
+    },
     label: {
         marginTop: 12,
         fontSize: 16,
@@ -120,4 +206,11 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 4,
     },
+    item: {
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
+    },
+    name: { fontSize: 16, fontWeight: "600" },
+    id: { fontSize: 12, color: "#555" },
 });
