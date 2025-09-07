@@ -2,7 +2,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc } from '@react-native-firebase/firestore';
 
-import { Job, Machine, Customer } from './types/types';
+import { Job, Machine, Customer, FirestoreMachines, machines } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
 import { addRecentActivity, convertJobToRecent } from './storage/storage';
 
@@ -21,6 +21,19 @@ export const getAllCustomers = async (): Promise<Customer[]> => {
 
     return customers;
 };
+
+export const getAllMachines = async (): Promise<FirestoreMachines[]> => {
+    const db = getFirestore();
+    const snapshot = await getDocs(collection(db, "machines"));
+
+    const machines: FirestoreMachines[] = snapshot.docs.map((doc) => ({
+        id: doc.id, // ← this is the Firestore doc ID
+        ...(doc.data() as Omit<FirestoreMachines, "id">),
+    }));
+
+    return machines;
+};
+
 export const searchJobsTrigrams = async (
     searchTerm: string,
     totalFetched: number = 0,

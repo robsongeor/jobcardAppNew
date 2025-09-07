@@ -68,6 +68,16 @@ export type Machine = {
     serialNumber: string
 }
 
+export type FirestoreMachines = Customer & {
+    id?: string;
+    fleet: string;
+    machine: {
+        make: string;
+        model: string;
+        serialNumber: string;
+    }
+}
+
 export type Customer = {
     coords: { latitude: number, longitude: number }
     customerAddress: string;

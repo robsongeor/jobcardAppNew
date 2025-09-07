@@ -14,7 +14,7 @@ export type AssignJobStackParamList = {
     JobOverview: { job: Job; handleAssign?: () => Promise<void> };
     FleetNumberEntry: { jobNumber: string };
     JobDescriptionEntry: { job: Job };
-    NewMachineEntry: { jobNumber: string, fleetNumber: string };
+    NewMachineEntry: { jobNumber: string };
     CustomerEntry: { jobNumber: string, fleet: string, machine: Machine }
 };
 

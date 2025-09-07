@@ -176,7 +176,6 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                     />
                 </View>}
 
-
             {!isSearching && <BottomRightButton
                 label={loading ? "Loading..." : "Next"}
                 disabled={loading || customer.customerName.length == 0}

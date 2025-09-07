@@ -23,8 +23,9 @@ export default function JobNumberEntryScreen() {
                 //Job already exists
                 navigation.navigate("JobOverview", { job: result });
             } else {
-                //navigate to fleet
-                navigation.navigate("FleetNumberEntry", { jobNumber: value });
+                // //navigate to fleet
+                // navigation.navigate("FleetNumberEntry", { jobNumber: value });
+                navigation.navigate("NewMachineEntry", { jobNumber: value })
             }
         } catch (error) {
             // Handle error (e.g., show a message)
