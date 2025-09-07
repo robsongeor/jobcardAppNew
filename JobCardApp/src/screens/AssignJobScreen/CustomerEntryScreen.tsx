@@ -91,6 +91,14 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
         setCustomer(customer)
     }
 
+    const checkValidInputs = () => {
+        if (machine.fleet.length == 0) {
+            return false
+        }
+
+        return true;
+    }
+
     const inputRef = useRef<TextInput>(null);
 
     return (

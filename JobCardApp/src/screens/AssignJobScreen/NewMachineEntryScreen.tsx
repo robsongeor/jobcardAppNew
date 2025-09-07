@@ -40,6 +40,8 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
     const [machines, setMachines] = useState<FirestoreMachines[]>([]);
     const [filteredMachines, setFilteredMachines] = useState<FirestoreMachines[]>([]);
 
+    const [inputsValid, setInputsValid] = useState(true)
+
     const handleChange = (field: keyof Machine, value: string) => {
         setMachine((prev) => ({
             ...prev,
@@ -75,6 +77,14 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         );
         setFilteredMachines(results);
     }, [searchTerm, machines]);
+
+    useEffect(() => {
+        if (machine.fleet.length > 0 && machine.make.length > 0 && machine.model.length > 0) {
+            setInputsValid(false)
+        } else {
+            setInputsValid(true)
+        }
+    }, [machine])
 
     const inputRef = useRef<TextInput>(null);
 
@@ -183,7 +193,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
 
             {!isSearching && <BottomRightButton
                 label={loading ? "Loading..." : "Next"}
-                disabled={loading}
+                disabled={loading || inputsValid}
                 onPress={() => handleSubmit(machine)}
             />}
 
