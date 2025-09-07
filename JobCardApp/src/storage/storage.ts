@@ -2,7 +2,7 @@ import { MMKV } from 'react-native-mmkv';
 import { FirestoreMachines, Job, Machine, RecentActivityType } from '../types/types';
 import { formatDate, formatDateTime } from '../components/helpers/formatters';
 import { EventBus } from '../utils/EventBus';
-import { getAllCustomers, getAllMachines } from '../firebase'; // wherever your firebase.ts is
+import { getAllMachines } from '../firebase'; // wherever your firebase.ts is
 import { Customer } from '../types/types';
 
 
@@ -147,18 +147,18 @@ export function getCachedMachines(): FirestoreMachines[] {
 }
 
 
-export async function syncCustomersToMMKV(): Promise<Customer[]> {
-    const customers = await getAllCustomers();
+// export async function syncCustomersToMMKV(): Promise<Customer[]> {
+//     const customers = await getAllCustomers();
 
-    if (customers.length > 0) {
-        storage.set('customers', JSON.stringify(customers));
-        console.log(`✅ Synced ${customers.length} customers to MMKV`);
-    } else {
-        console.warn('⚠ No customers fetched from Firestore');
-    }
+//     if (customers.length > 0) {
+//         storage.set('customers', JSON.stringify(customers));
+//         console.log(`✅ Synced ${customers.length} customers to MMKV`);
+//     } else {
+//         console.warn('⚠ No customers fetched from Firestore');
+//     }
 
-    return customers;
-}
+//     return customers;
+// }
 
 export function getCachedCustomers(): Customer[] {
     const raw = storage.getString('customers');

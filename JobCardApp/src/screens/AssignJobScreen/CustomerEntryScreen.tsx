@@ -2,15 +2,17 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import { useEffect, useRef, useState } from "react";
-import { createEmptyJob } from "../../firebase";
+import { createEmptyJob, listenToCustomers } from "../../firebase";
 import { Customer, Job } from "../../types/types";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SearchBar from "../../components/SearchBar";
 import COLORS from "../../constants/colors";
 import CustomButton from "../../components/form/Buttons/CustomButton";
-import { getCachedCustomers, syncCustomersToMMKV } from "../../storage/storage";
+import { getCachedCustomers } from "../../storage/storage";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import PADDING from "../../constants/padding";
+import { useCustomers } from "../../context/CustomerContext";
+
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "CustomerEntry">;
 
@@ -20,33 +22,20 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
 
     const [storedCustomer, setCustomer] = useState<Customer>(customer)
 
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>("");
 
     //Create an empty job
     const [job, setJob] = useState<Job>(createEmptyJob())
 
-    const [customers, setCustomers] = useState<Customer[]>([]);
+
     const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
 
     const [isSearching, setIsSearching] = useState(false);
 
+    const { customers, loading } = useCustomers();
 
-    useEffect(() => {
-        const cached = getCachedCustomers();
+    if (loading) return <Text>Loading customers...</Text>;
 
-        if (cached.length === 0) {
-            syncCustomersToMMKV().then((fresh) => {
-                setCustomers(fresh);
-                setFilteredCustomers(fresh); // set initial filtered list
-                console.log("Fetched from Firestore:", fresh.length);
-            });
-        } else {
-            setCustomers(cached);
-            setFilteredCustomers(cached); // set initial filtered list
-            console.log("Loaded cached customers:", cached.length);
-        }
-    }, []);
 
     useEffect(() => {
         const results = customers.filter((c) =>

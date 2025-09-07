@@ -7,7 +7,7 @@ import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SearchBar from "../../components/SearchBar";
 import COLORS from "../../constants/colors";
 import PADDING from "../../constants/padding";
-import { getCachedCustomers, getCachedMachines, syncCustomersToMMKV, syncMachinesToMMKV } from "../../storage/storage";
+import { getCachedCustomers, getCachedMachines, syncMachinesToMMKV } from "../../storage/storage";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "NewMachineEntry">;
 
@@ -36,6 +36,8 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         customerAddressTown: "",
         customerName: "",
     });
+
+
 
     const [machines, setMachines] = useState<FirestoreMachines[]>([]);
     const [filteredMachines, setFilteredMachines] = useState<FirestoreMachines[]>([]);

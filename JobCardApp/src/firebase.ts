@@ -1,26 +1,61 @@
 // src/firebase.ts
 import auth from '@react-native-firebase/auth';
-import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc } from '@react-native-firebase/firestore';
+import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc, onSnapshot } from '@react-native-firebase/firestore';
 
 import { Job, Machine, Customer, FirestoreMachines, machines } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
-import { addRecentActivity, convertJobToRecent } from './storage/storage';
+import { addRecentActivity, convertJobToRecent, getCachedCustomers, storage } from './storage/storage';
 
-/* Searchs firestore for first trigram (3chars of search term) 
-    used to reduce retrieving to many docs from firestore (worst case ~1500)
-    use pagination to reduce the chance of large queries 
-*/
-export const getAllCustomers = async (): Promise<Customer[]> => {
+
+export function listenToCustomers(onUpdate: (customers: Customer[]) => void) {
+
+
+
     const db = getFirestore();
-    const snapshot = await getDocs(collection(db, "customers"));
+    const colRef = collection(db, "customers");
 
-    const customers: Customer[] = snapshot.docs.map((doc) => ({
-        id: doc.id, // ← this is the Firestore doc ID
-        ...(doc.data() as Omit<Customer, "id">),
-    }));
 
-    return customers;
-};
+
+    let firstLoad = true;
+
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+        if (firstLoad) {
+            // ✅ Initial full load
+            const customers: Customer[] = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...(doc.data() as Omit<Customer, "id">),
+            }));
+            storage.set("customers", JSON.stringify(customers));
+            onUpdate(customers);
+            firstLoad = false;
+        } else {
+            // 🔄 Incremental updates
+            let cached = getCachedCustomers();
+
+            snapshot.docChanges().forEach((change) => {
+                const docData: Customer = {
+                    id: change.doc.id,
+                    ...(change.doc.data() as Omit<Customer, "id">),
+                };
+
+                if (change.type === "added") {
+                    cached.push(docData);
+                }
+                if (change.type === "modified") {
+                    cached = cached.map((c) => (c.id === docData.id ? docData : c));
+                }
+                if (change.type === "removed") {
+                    cached = cached.filter((c) => c.id !== docData.id);
+                }
+            });
+
+            storage.set("customers", JSON.stringify(cached));
+            onUpdate(cached);
+        }
+    });
+
+    return unsubscribe;
+}
 
 export const getAllMachines = async (): Promise<FirestoreMachines[]> => {
     const db = getFirestore();
