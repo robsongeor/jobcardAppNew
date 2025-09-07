@@ -142,7 +142,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                         <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
                     </TouchableOpacity>
                 )}
-                ListEmptyComponent={<Text>No customers found.</Text>}
+                ListEmptyComponent={<Text>Fleet number not found.</Text>}
             />}
 
 
