@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
 import { KeyboardAvoidingView, Platform, Text, TextInput, View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
-import { FirestoreMachines, Machine } from "../../types/types";
+import { Customer, FirestoreMachines, Machine } from "../../types/types";
 import { useEffect, useRef, useState } from "react";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
 import SearchBar from "../../components/SearchBar";
@@ -17,6 +17,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>("");
 
+
     const [searchTerm, setSearchTerm] = useState("")
 
     const [isSearching, setIsSearching] = useState(false);
@@ -26,6 +27,14 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         make: "",
         model: "",
         serialNumber: "",
+    });
+
+    const [customer, setCustomer] = useState<Customer>({
+        coords: { latitude: 0, longitude: 0 },
+        customerAddress: "",
+        customerAddressSuburb: "",
+        customerAddressTown: "",
+        customerName: "",
     });
 
     const [machines, setMachines] = useState<FirestoreMachines[]>([]);
@@ -41,7 +50,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
     const handleSubmit = (machine: Machine) => {
         setError(null); // reset old errors
         console.log(machine)
-        navigation.navigate("CustomerEntry", { jobNumber: jobNumber, fleet: machine.fleet, machine });
+        navigation.navigate("CustomerEntry", { jobNumber: jobNumber, fleet: machine.fleet, machine, customer });
     };
 
     useEffect(() => {
@@ -79,7 +88,19 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
             serialNumber: machine.machine.serialNumber
         } as Machine
 
+        const convertToCustomer = {
+            coords: machine.coords,
+            customerAddress: machine.customerAddress,
+            customerAddressSuburb: machine.customerAddressSuburb,
+            customerAddressTown: machine.customerAddressTown,
+            customerName: machine.customerName,
+
+        } as Customer
+
         setMachine(convertToMachine)
+        setCustomer(convertToCustomer)
+
+        console.log(customer)
 
     }
 

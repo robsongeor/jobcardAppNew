@@ -15,16 +15,10 @@ import PADDING from "../../constants/padding";
 type Props = NativeStackScreenProps<AssignJobStackParamList, "CustomerEntry">;
 
 export default function CustomerEntryScreen({ route, navigation }: Props) {
-    const { jobNumber, fleet, machine } = route.params
+    const { jobNumber, fleet, machine, customer } = route.params
     const [searchTerm, setSearchTerm] = useState("")
 
-    const [customer, setCustomer] = useState<Customer>({
-        coords: { latitude: 0, longitude: 0 },
-        customerAddress: "",
-        customerAddressSuburb: "",
-        customerAddressTown: "",
-        customerName: "",
-    })
+    const [storedCustomer, setCustomer] = useState<Customer>(customer)
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>("");
@@ -146,7 +140,7 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                     <Text style={styles.label}>Customer Name</Text>
                     <TextInput
                         style={styles.input}
-                        value={customer.customerName}
+                        value={storedCustomer.customerName}
                         onChangeText={(text) => handleChange("customerName", text)}
                         placeholder="Enter customer name"
                     />
@@ -154,7 +148,7 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                     <Text style={styles.label}>Address</Text>
                     <TextInput
                         style={styles.input}
-                        value={customer.customerAddress}
+                        value={storedCustomer.customerAddress}
                         onChangeText={(text) => handleChange("customerAddress", text)}
                         placeholder="Enter street address"
                     />
@@ -162,7 +156,7 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                     <Text style={styles.label}>Suburb</Text>
                     <TextInput
                         style={styles.input}
-                        value={customer.customerAddressSuburb}
+                        value={storedCustomer.customerAddressSuburb}
                         onChangeText={(text) => handleChange("customerAddressSuburb", text)}
                         placeholder="Enter suburb"
                     />
@@ -170,16 +164,17 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                     <Text style={styles.label}>Town / City</Text>
                     <TextInput
                         style={styles.input}
-                        value={customer.customerAddressTown}
+                        value={storedCustomer.customerAddressTown}
                         onChangeText={(text) => handleChange("customerAddressTown", text)}
                         placeholder="Enter town/city"
                     />
                 </View>}
 
+
             {!isSearching && <BottomRightButton
                 label={loading ? "Loading..." : "Next"}
-                disabled={loading || customer.customerName.length == 0}
-                onPress={() => handleSubmit(customer)}
+                disabled={loading || storedCustomer.customerName.length == 0}
+                onPress={() => handleSubmit(storedCustomer)}
             />}
         </KeyboardAvoidingView>
     )

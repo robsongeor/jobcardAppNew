@@ -2,7 +2,7 @@ import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-na
 import JobNumberEntryScreen from "../screens/AssignJobScreen/JobNumberEntryScreen";
 import JobOverviewScreen from "../screens/AssignJobScreen/JobOverviewScreen";
 import FleetNumberEntryScreen from "../screens/AssignJobScreen/FleetNumberEntryScreen";
-import { Job, Machine } from "../types/types";
+import { Customer, Job, Machine } from "../types/types";
 import AppHeader from "../components/AppHeader";
 import JobDescriptionEntryScreen from "../screens/AssignJobScreen/JobDescriptionEntryScreen";
 import { getStoredUserField } from "../storage/storage";
@@ -15,7 +15,7 @@ export type AssignJobStackParamList = {
     FleetNumberEntry: { jobNumber: string };
     JobDescriptionEntry: { job: Job };
     NewMachineEntry: { jobNumber: string };
-    CustomerEntry: { jobNumber: string, fleet: string, machine: Machine }
+    CustomerEntry: { jobNumber: string, fleet: string, machine: Machine, customer: Customer }
 };
 
 const Stack = createNativeStackNavigator<AssignJobStackParamList>();
