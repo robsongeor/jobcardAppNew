@@ -11,10 +11,11 @@ import { StyleSheet, View, Modal } from "react-native";
 import COLORS from "../constants/colors";
 import InfoSection from "../components/form/InfoSection";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import SubmitModal from "../components/form/Modals/SubmitModal"; // ⬅️ import modal
+import SubmitModal from "../components/form/Modals/SubmitModal";
 import { useEffect, useState } from "react";
 import { useSubmitJobForm } from "../hooks/useSubmitJobForm";
-
+import AppHeader from "../components/AppHeader";
+import HeaderButton from "../components/form/Buttons/HeaderButton";
 
 type JobFormRouteProp = RouteProp<JobsStackParamList, "JobForm">;
 type JobFormScreenProps = NativeStackScreenProps<JobsStackParamList, "JobForm">;
@@ -25,30 +26,45 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
     const { jobId, job } = useRoute<JobFormRouteProp>().params;
     const { form, updateField } = useJobFormData(jobId);
 
-    if (!form) return null; // early return until form is loaded
+    if (!form) return null;
 
-    // 🔥 use the new submit hook
     const { handleSubmit, loading, showSuccess, showError, errorMsg, closeModal } =
         useSubmitJobForm(job, jobId, form);
 
-    // 🔥 local state to toggle modal
     const [showModal, setShowModal] = useState(false);
 
-    // connect header button to our handleSubmit
+    // ✅ Configure header directly
     useEffect(() => {
-        navigation.setParams({
-            handleSubmitFromHeader: () => {
-                setShowModal(true);
-                handleSubmit();
-            },
+        navigation.setOptions({
+            header: () => (
+                <AppHeader
+                    title={job.fleet.toUpperCase()}
+                    onBack={() => navigation.goBack()}
+                    right={
+                        <View style={{ flexDirection: "row" }}>
+                            <HeaderButton
+                                icon="camera"
+                                onPress={() => console.log("clicked photos")}
+                                disabled={false}
+                            />
+                            <HeaderButton
+                                icon="send"
+                                onPress={() => {
+                                    console.log("clicked photos")
+                                    //setShowModal(true);
+                                    handleSubmit();
+                                }}
+                                disabled={false}
+                            />
+                        </View>
+                    }
+                />
+            ),
         });
-    }, [form]);
-
-    if (!form) return null; // or a loading state
+    }, [navigation, job, handleSubmit, setShowModal]);
 
     return (
         <View style={styles.container}>
-            {/* 🔥 modal now lives at screen level, not inside InfoSection */}
             <Modal visible={showModal} transparent animationType="fade">
                 <SubmitModal
                     showSuccess={showSuccess}
@@ -64,15 +80,8 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
 
             <Tab.Navigator tabBar={(props) => <FormTabBar {...props} />}>
                 <Tab.Screen name="Info">
-                    {() => (
-                        <InfoSection
-                            data={form}
-                            jobId={job.id}
-                            job={job}
-                        />
-                    )}
+                    {() => <InfoSection data={form} jobId={job.id} job={job} />}
                 </Tab.Screen>
-
                 <Tab.Screen name="Report">
                     {() => (
                         <DescriptionSection
@@ -82,7 +91,6 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                         />
                     )}
                 </Tab.Screen>
-
                 <Tab.Screen name="Activity">
                     {() => (
                         <ActivitySection
@@ -91,7 +99,6 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                         />
                     )}
                 </Tab.Screen>
-
                 <Tab.Screen name="Parts">
                     {() => (
                         <PartsSection
@@ -100,7 +107,6 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                         />
                     )}
                 </Tab.Screen>
-
                 <Tab.Screen name="Sign">
                     {() => (
                         <SignSection

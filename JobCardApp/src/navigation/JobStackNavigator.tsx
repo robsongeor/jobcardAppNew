@@ -1,16 +1,13 @@
-import React from 'react';
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import JobFormScreen from '../screens/JobFormScreen';
-import { Job } from '../types/types';
-import AppHeader from '../components/AppHeader';
-import JobsScreen from '../screens/JobsScreen';
-import HeaderButton from '../components/form/Buttons/HeaderButton';
-import { View } from 'react-native';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import JobFormScreen from "../screens/JobFormScreen";
+import { Job } from "../types/types";
+import AppHeader from "../components/AppHeader";
+import JobsScreen from "../screens/JobsScreen";
 
 export type JobsStackParamList = {
     JobsList: undefined;
-    JobForm: { jobId: string; job: Job; handleSubmitFromHeader?: () => void }; // add it as optional
+    JobForm: { jobId: string; job: Job }; // cleaned up
     SignatureModal: { jobId: string };
 };
 
@@ -19,42 +16,15 @@ const Stack = createNativeStackNavigator<JobsStackParamList>();
 const JobsStackNavigator = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="JobsList" component={JobsScreen}
-                options={({ route }) => ({
-                    headerShown: false,
-                    header: () => <AppHeader title='Jobs'></AppHeader>
-                })} />
             <Stack.Screen
-                name="JobForm"
-                component={JobFormScreen}
-                options={({ route, navigation }) => {
-                    // The handler is set as a param
-                    const handleSubmit = route.params?.handleSubmitFromHeader;
-
-                    return {
-                        header: () => (
-                            <AppHeader
-                                title={route.params.job.fleet.toUpperCase()}
-                                onBack={() => navigation.goBack()}
-                                right={
-                                    <View style={{ flexDirection: "row" }}>
-                                        <HeaderButton
-                                            icon="camera"
-                                            disabled={false}
-                                        />
-                                        <HeaderButton
-                                            icon="send"
-                                            onPress={handleSubmit} // <-- uses handler from params!
-                                            disabled={!handleSubmit}
-                                        />
-                                    </View>
-                                }
-                            />
-                        )
-                    }
+                name="JobsList"
+                component={JobsScreen}
+                options={{
+                    headerShown: false,
+                    header: () => <AppHeader title="Jobs" />,
                 }}
             />
-
+            <Stack.Screen name="JobForm" component={JobFormScreen} />
         </Stack.Navigator>
     );
 };
