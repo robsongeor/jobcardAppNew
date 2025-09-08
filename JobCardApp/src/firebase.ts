@@ -2,7 +2,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore, { collection, getDocs, getFirestore, query, where, FirebaseFirestoreTypes, limit, startAfter, getDoc, doc, updateDoc, setDoc, addDoc, onSnapshot } from '@react-native-firebase/firestore';
 
-import { Job, Machine, Customer, FirestoreMachines, machines } from './types/types';
+import { Job, Customer, FirestoreMachines } from './types/types';
 import { JobFormData } from './hooks/useJobFormData';
 import { addRecentActivity, convertJobToRecent, getCachedCustomers, getCachedMachines, storage } from './storage/storage';
 

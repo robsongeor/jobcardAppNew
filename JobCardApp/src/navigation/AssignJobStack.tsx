@@ -1,11 +1,9 @@
-import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import JobNumberEntryScreen from "../screens/AssignJobScreen/JobNumberEntryScreen";
 import JobOverviewScreen from "../screens/AssignJobScreen/JobOverviewScreen";
-import FleetNumberEntryScreen from "../screens/AssignJobScreen/FleetNumberEntryScreen";
 import { Customer, Job, Machine } from "../types/types";
 import AppHeader from "../components/AppHeader";
 import JobDescriptionEntryScreen from "../screens/AssignJobScreen/JobDescriptionEntryScreen";
-import { getStoredUserField } from "../storage/storage";
 import NewMachineEntryScreen from "../screens/AssignJobScreen/NewMachineEntryScreen";
 import CustomerEntryScreen from "../screens/AssignJobScreen/CustomerEntryScreen";
 
@@ -38,19 +36,6 @@ export default function AssignJobStack() {
                 options={{ gestureEnabled: true }} // no custom header here!
             />
 
-            <Stack.Screen
-                name="FleetNumberEntry"
-                component={FleetNumberEntryScreen}
-                options={({ navigation }) => ({
-                    header: () => (
-                        <AppHeader
-                            onBack={() => navigation.goBack()}
-                        />
-                    ),
-                    gestureEnabled: true,
-
-                })}
-            />
             <Stack.Screen
                 name="NewMachineEntry"
                 component={NewMachineEntryScreen}

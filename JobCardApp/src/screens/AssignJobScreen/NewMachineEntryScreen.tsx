@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AssignJobStackParamList } from "../../navigation/AssignJobStack";
-import { KeyboardAvoidingView, Platform, Text, TextInput, View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { KeyboardAvoidingView, Platform, Text, TextInput, View, StyleSheet } from "react-native";
 import { Customer, FirestoreMachines, Machine } from "../../types/types";
 import { useEffect, useRef, useState } from "react";
 import BottomRightButton from "../../components/form/Buttons/BottomRightButton";
@@ -8,24 +8,18 @@ import SearchBar from "../../components/SearchBar";
 import COLORS from "../../constants/colors";
 import PADDING from "../../constants/padding";
 import { useMachines } from "../../context/MachinesContext";
+import SearchList from "./components/SearchList";
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "NewMachineEntry">;
 
 export default function NewMachineEntryScreen({ route, navigation }: Props) {
 
     const { machines, loading } = useMachines();
-
     if (loading) return <Text>Loading customers...</Text>;
-
 
     const { jobNumber } = route.params;
 
-
-    const [error, setError] = useState<string | null>("");
-
-
     const [searchTerm, setSearchTerm] = useState("")
-
     const [isSearching, setIsSearching] = useState(false);
 
     const [machine, setMachine] = useState<Machine>({
@@ -43,27 +37,22 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         customerName: "",
     });
 
-
-
     const [filteredMachines, setFilteredMachines] = useState<FirestoreMachines[]>([]);
-
     const [inputsValid, setInputsValid] = useState(true)
 
-    const handleChange = (field: keyof Machine, value: string) => {
+
+    const UpdateMachineField = (field: keyof Machine, value: string) => {
         setMachine((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
 
-    const handleSubmit = (machine: Machine) => {
-        setError(null); // reset old errors
-        console.log(machine)
+    const handleNavigation = (machine: Machine) => {
         navigation.navigate("CustomerEntry", { jobNumber: jobNumber, fleet: machine.fleet, machine, customer });
     };
 
-
-
+    //Filter Machines by search term
     useEffect(() => {
         const results = machines.filter((c) =>
             c.fleet.toLowerCase().includes(searchTerm.toLowerCase())
@@ -71,6 +60,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         setFilteredMachines(results);
     }, [searchTerm, machines]);
 
+    //Simple validation checking if fleet, make and model not empty
     useEffect(() => {
         if (machine.fleet.length > 0 && machine.make.length > 0 && machine.model.length > 0) {
             setInputsValid(false)
@@ -79,8 +69,10 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
         }
     }, [machine])
 
+    //For removing focus on cancel
     const inputRef = useRef<TextInput>(null);
 
+    //Takes firestoreMachine (which has both machine and customer fields) and converts it
     const setMachineSelection = (machine: FirestoreMachines) => {
         setIsSearching(false)
 
@@ -102,9 +94,6 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
 
         setMachine(convertToMachine)
         setCustomer(convertToCustomer)
-
-        console.log(customer)
-
     }
 
     return (
@@ -113,6 +102,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={0}
         >
+            {/* SEARCH  */}
             <SearchBar
                 value={searchTerm}
                 onChangeText={setSearchTerm}
@@ -122,39 +112,29 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                 ref={inputRef}
             />
 
-            {isSearching && <FlatList
-                data={filteredMachines}
-                keyExtractor={(item, index) => item.id || `${index}`}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.item}
-                        onPress={() => setMachineSelection(item)}
-                    >
+            {isSearching && <>
+                <SearchList
+                    list={filteredMachines}
+                    onSelect={setMachineSelection}
+                />
 
-                        <Text style={styles.name}>{item.fleet}</Text>
-                        <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
-                    </TouchableOpacity>
-                )}
-                ListEmptyComponent={<Text>Fleet number not found.</Text>}
-            />}
+                <BottomRightButton
+                    label={"Close"}
+                    onPress={() => {
+                        setIsSearching(false);
+                        inputRef.current?.blur(); // remove focus
+                    }}
+                    color="red"
+                />
+            </>}
 
-
-            {isSearching && <BottomRightButton
-                label={"Close"}
-                onPress={() => {
-                    setIsSearching(false);
-                    inputRef.current?.blur(); // remove focus
-                }}
-                color="red"
-            />}
-
-            {!isSearching &&
+            {!isSearching && <>
                 <View style={styles.details}>
                     <Text style={styles.label}>Fleet Number</Text>
                     <TextInput
                         style={styles.input}
                         value={machine.fleet}
-                        onChangeText={(text) => handleChange("fleet", text)}
+                        onChangeText={(text) => UpdateMachineField("fleet", text)}
                         placeholder="Enter Fleet Number"
                     />
 
@@ -162,7 +142,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                     <TextInput
                         style={styles.input}
                         value={machine.make}
-                        onChangeText={(text) => handleChange("make", text)}
+                        onChangeText={(text) => UpdateMachineField("make", text)}
                         placeholder="Enter make"
                     />
 
@@ -170,7 +150,7 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                     <TextInput
                         style={styles.input}
                         value={machine.model}
-                        onChangeText={(text) => handleChange("model", text)}
+                        onChangeText={(text) => UpdateMachineField("model", text)}
                         placeholder="Enter model"
                     />
 
@@ -178,18 +158,18 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                     <TextInput
                         style={styles.input}
                         value={machine.serialNumber}
-                        onChangeText={(text) => handleChange("serialNumber", text)}
+                        onChangeText={(text) => UpdateMachineField("serialNumber", text)}
                         placeholder="Enter serial number"
                     />
-                </View>}
+                </View>
 
-
-            {!isSearching && <BottomRightButton
-                label={loading ? "Loading..." : "Next"}
-                disabled={loading || inputsValid}
-                onPress={() => handleSubmit(machine)}
-            />}
-
+                <BottomRightButton
+                    label={loading ? "Loading..." : "Next"}
+                    disabled={loading || inputsValid}
+                    onPress={() => handleNavigation(machine)}
+                />
+            </>
+            }
 
         </KeyboardAvoidingView>
     );
@@ -216,12 +196,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 4,
     },
-    item: {
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderColor: "#ddd",
-    },
-    name: { fontSize: 16, fontWeight: "600" },
-    id: { fontSize: 12, color: "#555" },
+
 });
 

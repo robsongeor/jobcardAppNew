@@ -1,6 +1,6 @@
 import { MMKV } from 'react-native-mmkv';
 import { FirestoreMachines, Job, Machine, RecentActivityType } from '../types/types';
-import { formatDate, formatDateTime } from '../components/helpers/formatters';
+import { formatDateTime } from '../components/helpers/formatters';
 import { EventBus } from '../utils/EventBus';
 import { Customer } from '../types/types';
 
