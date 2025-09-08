@@ -7,7 +7,7 @@ import PartsSection from "../components/form/PartsSection";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import SignSection from "../components/form/SignSection";
 import FormTabBar from "../components/FormTabBar";
-import { StyleSheet, View, Modal } from "react-native";
+import { StyleSheet, View, Modal, Text } from "react-native";
 import COLORS from "../constants/colors";
 import InfoSection from "../components/form/InfoSection";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -24,12 +24,17 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
     const Tab = createMaterialTopTabNavigator();
 
     const { jobId, job } = useRoute<JobFormRouteProp>().params;
+
     const { form, updateField } = useJobFormData(jobId);
 
-    if (!form) return null;
-
-    const { handleSubmit, loading, showSuccess, showError, errorMsg, closeModal } =
-        useSubmitJobForm(job, jobId, form);
+    const {
+        handleSubmit,
+        loading,
+        showSuccess,
+        showError,
+        errorMsg,
+        closeModal,
+    } = useSubmitJobForm(job, jobId, form);
 
     const [showModal, setShowModal] = useState(false);
 
@@ -50,8 +55,7 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                             <HeaderButton
                                 icon="send"
                                 onPress={() => {
-                                    console.log("clicked photos")
-                                    //setShowModal(true);
+                                    setShowModal(true);
                                     handleSubmit();
                                 }}
                                 disabled={false}
@@ -61,7 +65,7 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                 />
             ),
         });
-    }, [navigation, job, handleSubmit, setShowModal]);
+    }, [navigation, job, handleSubmit]);
 
     return (
         <View style={styles.container}>
@@ -80,40 +84,62 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
 
             <Tab.Navigator tabBar={(props) => <FormTabBar {...props} />}>
                 <Tab.Screen name="Info">
-                    {() => <InfoSection data={form} jobId={job.id} job={job} />}
+                    {() =>
+                        form ? (
+                            <InfoSection data={form} jobId={job.id} job={job} />
+                        ) : (
+                            <Text style={{ color: "white" }}>Loading form...</Text>
+                        )
+                    }
                 </Tab.Screen>
                 <Tab.Screen name="Report">
-                    {() => (
-                        <DescriptionSection
-                            job={job}
-                            description={form.description}
-                            setDescription={(updated) => updateField("description", updated)}
-                        />
-                    )}
+                    {() =>
+                        form ? (
+                            <DescriptionSection
+                                job={job}
+                                description={form.description}
+                                setDescription={(updated) => updateField("description", updated)}
+                            />
+                        ) : (
+                            <Text style={{ color: "white" }}>Loading form...</Text>
+                        )
+                    }
                 </Tab.Screen>
                 <Tab.Screen name="Activity">
-                    {() => (
-                        <ActivitySection
-                            activity={form.activity ?? []}
-                            setActivity={(updated) => updateField("activity", updated)}
-                        />
-                    )}
+                    {() =>
+                        form ? (
+                            <ActivitySection
+                                activity={form.activity ?? []}
+                                setActivity={(updated) => updateField("activity", updated)}
+                            />
+                        ) : (
+                            <Text style={{ color: "white" }}>Loading form...</Text>
+                        )
+                    }
                 </Tab.Screen>
                 <Tab.Screen name="Parts">
-                    {() => (
-                        <PartsSection
-                            parts={form.parts ?? []}
-                            setParts={(updated) => updateField("parts", updated)}
-                        />
-                    )}
+                    {() =>
+                        form ? (
+                            <PartsSection
+                                parts={form.parts ?? []}
+                                setParts={(updated) => updateField("parts", updated)}
+                            />
+                        ) : (
+                            <Text style={{ color: "white" }}>Loading form...</Text>
+                        )
+                    }
                 </Tab.Screen>
                 <Tab.Screen name="Sign">
-                    {() => (
-                        <SignSection
-                            signed={form.signed}
-                            setSignatures={(updated) => updateField("signed", updated)}
-                        />
-                    )}
+                    {() =>
+                        form ? (
+                            <SignSection
+                                signed={form.signed}
+                                setSignatures={(updated) => updateField("signed", updated)}
+                            />
+                        ) : (
+                            <Text style={{ color: "white" }}>Loading form...</Text>
+                        )
+                    }
                 </Tab.Screen>
             </Tab.Navigator>
         </View>

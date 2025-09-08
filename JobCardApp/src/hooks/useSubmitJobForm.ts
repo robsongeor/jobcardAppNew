@@ -5,7 +5,7 @@ import { submitJobCardToFireStore, updateAssignedStatus } from "../firebase";
 import { Job } from "../types/types";
 import { JobFormData } from "./useJobFormData";
 
-export function useSubmitJobForm(job: Job, jobId: string, form: JobFormData) {
+export function useSubmitJobForm(job: Job, jobId: string, form: JobFormData | null) {
     const [loading, setLoading] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showError, setShowError] = useState(false);
@@ -18,6 +18,10 @@ export function useSubmitJobForm(job: Job, jobId: string, form: JobFormData) {
     };
 
     const handleSubmit = async () => {
+        if (!form) {
+            console.warn("Tried to submit before form was ready");
+            return;
+        }
         setLoading(true);
         try {
             const user = firebase.auth().currentUser;
