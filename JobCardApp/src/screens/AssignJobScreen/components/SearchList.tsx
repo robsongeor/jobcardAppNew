@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import COLORS from "../../../constants/colors";
+import PADDING from "../../../constants/padding";
 
 type SearchListProps = {
     list: any[];
@@ -11,6 +12,7 @@ export default function SearchList({ list, onSelect }: SearchListProps) {
 
     return (
         <FlatList
+            style={styles.container}
             data={list}
             keyExtractor={(item, index) => item.id || `${index}`}
             renderItem={({ item }) => (
@@ -20,7 +22,7 @@ export default function SearchList({ list, onSelect }: SearchListProps) {
                 >
 
                     <Text style={styles.name}>{item.fleet}</Text>
-                    <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
+                    <Text style={styles.id}> {item.machine.make || ""} {item.machine.model || ""} </Text>
                 </TouchableOpacity>
             )}
             ListEmptyComponent={<Text>Fleet number not found.</Text>}
@@ -29,9 +31,10 @@ export default function SearchList({ list, onSelect }: SearchListProps) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        marginHorizontal: PADDING.horizontal,
 
-
-
+    },
     item: {
         paddingVertical: 10,
         borderBottomWidth: 1,
