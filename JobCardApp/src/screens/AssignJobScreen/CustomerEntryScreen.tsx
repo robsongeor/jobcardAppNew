@@ -12,6 +12,7 @@ import { getCachedCustomers } from "../../storage/storage";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import PADDING from "../../constants/padding";
 import { useCustomers } from "../../context/CustomerContext";
+import SearchList from "./components/SearchList";
 
 
 type Props = NativeStackScreenProps<AssignJobStackParamList, "CustomerEntry">;
@@ -22,7 +23,6 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
 
     const [storedCustomer, setCustomer] = useState<Customer>(customer)
 
-    const [error, setError] = useState<string | null>("");
 
     //Create an empty job
     const [job, setJob] = useState<Job>(createEmptyJob())
@@ -53,8 +53,6 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
     };
 
     const handleSubmit = (customer: Customer) => {
-        setError(null); // reset old errors
-
         const newJob: Job = {
             ...job,
             job: jobNumber,           // <- confirm this field name matches your Job type
@@ -70,24 +68,12 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
         setJob(newJob)
 
         navigation.navigate("JobDescriptionEntry", { job: newJob });
-
-        console.log(newJob)
-
     };
 
     const setCustomerSelection = (customer: Customer) => {
         setIsSearching(false)
         setCustomer(customer)
     }
-
-    const checkValidInputs = () => {
-        if (machine.fleet.length == 0) {
-            return false
-        }
-
-        return true;
-    }
-
     const inputRef = useRef<TextInput>(null);
 
     return (
@@ -106,33 +92,26 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                 ref={inputRef}
             />
 
-            {isSearching && <FlatList
-                data={filteredCustomers}
-                keyExtractor={(item, index) => item.id || `${index}`}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.item}
-                        onPress={() => setCustomerSelection(item)}
-                    >
+            {isSearching && <>
+                <SearchList
+                    list={filteredCustomers}
+                    onSelect={setCustomerSelection}
+                    titleExtractor={(item) => item.customerName}
+                    subtitleExtractor={(item) => `${item.customerAddress}, ${item.customerAddressSuburb} `}
+                />
 
-                        <Text style={styles.name}>{item.customerName}</Text>
-                        <Text style={styles.id}>ID: {item.id || "No ID"}</Text>
-                    </TouchableOpacity>
-                )}
-                ListEmptyComponent={<Text>No customers found.</Text>}
-            />}
+                <BottomRightButton
+                    label={"Close"}
+                    onPress={() => {
+                        setIsSearching(false);
+                        inputRef.current?.blur(); // remove focus
+                    }}
+                    color="red"
+                />
+            </>
+            }
 
-            {isSearching && <BottomRightButton
-                label={"Close"}
-                onPress={() => {
-                    setIsSearching(false);
-                    inputRef.current?.blur(); // remove focus
-                }}
-                color="red"
-            />}
-
-
-            {!isSearching &&
+            {!isSearching && <>
                 <View style={styles.details}>
                     <Text style={styles.label}>Customer Name</Text>
                     <TextInput
@@ -165,14 +144,18 @@ export default function CustomerEntryScreen({ route, navigation }: Props) {
                         onChangeText={(text) => handleChange("customerAddressTown", text)}
                         placeholder="Enter town/city"
                     />
-                </View>}
+                </View>
+
+                <BottomRightButton
+                    label={loading ? "Loading..." : "Next"}
+                    disabled={loading || storedCustomer.customerName.length == 0}
+                    onPress={() => handleSubmit(storedCustomer)}
+                />
+            </>
+            }
 
 
-            {!isSearching && <BottomRightButton
-                label={loading ? "Loading..." : "Next"}
-                disabled={loading || storedCustomer.customerName.length == 0}
-                onPress={() => handleSubmit(storedCustomer)}
-            />}
+
         </KeyboardAvoidingView>
     )
 }

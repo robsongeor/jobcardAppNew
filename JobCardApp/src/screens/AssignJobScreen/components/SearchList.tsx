@@ -5,9 +5,11 @@ import PADDING from "../../../constants/padding";
 type SearchListProps = {
     list: any[];
     onSelect: (item: any) => void;
+    titleExtractor: (item: any) => string;
+    subtitleExtractor: (item: any) => string;
 }
 
-export default function SearchList({ list, onSelect }: SearchListProps) {
+export default function SearchList({ list, onSelect, titleExtractor, subtitleExtractor }: SearchListProps) {
 
 
     return (
@@ -16,13 +18,9 @@ export default function SearchList({ list, onSelect }: SearchListProps) {
             data={list}
             keyExtractor={(item, index) => item.id || `${index}`}
             renderItem={({ item }) => (
-                <TouchableOpacity
-                    style={styles.item}
-                    onPress={() => onSelect(item)}
-                >
-
-                    <Text style={styles.name}>{item.fleet}</Text>
-                    <Text style={styles.id}> {item.machine.make || ""} {item.machine.model || ""} </Text>
+                <TouchableOpacity style={styles.item} onPress={() => onSelect(item)} >
+                    <Text style={styles.name}>{titleExtractor(item)}</Text>
+                    <Text style={styles.id}> {subtitleExtractor(item)}</Text>
                 </TouchableOpacity>
             )}
             ListEmptyComponent={<Text>Fleet number not found.</Text>}

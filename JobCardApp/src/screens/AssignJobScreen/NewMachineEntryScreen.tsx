@@ -116,6 +116,8 @@ export default function NewMachineEntryScreen({ route, navigation }: Props) {
                 <SearchList
                     list={filteredMachines}
                     onSelect={setMachineSelection}
+                    titleExtractor={(item) => item.fleet}
+                    subtitleExtractor={(item) => `${item.machine.make || ""} ${item.machine.model || ""} `}
                 />
 
                 <BottomRightButton
