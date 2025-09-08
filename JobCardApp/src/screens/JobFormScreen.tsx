@@ -4,18 +4,12 @@ import { useJobFormData } from '../hooks/useJobFormData';
 import ActivitySection from '../components/form/ActivitySection';
 import DescriptionSection from '../components/form/DescriptionSection';
 import PartsSection from '../components/form/PartsSection';
-
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import SignSection from '../components/form/SignSection';
-import SubmitSection from '../components/form/SubmitSection';
-import JobInfo from '../components/form/JobInfo';
 import FormTabBar from '../components/FormTabBar';
-import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet, View } from 'react-native';
 import COLORS from '../constants/colors';
-import PADDING from '../constants/padding';
 import InfoSection from '../components/form/InfoSection';
-import { useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
@@ -80,10 +74,6 @@ const JobFormScreen = ({ navigation }: JobFormScreenProps) => {
                     {() => <SignSection signed={form.signed} setSignatures={(updated) => updateField('signed', updated)} />}
                 </Tab.Screen>
 
-                {/* <Tab.Screen name="Submit">
-                    {() => <SubmitSection data={form} jobId={job.id} job={job} />}
-                </Tab.Screen> */}
-
             </Tab.Navigator>
         </View>
     );
@@ -93,7 +83,6 @@ export default JobFormScreen;
 
 const styles = StyleSheet.create({
     container: {
-
         backgroundColor: COLORS.background,
         flex: 1,
     }
