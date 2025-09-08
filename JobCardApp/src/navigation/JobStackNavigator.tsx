@@ -8,7 +8,6 @@ import JobsScreen from '../screens/JobsScreen';
 import HeaderButton from '../components/form/Buttons/HeaderButton';
 import { View } from 'react-native';
 
-
 export type JobsStackParamList = {
     JobsList: undefined;
     JobForm: { jobId: string; job: Job; handleSubmitFromHeader?: () => void }; // add it as optional
